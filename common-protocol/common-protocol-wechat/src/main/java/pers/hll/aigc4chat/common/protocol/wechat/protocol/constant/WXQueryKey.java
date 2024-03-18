@@ -54,4 +54,5 @@ public interface WXQueryKey {
 
     String WEB_WX_DATA_TICKET = "webwx_data_ticket";
 
+    String REDIRECT = "redirect";
 }

@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class WebWxUpdateChatRoomReqBody extends BasePostRequestBaseBody {
 
     @SerializedName("ChatRoomName")

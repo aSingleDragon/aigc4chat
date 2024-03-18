@@ -84,5 +84,7 @@ public interface WXEndPoint {
 
     String WEB_WX_CHECK_UPLOAD = "https://%s/cgi-bin/mmwebwx-bin/webwxcheckupload";
 
+    String WEB_WX_UPLOAD_MEDIA = "https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia";
+
     String WEB_WX_LOGOUT = "https://%s/cgi-bin/mmwebwx-bin/webwxlogout";
 }

@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.response;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author 2024/03/14
  */
 @Data
-@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class WebWxSyncResp extends BaseResponseBaseBody {
 
     @SerializedName("AddMsgCount")

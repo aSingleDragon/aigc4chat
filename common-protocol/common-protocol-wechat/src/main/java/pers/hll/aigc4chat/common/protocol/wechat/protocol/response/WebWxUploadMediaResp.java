@@ -11,17 +11,17 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WebWxCheckUploadResp extends BaseResponseBaseBody {
-
-    @SerializedName("AESKey")
-    private String aseKey;
-
-    @SerializedName("Signature")
-    private String signature;
+public class WebWxUploadMediaResp extends BaseResponseBaseBody {
 
     @SerializedName("MediaId")
     private String mediaId;
 
-    @SerializedName("EncryFileName")
-    private String encryFileName;
+    @SerializedName("StartPos")
+    private long startPos;
+
+    @SerializedName("CDNThumbImgHeight")
+    private int cdnThumbImgHeight;
+
+    @SerializedName("CDNThumbImgWidth")
+    private int cdnThumbImgWidth;
 }

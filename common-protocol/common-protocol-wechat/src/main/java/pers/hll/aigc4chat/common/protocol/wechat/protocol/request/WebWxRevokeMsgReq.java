@@ -1,18 +1,13 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.EqualsAndHashCode;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxRevokeMsgReqBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxSendMsgReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxRevokeMsgResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSendMsgResp;
 
 import java.util.Map;
 

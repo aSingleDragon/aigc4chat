@@ -1,8 +1,6 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
@@ -12,9 +10,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxBatchGetContactReqBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxInitReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxBatchGetContactResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxInitResp;
 
 import java.util.List;
 import java.util.Map;

@@ -544,11 +544,11 @@ public final class XRequest implements XHttpExecutor.Request {
         }
 
         public static class Part {
-            @Nonnull
+
             public final String name;
-            @Nullable
+
             public final Object value;
-            @Nonnull
+
             public final String charset;
 
             public Part(@Nonnull String name, @Nullable Object value) {

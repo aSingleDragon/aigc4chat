@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 
+/**
+ *
+ *
+ * @author hll
+ * @since 2024/03/19
+ */
 @Data
 public class Msg {
 

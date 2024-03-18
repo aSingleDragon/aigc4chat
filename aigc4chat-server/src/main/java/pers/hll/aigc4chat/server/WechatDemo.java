@@ -1,19 +1,14 @@
 package pers.hll.aigc4chat.server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import lombok.extern.slf4j.Slf4j;
-import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
-import pers.hll.aigc4chat.common.entity.wechat.message.*;
+import pers.hll.aigc4chat.common.entity.wechat.message.WXUnknown;
+import pers.hll.aigc4chat.common.entity.wechat.message.WXVerify;
+import pers.hll.aigc4chat.server.wechat.DefaultWeChatListener;
 import pers.hll.aigc4chat.server.wechat.WeChatClient;
 
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Scanner;
 
@@ -26,59 +21,11 @@ import java.util.Scanner;
 @Slf4j
 public class WechatDemo {
 
-    /**
-     * 新建一个微信监听器
-     */
-    public static final WeChatClient.WeChatListener LISTENER = new WeChatClient.WeChatListener() {
-
-
-        @Override
-        public void onLogin(@Nonnull WeChatClient client) {
-            log.info("onLogin：您有{}名好友、活跃微信群{}个", client.userFriends().size(), client.userGroups().size());
-        }
-
-        @Override
-        public void onMessage(@Nonnull WeChatClient client, @Nonnull WXMessage message) {
-            //log.info("获取到消息:{}", BaseUtil.GSON.toJson(message));
-
-            if (message instanceof WXVerify wxVerify) {
-                // 是好友请求消息，自动同意好友申请
-                //client.passVerify(wxVerify);
-            } else if (message instanceof WXLocation && message.getFromUser() != null
-                    && !message.getFromUser().getId().equals(client.userMe().getId())) {
-                // 如果对方告诉我他的位置，发送消息的不是自己，则我也告诉他我的位置
-                if (message.getFromGroup() != null) {
-                    // 群消息
-                    // client.sendLocation(message.fromGroup, "120.14556", "30.23856", "我在这里", "西湖");
-                } else {
-                    // 用户消息
-                    //client.sendLocation(message.getFromUser(), "120.14556", "30.23856", "我在这里", "西湖");
-                }
-            } else if (message instanceof WXText && message.getFromUser() != null
-                    && !message.getFromUser().getId().equals(client.userMe().getId())) {
-                // 是文字消息，并且发送消息的人不是自己，发送相同内容的消息
-                if (message.getFromGroup() != null) {
-                    // 群消息
-                    // client.sendText(message.fromGroup, message.content);
-                } else {
-                    // 用户消息
-                    //client.sendText(message.getFromUser(), message.getContent());
-                }
-            }
-        }
-
-        @Override
-        public void onContact(@Nonnull WeChatClient client, @Nullable WXContact oldContact, @Nullable WXContact newContact) {
-            log.info("检测到联系人变更:旧联系人名称：{}:新联系人名称：{}",
-                    (oldContact == null ? "null" : oldContact.getName()), (newContact == null ? "null" : newContact.getName()));
-        }
-    };
-
     public static void main(String[] args) {
         // 新建一个模拟微信客户端
         WeChatClient wechatClient = new WeChatClient();
         // 为模拟微信客户端设置监听器
-        wechatClient.setListener(LISTENER);
+        wechatClient.setListener(new DefaultWeChatListener());
         // 启动模拟微信客户端
         wechatClient.startup();
         Scanner scanner = new Scanner(System.in);
@@ -93,7 +40,7 @@ public class WechatDemo {
                         String text = scanner.nextLine();
                         WXContact contact = wechatClient.userContact(toContactId);
                         if (contact != null) {
-                            //log.info("success:{}", GSON.toJson(wechatClient.sendText(contact, text)));
+                            log.info("success:{}", wechatClient.sendText(contact, text));
                         } else {
                             log.info("联系人[{}]未找到!", toContactId);
                         }
@@ -106,7 +53,7 @@ public class WechatDemo {
                         File file = new File(scanner.nextLine());
                         WXContact contact = wechatClient.userContact(toContactId);
                         if (contact != null) {
-                            //log.info("success:" + GSON.toJson(wechatClient.sendFile(contact, file)));
+                            log.info("success:{}", wechatClient.sendFile(contact, file));
                         } else {
                             log.info("联系人[{}]未找到!", toContactId);
                         }
@@ -125,7 +72,7 @@ public class WechatDemo {
                         String lable = scanner.nextLine();
                         WXContact contact = wechatClient.userContact(toContactId);
                         if (contact != null) {
-                            //log.info("success:" + GSON.toJson(wechatClient.sendLocation(contact, longitude, latitude, title, lable)));
+                            log.info("success:{}", wechatClient.sendLocation(contact, longitude, latitude, title, lable));
                         } else {
                             log.info("联系人未找到");
                         }
@@ -142,7 +89,7 @@ public class WechatDemo {
                         wxUnknown.setId(Long.parseLong(serverMsgId));
                         wxUnknown.setIdLocal(Long.parseLong(clientMsgId));
                         wxUnknown.setToContact(wechatClient.userContact(toContactId));
-                        //wechatClient.revokeMsg(wxUnknown);
+                        wechatClient.revokeMsg(wxUnknown);
                     }
                     break;
                     case "passVerify": {
@@ -153,7 +100,7 @@ public class WechatDemo {
                         WXVerify wxVerify = new WXVerify();
                         wxVerify.setUserId(userId);
                         wxVerify.setTicket(verifyTicket);
-                        //wechatClient.passVerify(wxVerify);
+                        wechatClient.passVerify(wxVerify);
                     }
                     break;
                     case "editRemark": {
@@ -163,7 +110,7 @@ public class WechatDemo {
                         String remark = scanner.nextLine();
                         WXContact contact = wechatClient.userContact(userId);
                         if (contact instanceof WXUser) {
-                            //wechatClient.editRemark((WXUser) contact, remark);
+                            wechatClient.editRemark((WXUser) contact, remark);
                         } else {
                             log.info("好友未找到");
                         }
@@ -176,7 +123,7 @@ public class WechatDemo {
                         String isTop = scanner.nextLine();
                         WXContact contact = wechatClient.userContact(contactId);
                         if (contact != null) {
-                            //wechatClient.topContact(contact, Boolean.parseBoolean(isTop.toLowerCase()));
+                            wechatClient.topContact(contact, Boolean.parseBoolean(isTop.toLowerCase()));
                         } else {
                             log.info("联系人未找到");
                         }
@@ -189,7 +136,7 @@ public class WechatDemo {
                         String name = scanner.nextLine();
                         WXGroup group = wechatClient.userGroup(groupId);
                         if (group != null) {
-                            //wechatClient.setGroupName(group, name);
+                            wechatClient.setGroupName(group, name);
                         } else {
                             log.info("群组未找到");
                         }

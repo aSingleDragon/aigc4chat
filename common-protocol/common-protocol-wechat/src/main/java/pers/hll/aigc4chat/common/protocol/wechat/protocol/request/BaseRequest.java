@@ -37,8 +37,9 @@ public class BaseRequest<RequestType, ResponseType> implements Builder<RequestTy
     }
 
     public ResponseType convertRespBodyToObj(String stringEntity) {
-        log.error("响应数据没有转换实现:{}", stringEntity);
-        throw new UnsupportedOperationException("此方法需要子类重写!");
+        log.warn("响应数据没有转换实现:{}", stringEntity);
+        return null;
+        //throw new UnsupportedOperationException("此方法需要子类重写!");
     }
 
     @Override

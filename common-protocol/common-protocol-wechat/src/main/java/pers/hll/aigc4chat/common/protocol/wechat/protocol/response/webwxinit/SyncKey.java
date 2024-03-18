@@ -5,6 +5,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ *
+ * @author hll
+ * @since 2024/03/19
+ */
 @Data
 public class SyncKey {
 

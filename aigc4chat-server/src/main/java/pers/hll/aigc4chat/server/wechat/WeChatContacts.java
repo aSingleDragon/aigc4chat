@@ -1,5 +1,6 @@
 package pers.hll.aigc4chat.server.wechat;
 
+import lombok.Getter;
 import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
@@ -10,15 +11,21 @@ import java.util.HashMap;
 
 /**
  * 模拟网页微信客户端联系人
+ *
+ * @author hll
+ * @since 2024/03/19
  */
 public final class WeChatContacts {
 
     private final HashMap<String, WXContact> contacts = new HashMap<>();
 
+    @Getter
     private final HashMap<String, WXUser> friends = new HashMap<>();
 
+    @Getter
     private final HashMap<String, WXGroup> groups = new HashMap<>();
 
+    @Getter
     private WXUser me;
 
     private static <T extends WXContact> T parseContact(String host, User contact) {
@@ -62,31 +69,13 @@ public final class WeChatContacts {
     }
 
     /**
-     * 获取自身信息
-     *
-     * @return 自身信息
-     */
-    WXUser getMe() {
-        return this.me;
-    }
-
-    /**
      * 获取好友信息
      *
      * @param id 好友id
      * @return 好友信息
      */
-    WXUser getFriend(String id) {
+    public WXUser getFriend(String id) {
         return this.friends.get(id);
-    }
-
-    /**
-     * 获取所有好友
-     *
-     * @return 所有好友
-     */
-    HashMap<String, WXUser> getFriends() {
-        return this.friends;
     }
 
     /**
@@ -95,17 +84,8 @@ public final class WeChatContacts {
      * @param id 群id
      * @return 群信息
      */
-    WXGroup getGroup(String id) {
+    public WXGroup getGroup(String id) {
         return this.groups.get(id);
-    }
-
-    /**
-     * 获取所有群
-     *
-     * @return 所有群
-     */
-    HashMap<String, WXGroup> getGroups() {
-        return this.groups;
     }
 
     /**
@@ -114,7 +94,7 @@ public final class WeChatContacts {
      * @param userId 联系人id
      * @return 联系人信息
      */
-    WXContact getContact(String userId) {
+    public WXContact getContact(String userId) {
         return this.contacts.get(userId);
     }
 
@@ -123,12 +103,12 @@ public final class WeChatContacts {
      *
      * @param userMe 自身信息
      */
-    void setMe(String host, User userMe) {
+    public void setMe(String host, User userMe) {
         this.me = WeChatContacts.parseContact(host, userMe);
         this.contacts.put(this.me.getId(), this.me);
     }
 
-    void putContact(String host, User userContact) {
+    public void putContact(String host, User userContact) {
         WXContact contact = WeChatContacts.parseContact(host, userContact);
         this.contacts.put(contact.getId(), contact);
         if (contact instanceof WXGroup wxGroup) {
@@ -146,7 +126,7 @@ public final class WeChatContacts {
      *
      * @param userId 联系人id
      */
-    WXContact rmvContact(String userId) {
+    public WXContact rmvContact(String userId) {
         this.groups.remove(userId);
         this.friends.remove(userId);
         return this.contacts.remove(userId);
