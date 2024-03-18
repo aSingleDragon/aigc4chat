@@ -16,7 +16,7 @@ public interface WXEndPoint {
     /**
      * 获取登录二维码地址 redirect_uri
      */
-    String NEW_LOGIN_PAGE = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?mod=desktop";
+    String WEB_WX_NEW_LOGIN_PAGE = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?mod=desktop";
 
     /**
      * 登录二维码地址
@@ -32,22 +32,17 @@ public interface WXEndPoint {
     /**
      * 初始化请求地址 获取自身信息，好友列表，活跃群等
      */
-    String INIT ="https://%s/cgi-bin/mmwebwx-bin/webwxinit";
-
-    /**
-     * 批量获取联系人详细信息
-     */
-    String BATCH_GET_CONTACT = "https://%s/cgi-bin/mmwebwx-bin/webwxbatchgetcontact";
+    String WEB_WX_INIT ="https://%s/cgi-bin/mmwebwx-bin/webwxinit";
 
     /**
      * 状态更新接口，登录登出，消息已读
      */
-    String STATUS_NOTIFY = "https://%s/cgi-bin/mmwebwx-bin/webwxstatusnotify";
+    String WEB_WX_STATUS_NOTIFY = "https://%s/cgi-bin/mmwebwx-bin/webwxstatusnotify";
 
     /**
      * 获取联系人信息
      */
-    String GET_CONTACT = "https://%s/cgi-bin/mmwebwx-bin/webwxgetcontact";
+    String WEB_WX_GET_GET_CONTACT = "https://%s/cgi-bin/mmwebwx-bin/webwxgetcontact";
 
     /**
      * 同步检查接口，需要无限循环请求该接口，如果有消息要同步，则该接口立即返回并携带参数，否则将在60秒后返回
@@ -57,7 +52,37 @@ public interface WXEndPoint {
     /**
      * 同步接口，将服务端数据同步到本地
      */
-    String SYNC_DATA = "https://%s/cgi-bin/mmwebwx-bin/webwxsync";
+    String WEB_WX_SYNC = "https://%s/cgi-bin/mmwebwx-bin/webwxsync";
 
-    String APPID = "wx782c26e4c19acffb";
+    String WEB_WX_BATCH_GET_CONTACT = "https://%s/cgi-bin/mmwebwx-bin/webwxbatchgetcontact";
+
+    String WEB_WX_GET_MSG_IMG = "https://%s/cgi-bin/mmwebwx-bin/webwxgetmsgimg";
+
+    String WEB_WX_SEND_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendmsg";
+
+    String WEB_WX_SEND_MSG_IMG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendmsgimg";
+
+    String WEB_WX_SEND_VIDEO_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendvideomsg";
+
+    String WEB_WX_SEND_EMOTICON = "https://%s/cgi-bin/mmwebwx-bin/webwxsendemoticon";
+
+    String WEB_WX_SEND_APP_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendappmsg";
+
+    String WEB_WX_REVOKE_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxrevokemsg";
+
+    String WEB_WX_GET_VOICE = "https://%s/cgi-bin/mmwebwx-bin/webwxgetvoice";
+
+    String WEB_WX_GET_VIDEO = "https://%s/cgi-bin/mmwebwx-bin/webwxgetvideo";
+
+    String WEB_WX_GET_MEDIA = "https://file.%s/cgi-bin/mmwebwx-bin/webwxgetmedia";
+
+    String WEB_WX_VERIFY_USER =  "https://%s/cgi-bin/mmwebwx-bin/webwxverifyuser";
+
+    String WEB_WX_OP_LOG = "https://%s/cgi-bin/mmwebwx-bin/webwxoplog";
+
+    String WEB_WX_UPDATE_CHAT_ROOM = "https://%s/cgi-bin/mmwebwx-bin/webwxupdatechatroom";
+
+    String WEB_WX_CHECK_UPLOAD = "https://%s/cgi-bin/mmwebwx-bin/webwxcheckupload";
+
+    String WEB_WX_LOGOUT = "https://%s/cgi-bin/mmwebwx-bin/webwxlogout";
 }
