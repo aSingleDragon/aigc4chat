@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.common.base.http.executor.impl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import pers.hll.aigc4chat.common.base.XTools;
 import pers.hll.aigc4chat.common.base.config.XConfigTools;
 import pers.hll.aigc4chat.common.base.http.executor.XHttpExecutor;
@@ -96,7 +97,7 @@ public class XHttpExecutorImpl implements XHttpExecutor {
 
             KeyManager[] keyManagers = null;
             String keyManagersStr = XTools.cfgDef(CFG_SSL_KEY_MANAGERS, CFG_SSL_KEY_MANAGERS_DEFAULT);
-            if (!XTools.strBlank(keyManagersStr)) {
+            if (StringUtils.isNotBlank(keyManagersStr)) {
                 String[] array = keyManagersStr.split(",");
                 keyManagers = new KeyManager[array.length];
                 for (int i = 0, len = array.length; i < len; i++) {
@@ -106,7 +107,7 @@ public class XHttpExecutorImpl implements XHttpExecutor {
 
             TrustManager[] trustManagers = null;
             String trustManagersStr = XTools.cfgDef(CFG_SSL_TRUST_MANAGERS, CFG_SSL_TRUST_MANAGERS_DEFAULT);
-            if (!XTools.strBlank(trustManagersStr)) {
+            if (StringUtils.isNotBlank(trustManagersStr)) {
                 String[] array = trustManagersStr.split(",");
                 trustManagers = new TrustManager[array.length];
                 for (int i = 0, len = array.length; i < len; i++) {
@@ -116,7 +117,7 @@ public class XHttpExecutorImpl implements XHttpExecutor {
 
             SecureRandom secureRandom = null;
             String secureRandomStr = XTools.cfgDef(CFG_SSL_SECURE_RANDOM, CFG_SSL_SECURE_RANDOM_DEFAULT).trim();
-            if (!XTools.strBlank(secureRandomStr)) {
+            if (StringUtils.isNotBlank(secureRandomStr)) {
                 secureRandom = XConfigTools.supply(secureRandomStr);
             }
 

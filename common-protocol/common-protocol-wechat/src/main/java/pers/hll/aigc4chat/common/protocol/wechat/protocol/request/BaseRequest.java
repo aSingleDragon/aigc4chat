@@ -1,69 +1,49 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
+import pers.hll.aigc4chat.common.base.Builder;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
- *
  * @author hll
  * @author 2024/03/10
  */
-@Getter
-public class BaseRequest {
+@Data
+@Slf4j
+@Accessors(chain = true)
+public class BaseRequest<RequestType, ResponseType> implements Builder<RequestType> {
 
-    @JsonProperty("Uin")
-    public String uin;
+    private final String uri;
 
-    @JsonProperty("Sid")
-    public String sId;
+    protected boolean redirectsEnabled = true;
 
-    @JsonProperty("Skey")
-    public String sKey;
+    protected boolean fileStreamAvailable = false;
 
-    @JsonProperty("DeviceID")
-    public String deviceID;
+    protected InputStream inputStream = null;
 
-    @Getter
-    public String uri;
-
-    @Setter
-    @Getter
-    private boolean redirectsEnabled;
-
-    private static final Random RANDOM = new Random();
-
-    private final Map<String, String> requestParamMap = new HashMap<>();
+    private final Map<String, Object> requestParamMap = new HashMap<>();
 
     private final Map<String, String> headerMap = new HashMap<>();
 
     private final Map<String, String> pathVariableMap = new HashMap<>();
 
-    public BaseRequest(String uin, String sId, String sKey) {
-        this.uin = uin;
-        this.sId = sId;
-        this.sKey = sKey;
-        this.redirectsEnabled = true;
-        this.deviceID = createDeviceId();
-    }
-
     public BaseRequest(String uri) {
         this.uri = uri;
     }
 
-    public static String createDeviceId() {
-        StringBuilder sb = new StringBuilder("e");
-        for (int i = 0; i < 15; i++) {
-            sb.append(RANDOM.nextInt(10));
-        }
-        return sb.toString();
+    public ResponseType convertRespBodyToObj(String stringEntity) {
+        log.error("响应数据没有转换实现:{}", stringEntity);
+        throw new UnsupportedOperationException("此方法需要子类重写!");
     }
 
-    public <T> T stringToGeneric(String stringEntity) {
-        return null;
+    @Override
+    public RequestType build() {
+        log.error("请求没有构造实现!");
+        throw new UnsupportedOperationException("此方法需要子类重写!");
     }
 }

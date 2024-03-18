@@ -15,4 +15,8 @@ public interface WXHeaderKey {
     String EXT_SPAM = "extspam";
 
     String REFERER = "referer";
+
+    String CONTENT_TYPE = "ContentType";
+
+    String RANGE = "Range";
 }

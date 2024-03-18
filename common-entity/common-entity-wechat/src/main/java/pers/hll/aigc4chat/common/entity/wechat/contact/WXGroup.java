@@ -1,6 +1,7 @@
 package pers.hll.aigc4chat.common.entity.wechat.contact;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.HashMap;
  * @since 2023/03/10
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class WXGroup extends WXContact implements Serializable, Cloneable {
 
     /**
@@ -31,48 +33,11 @@ public class WXGroup extends WXContact implements Serializable, Cloneable {
     private HashMap<String, Member> members;
 
     @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (isDetail ? 1 : 0);
-        result = 31 * result + (isOwner ? 1 : 0);
-        result = 31 * result + (members != null ? members.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public WXGroup clone() {
         WXGroup wxGroup = (WXGroup) super.clone();
         if (this.members != null) {
             wxGroup.members = (HashMap<String, Member>) this.members.clone();
         }
         return wxGroup;
-    }
-
-    @Data
-    public static class Member implements Serializable, Cloneable {
-
-        /**
-         * 群成员id
-         */
-        private String id;
-
-        /**
-         * 群成员昵称
-         */
-        private String name;
-
-        /**
-         * 群成员群名片
-         */
-        private String display;
-
-        @Override
-        public Member clone() {
-            try {
-                return (Member) super.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new IllegalStateException();
-            }
-        }
     }
 }

@@ -1,6 +1,7 @@
 package pers.hll.aigc4chat.server.wechat;
 
 
+import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.common.base.http.executor.impl.XRequest;
 
 import java.io.File;
@@ -9,7 +10,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 
+@Slf4j
 final class WeChatTools {
+
     private static final char[] HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
@@ -37,7 +40,6 @@ final class WeChatTools {
             byte[] b = new byte[3];
             is.read(b, 0, b.length);
             String fileCode = bytesToHex(b);
-
             switch (fileCode) {
                 case "ffd8ff":
                     return "jpg";
@@ -55,7 +57,7 @@ final class WeChatTools {
                     }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("文件读写异常:", e);
             return "";
         }
     }

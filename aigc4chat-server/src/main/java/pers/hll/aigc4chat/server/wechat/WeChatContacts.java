@@ -1,58 +1,62 @@
 package pers.hll.aigc4chat.server.wechat;
 
+import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.RspInit;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
 
 import java.util.HashMap;
 
 /**
  * 模拟网页微信客户端联系人
  */
-@SuppressWarnings("unchecked")
-final class WeChatContacts {
+public final class WeChatContacts {
+
     private final HashMap<String, WXContact> contacts = new HashMap<>();
+
     private final HashMap<String, WXUser> friends = new HashMap<>();
+
     private final HashMap<String, WXGroup> groups = new HashMap<>();
+
     private WXUser me;
 
-    private static <T extends WXContact> T parseContact(String host, RspInit.User contact) {
-        if (contact.UserName.startsWith("@@")) {
+    private static <T extends WXContact> T parseContact(String host, User contact) {
+        if (contact.getUserName().startsWith("@@")) {
             WXGroup group = new WXGroup();
-            group.setId(contact.UserName);
-            group.setName(contact.NickName);
-            group.setNamePY(contact.PYInitial);
-            group.setNameQP(contact.PYQuanPin);
-            group.setAvatarUrl(String.format("https://%s%s", host, contact.HeadImgUrl));
-            group.setContactFlag(contact.ContactFlag);
+            group.setId(contact.getUserName());
+            group.setName(contact.getNickName());
+            group.setNamePY(contact.getPYInitial());
+            group.setNameQP(contact.getPYQuanPin());
+            group.setAvatarUrl(String.format("https://%s%s", host, contact.getHeadImgUrl()));
+            group.setContactFlag(contact.getContactFlag());
             group.setDetail(false);
-            group.setOwner(contact.IsOwner > 0);
+            group.setOwner(contact.getIsOwner() > 0);
             group.setMembers(new HashMap<>());
-            for (RspInit.User user : contact.MemberList) {
-                WXGroup.Member member = new WXGroup.Member();
-                member.setId(user.UserName);
-                member.setName(user.NickName);
-                member.setDisplay(user.DisplayName);
+            for (User user : contact.getMemberList()) {
+                Member member = new Member();
+                member.setId(user.getUserName());
+                member.setName(user.getNickName());
+                member.setDisplay(user.getDisplayName());
                 group.getMembers().put(member.getId(), member);
             }
             return (T) group;
         } else {
             WXUser user = new WXUser();
-            user.setId(contact.UserName);
-            user.setName(contact.NickName);
-            user.setNamePY(contact.PYInitial);
-            user.setNameQP(contact.PYQuanPin);
-            user.setAvatarUrl(String.format("https://%s%s", host, contact.HeadImgUrl));
-            user.setContactFlag(contact.ContactFlag);
-            user.setGender(contact.Sex);
-            user.setSignature(contact.Signature);
-            user.setRemark(contact.RemarkName);
-            user.setRemarkPY(contact.RemarkPYInitial);
-            user.setRemarkQP(contact.RemarkPYQuanPin);
-            user.setProvince(contact.Province);
-            user.setCity(contact.City);
-            user.setVerifyFlag(contact.VerifyFlag);
+            user.setId(contact.getUserName());
+            user.setName(contact.getNickName());
+            user.setNamePY(contact.getPYInitial());
+            user.setNameQP(contact.getPYQuanPin());
+            user.setAvatarUrl(String.format("https://%s%s", host, contact.getHeadImgUrl()));
+            user.setContactFlag(contact.getContactFlag());
+            user.setGender(contact.getSex());
+            user.setSignature(contact.getSignature());
+            user.setRemark(contact.getRemarkName());
+            user.setRemarkPY(contact.getRemarkPYInitial());
+            user.setRemarkQP(contact.getRemarkPYQuanPin());
+            user.setProvince(contact.getProvince());
+            user.setCity(contact.getCity());
+            user.setVerifyFlag(contact.getVerifyFlag());
             return (T) user;
         }
     }
@@ -119,12 +123,12 @@ final class WeChatContacts {
      *
      * @param userMe 自身信息
      */
-    void setMe(String host, RspInit.User userMe) {
+    void setMe(String host, User userMe) {
         this.me = WeChatContacts.parseContact(host, userMe);
         this.contacts.put(this.me.getId(), this.me);
     }
 
-    void putContact(String host, RspInit.User userContact) {
+    void putContact(String host, User userContact) {
         WXContact contact = WeChatContacts.parseContact(host, userContact);
         this.contacts.put(contact.getId(), contact);
         if (contact instanceof WXGroup wxGroup) {
