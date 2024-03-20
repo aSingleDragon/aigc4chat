@@ -34,6 +34,9 @@ import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXEndP
 
 /**
  * 网页版微信全部接口
+ *
+ * @author hll
+ * @since 2024/03/20
  */
 @Data
 @Slf4j
@@ -149,6 +152,7 @@ public class WeChatApi {
                 .setPassTicket(passTicket)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
                 .build());
+        log.info("初始化: {}", webWxInitResp);
         this.skey = webWxInitResp.getSKey();
         if (this.skey == null) {
             this.skey = "";

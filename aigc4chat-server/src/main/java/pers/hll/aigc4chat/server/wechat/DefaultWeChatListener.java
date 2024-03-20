@@ -39,7 +39,7 @@ public class DefaultWeChatListener implements WeChatListener {
                  client.sendLocation(message.getFromGroup(), "120.14556", "30.23856", "我在这里", "西湖");
             } else {
                 // 用户消息
-                client.sendLocation(message.getFromUser(), "120.14556", "30.23856", "我在这里", "西湖");
+                client.sendLocation(message.getFromUser(), "-77.03678", "38.89752", "白宫", "宾夕法尼亚大道1600号");
             }
         } else if (message instanceof WXText && message.getFromUser() != null
                 && !message.getFromUser().getId().equals(client.userMe().getId())) {

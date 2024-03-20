@@ -511,14 +511,14 @@ public final class WeChatClient {
      * @param lon       经度
      * @param lat       纬度
      * @param title     定位消息模块标题
-     * @param lable     定位消息模块二级描述
+     * @param label     定位消息模块二级描述
      * @return 定位消息
      */
     @Nonnull
     public WXLocation sendLocation(@Nonnull WXContact wxContact, @Nonnull String lon, @Nonnull String lat,
-                                   @Nonnull String title, @Nonnull String lable) {
+                                   @Nonnull String title, @Nonnull String label) {
         log.error("向({}: {})发送位置信息，坐标: {}, {}，说明: {}({})",
-                wxContact.getId(), wxContact.getName(), lon, lat, title, lable);
+                wxContact.getId(), wxContact.getName(), lon, lat, title, label);
         StringBuilder sbLocationMsg = new StringBuilder();
         sbLocationMsg.append("<?xml version=\"1.0\"?>\n");
         sbLocationMsg.append("<msg>\n");
@@ -527,7 +527,7 @@ public final class WeChatClient {
                 .append("\" y=\"")
                 .append(lon)
                 .append("\" scale=\"15\" label=\"")
-                .append(lable)
+                .append(label)
                 .append("\" maptype=\"roadmap\" poiname=\"")
                 .append(title)
                 .append("\" poiid=\"City\" />\n");

@@ -32,6 +32,9 @@ import java.nio.charset.StandardCharsets;
 @UtilityClass
 public class WeChatHttpClient {
 
+    /**
+     * 复用Cookie信息
+     */
     private CookieStore cookieStore = null;
 
     public <RequestType, ResponseType> ResponseType post(BasePostRequest<RequestType, ResponseType> basePostRequest) {
@@ -44,6 +47,7 @@ public class WeChatHttpClient {
 
         try (CloseableHttpClient httpClient = HttpClients
                 .custom()
+                .setDefaultCookieStore(cookieStore)
                 .setDefaultRequestConfig(requestConfig)
                 .build()) {
 
@@ -55,8 +59,12 @@ public class WeChatHttpClient {
             httpPost.setURI(uriBuilder.build());
             httpPost.setEntity(new StringEntity(basePostRequest.buildRequestBody(), ContentType.APPLICATION_JSON));
 
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            HttpContext context = HttpClientContext.create();
+            context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost, context)) {
                 String strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
+                cookieStore = (CookieStore) context.getAttribute(HttpClientContext.COOKIE_STORE);
                 return basePostRequest.convertRespBodyToObj(strEntity);
             }
         } catch (IOException | URISyntaxException e) {
