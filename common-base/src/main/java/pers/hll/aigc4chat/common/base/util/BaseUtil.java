@@ -79,12 +79,12 @@ public class BaseUtil {
         return sbRandom.toString();
     }
 
-    public String md5(String algorithm, File file) {
+    public String md5(File file) {
         MessageDigest messageDigest = null;
         try {
-            messageDigest = MessageDigest.getInstance(algorithm);
+            messageDigest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            log.error("未找到{}算法:", algorithm, e);
+            log.error("未找到MD5算法:", e);
         }
         try (FileInputStream fileInputStream = new FileInputStream(file);
              DigestInputStream digestInputStream = new DigestInputStream(fileInputStream, messageDigest)) {

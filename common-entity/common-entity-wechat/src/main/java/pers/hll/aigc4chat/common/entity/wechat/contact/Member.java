@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ *
+ * @author hll
+ * @since 2024/03/19
+ */
 @Data
 public class Member implements Serializable, Cloneable {
 

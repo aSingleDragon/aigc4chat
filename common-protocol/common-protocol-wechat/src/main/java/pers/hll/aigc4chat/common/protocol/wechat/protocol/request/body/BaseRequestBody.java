@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ *
+ * @author hll
+ * @since 2024/03/19
+ */
 @Data
 @RequiredArgsConstructor
 public class BaseRequestBody {

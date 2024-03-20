@@ -32,6 +32,9 @@ import java.nio.charset.StandardCharsets;
 @UtilityClass
 public class WeChatHttpClient {
 
+    /**
+     * 复用Cookie信息
+     */
     private CookieStore cookieStore = null;
 
     public <RequestType, ResponseType> ResponseType post(BasePostRequest<RequestType, ResponseType> basePostRequest) {
@@ -44,6 +47,7 @@ public class WeChatHttpClient {
 
         try (CloseableHttpClient httpClient = HttpClients
                 .custom()
+                .setDefaultCookieStore(cookieStore)
                 .setDefaultRequestConfig(requestConfig)
                 .build()) {
 
@@ -55,8 +59,12 @@ public class WeChatHttpClient {
             httpPost.setURI(uriBuilder.build());
             httpPost.setEntity(new StringEntity(basePostRequest.buildRequestBody(), ContentType.APPLICATION_JSON));
 
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            HttpContext context = HttpClientContext.create();
+            context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost, context)) {
                 String strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
+                cookieStore = (CookieStore) context.getAttribute(HttpClientContext.COOKIE_STORE);
                 return basePostRequest.convertRespBodyToObj(strEntity);
             }
         } catch (IOException | URISyntaxException e) {
@@ -103,42 +111,5 @@ public class WeChatHttpClient {
             log.error("构造Get请求出错: ", e);
         }
         return null;
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        // 创建一个Cookie存储对象
-        CookieStore cookieStore = new BasicCookieStore();
-        // 添加一个Cookie到CookieStore中
-        BasicClientCookie cookie = new BasicClientCookie("cookieName", "cookieValue");
-        cookie.setDomain("yourdomain.com");  // 设置域名
-        cookie.setPath("/");                 // 设置路径（可选）
-        cookieStore.addCookie(cookie);
-        // 创建HttpClient实例并设置默认的CookieStore
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setDefaultCookieStore(cookieStore)
-                .build();
-        // 创建请求配置
-        RequestConfig requestConfig = RequestConfig.custom().build();
-        // 创建HttpGet请求
-        HttpGet httpGet = new HttpGet("http://yourdomain.com/some-resource");
-        httpGet.setConfig(requestConfig);
-        // 获取HttpContext实例以关联CookieStore
-        HttpContext context = HttpClientContext.create();
-        context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
-        // 执行HTTP GET请求
-        CloseableHttpResponse response1 = httpClient.execute(httpGet, context);
-        // 处理响应...
-        // ...
-        // 下一次请求时，不需要重新添加Cookie，直接使用同一个HttpClient实例和上下文即可
-        HttpGet nextRequest = new HttpGet("http://yourdomain.com/another-resource");
-        nextRequest.setConfig(requestConfig);
-        // 使用相同的context执行下一个请求
-        CloseableHttpResponse response2 = httpClient.execute(nextRequest, context);
-        // ...处理response2...
-        // 最后关闭HTTP客户端
-        response1.close();
-        response2.close();
-        httpClient.close();
     }
 }

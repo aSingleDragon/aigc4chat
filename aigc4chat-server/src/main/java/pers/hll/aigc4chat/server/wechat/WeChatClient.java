@@ -226,16 +226,16 @@ public final class WeChatClient {
         try {
             log.info("微信用户: {}", userMe().getName());
 
-            StringBuilder sbCookie = new StringBuilder("Cookie信息：");
+            //StringBuilder sbCookie = new StringBuilder("Cookie信息：");
             //Field created = HttpCookie.class.getDeclaredField("whenCreated");
             //created.setAccessible(true);
-            for (HttpCookie cookie : weChatApi.getHttpExecutor().getCookies()) {
-                //sbCookie.append("\n\t过期时间：")
-                //        .append(XTools.dateFormat(XTimeTools.FORMAT_YMDHMS, new Date((long) created.get(cookie) + cookie.getMaxAge() * 1000)));
-                sbCookie.append(", 键: ").append(cookie.getName());
-                sbCookie.append(", 值: ").append(cookie.getValue());
-            }
-            log.info(sbCookie.toString());
+            //for (HttpCookie cookie : weChatApi.getHttpExecutor().getCookies()) {
+            //    sbCookie.append("\n\t过期时间：")
+            //            .append(XTools.dateFormat(XTimeTools.FORMAT_YMDHMS, new Date((long) created.get(cookie) + cookie.getMaxAge() * 1000)));
+            //    sbCookie.append(", 键: ").append(cookie.getName());
+            //    sbCookie.append(", 值: ").append(cookie.getValue());
+            //}
+            //log.info(sbCookie.toString());
 
             StringBuilder sbLogin = new StringBuilder("登录信息：");
             sbLogin.append("\n\thost：").append(weChatApi.getHost());
@@ -405,8 +405,8 @@ public final class WeChatClient {
                     signature = rspCheckUpload.getSignature();
                 }
                 if (StringUtils.isEmpty(mediaId)) {
-                    //RspUploadMedia rspUploadMedia = weChatApi.webwxuploadmedia(wxContacts.getMe().getId(), wxContact.getId(), file, aesKey, signature);
-                    //mediaId = rspUploadMedia.MediaId;
+                    //WebWxUploadMediaResp webWxUploadMediaResp = weChatApi.webWxUploadMedia(wxContacts.getMe().getId(), wxContact.getId(), file, aesKey, signature);
+                    //mediaId = webWxUploadMediaResp.getMediaId();
                 }
 
                 if (StringUtils.isNotEmpty(mediaId)) {
@@ -511,14 +511,14 @@ public final class WeChatClient {
      * @param lon       经度
      * @param lat       纬度
      * @param title     定位消息模块标题
-     * @param lable     定位消息模块二级描述
+     * @param label     定位消息模块二级描述
      * @return 定位消息
      */
     @Nonnull
     public WXLocation sendLocation(@Nonnull WXContact wxContact, @Nonnull String lon, @Nonnull String lat,
-                                   @Nonnull String title, @Nonnull String lable) {
+                                   @Nonnull String title, @Nonnull String label) {
         log.error("向({}: {})发送位置信息，坐标: {}, {}，说明: {}({})",
-                wxContact.getId(), wxContact.getName(), lon, lat, title, lable);
+                wxContact.getId(), wxContact.getName(), lon, lat, title, label);
         StringBuilder sbLocationMsg = new StringBuilder();
         sbLocationMsg.append("<?xml version=\"1.0\"?>\n");
         sbLocationMsg.append("<msg>\n");
@@ -527,7 +527,7 @@ public final class WeChatClient {
                 .append("\" y=\"")
                 .append(lon)
                 .append("\" scale=\"15\" label=\"")
-                .append(lable)
+                .append(label)
                 .append("\" maptype=\"roadmap\" poiname=\"")
                 .append(title)
                 .append("\" poiid=\"City\" />\n");
@@ -585,17 +585,17 @@ public final class WeChatClient {
         return wxContact;
     }
 
-    ///**
-    // * 获取图片消息的大图
-    // *
-    // * @param wxImage 要获取大图的图片消息
-    // * @return 获取大图后的图片消息
-    // */
-    //@Nonnull
-    //public WXImage fetchImage(@Nonnull WXImage wxImage) {
-    //    wxImage.setOrigin(weChatApi.webWxGetMsgImg(wxImage.getId(), "big"));
-    //    return wxImage;
-    //}
+    /**
+     * 获取图片消息的大图
+     *
+     * @param wxImage 要获取大图的图片消息
+     * @return 获取大图后的图片消息
+     */
+    @Nonnull
+    public WXImage fetchImage(@Nonnull WXImage wxImage) throws IOException {
+        wxImage.setOrigin(weChatApi.webWxGetMsgImg(wxImage.getId(), "big"));
+        return wxImage;
+    }
 
     /**
      * 获取语音消息的语音文件
@@ -688,74 +688,6 @@ public final class WeChatClient {
         weChatApi.webWxUpdateChatRoom(wxGroup.getId(), "modtopic", name, new LinkedList<>());
     }
 
-    /**
-     * 模拟网页微信客户端监听器
-     */
-    public interface WeChatListener {
-        /**
-         * 获取到用户登录的二维码
-         *
-         * @param client 微信客户端
-         * @param qrCode 用户登录二维码的url
-         */
-        default void onQRCode(@Nonnull WeChatClient client, @Nonnull String qrCode) {
-        }
-
-        /**
-         * 获取用户头像，base64编码
-         *
-         * @param client       微信客户端
-         * @param base64Avatar base64编码的用户头像
-         */
-        default void onAvatar(@Nonnull WeChatClient client, @Nonnull String base64Avatar) {
-        }
-
-        /**
-         * 模拟网页微信客户端异常退出
-         *
-         * @param client 微信客户端
-         * @param reason 错误原因
-         */
-        default void onFailure(@Nonnull WeChatClient client, @Nonnull String reason) {
-            client.dump();
-        }
-
-        /**
-         * 用户登录并初始化成功
-         *
-         * @param client 微信客户端
-         */
-        default void onLogin(@Nonnull WeChatClient client) {
-        }
-
-        /**
-         * 用户获取到消息
-         *
-         * @param client  微信客户端
-         * @param message 用户获取到的消息
-         */
-        default void onMessage(@Nonnull WeChatClient client, @Nonnull WXMessage message) {
-        }
-
-        /**
-         * 用户联系人变化
-         *
-         * @param client     微信客户端
-         * @param oldContact 旧联系人，新增联系人时为null
-         * @param newContact 新联系人，删除联系人时为null
-         */
-        default void onContact(@Nonnull WeChatClient client, @Nullable WXContact oldContact, @Nullable WXContact newContact) {
-        }
-
-        /**
-         * 模拟网页微信客户端正常退出
-         *
-         * @param client 微信客户端
-         */
-        default void onLogout(@Nonnull WeChatClient client) {
-            client.dump();
-        }
-    }
 
     /**
      * 模拟网页微信客户端工作线程

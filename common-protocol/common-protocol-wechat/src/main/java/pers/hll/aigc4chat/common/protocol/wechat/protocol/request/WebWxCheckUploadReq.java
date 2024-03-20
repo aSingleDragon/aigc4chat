@@ -58,7 +58,7 @@ public class WebWxCheckUploadReq extends BasePostRequest<WebWxCheckUploadReq, We
     @Override
     public String buildRequestBody() {
         return BaseUtil.GSON.toJson(new WebWxCheckUploadReqBody()
-                        .setFileMd5(BaseUtil.md5("MD5", file))
+                        .setFileMd5(BaseUtil.md5(file))
                         .setFileName(file.getName())
                         .setFileSize(file.length())
                         .setFileType(7)

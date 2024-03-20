@@ -1,6 +1,5 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
-import org.dom4j.DocumentException;
 import pers.hll.aigc4chat.common.base.util.XmlUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;

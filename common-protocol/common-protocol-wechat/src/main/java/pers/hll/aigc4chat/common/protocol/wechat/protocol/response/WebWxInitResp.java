@@ -10,6 +10,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.MPS
 import java.util.List;
 
 /**
+ * 网页微信初始化请求响应体
  *
  * @author hll
  * @author 2024/03/14

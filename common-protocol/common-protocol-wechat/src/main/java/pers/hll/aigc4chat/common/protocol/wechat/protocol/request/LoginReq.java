@@ -1,5 +1,6 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.common.base.constant.StringPool;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
  * @since 2023/03/13
  */
 @Slf4j
+@EqualsAndHashCode(callSuper = true)
 public class LoginReq extends BaseRequest<LoginReq, LoginResp> {
 
     private String uuid;
