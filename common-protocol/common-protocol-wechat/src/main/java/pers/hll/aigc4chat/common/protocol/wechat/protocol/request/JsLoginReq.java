@@ -37,6 +37,7 @@ public class JsLoginReq extends BaseRequest<JsLoginReq, JsLoginResp> {
                 .build();
     }
 
+    @Override
     public JsLoginReq build() {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
