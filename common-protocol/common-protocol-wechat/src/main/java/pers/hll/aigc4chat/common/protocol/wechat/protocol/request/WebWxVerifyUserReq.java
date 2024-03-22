@@ -9,17 +9,15 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.VerifyUser;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxSyncReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxVerifyUserReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.BaseResponseBaseBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSyncResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 验证好友请求
+ *
  * @author hll
  * @since 2023/03/11
  */

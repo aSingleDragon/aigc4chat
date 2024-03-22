@@ -8,6 +8,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WxNewLoginPag
 import java.util.Map;
 
 /**
+ * 跳转新登录页面请求
  *
  * @author hll
  * @since 2023/03/11

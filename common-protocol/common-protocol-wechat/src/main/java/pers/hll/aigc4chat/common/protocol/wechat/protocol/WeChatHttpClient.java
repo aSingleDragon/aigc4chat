@@ -25,6 +25,8 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 微信HTTP客户端
+ *
  * @author hll
  * @since 2024/03/11
  */

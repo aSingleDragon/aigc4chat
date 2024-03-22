@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 获取联系人列表 响应 body
  *
  * @author hll
  * @author 2024/03/14

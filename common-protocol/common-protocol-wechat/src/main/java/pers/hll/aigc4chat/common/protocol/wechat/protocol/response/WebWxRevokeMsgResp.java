@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 撤回消息 响应 body
  *
  * @author hll
  * @author 2024/03/10

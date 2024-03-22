@@ -109,8 +109,8 @@ public class WechatDemo {
                         log.info("remarkName:");
                         String remark = scanner.nextLine();
                         WXContact contact = wechatClient.userContact(userId);
-                        if (contact instanceof WXUser) {
-                            wechatClient.editRemark((WXUser) contact, remark);
+                        if (contact instanceof WXUser wxUser) {
+                            wechatClient.editRemark(wxUser, remark);
                         } else {
                             log.info("好友未找到");
                         }

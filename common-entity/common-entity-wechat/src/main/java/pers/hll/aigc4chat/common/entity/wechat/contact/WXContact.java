@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- * 微信联系人
+ * 联系人
  *
  * @author hll
  * @since 2024/03/10

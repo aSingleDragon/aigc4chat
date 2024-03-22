@@ -14,6 +14,8 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WxNewLoginPag
 import java.util.Map;
 
 /**
+ * 登出请求
+ *
  * @author hll
  * @since 2023/03/11
  */
@@ -36,7 +38,7 @@ public class WebWxLogoutReq extends BasePostRequest<WebWxLogoutReq, Object> {
         return this;
     }
 
-    public WebWxLogoutReq setSid(String sId) {
+    public WebWxLogoutReq setSid(String sid) {
         this.sid = sid;
         return this;
     }

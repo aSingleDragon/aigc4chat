@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * 微信群
+ * 群
  *
  * @author hll
  * @since 2023/03/10

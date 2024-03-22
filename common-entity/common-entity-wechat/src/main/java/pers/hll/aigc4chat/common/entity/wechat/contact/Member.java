@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * 群成员
  *
  * @author hll
  * @since 2024/03/19

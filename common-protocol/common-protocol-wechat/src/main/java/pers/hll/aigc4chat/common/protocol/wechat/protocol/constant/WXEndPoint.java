@@ -54,37 +54,88 @@ public interface WXEndPoint {
      */
     String WEB_WX_SYNC = "https://%s/cgi-bin/mmwebwx-bin/webwxsync";
 
+    /**
+     * 批量获取联系人详细信息
+     */
     String WEB_WX_BATCH_GET_CONTACT = "https://%s/cgi-bin/mmwebwx-bin/webwxbatchgetcontact";
 
+    /**
+     * 根据MsgId获取那条消息的图片
+     */
     String WEB_WX_GET_MSG_IMG = "https://%s/cgi-bin/mmwebwx-bin/webwxgetmsgimg";
 
+    /**
+     * 发送消息接口
+     */
     String WEB_WX_SEND_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendmsg";
 
+    /**
+     * 发送图片消息
+     */
     String WEB_WX_SEND_MSG_IMG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendmsgimg";
 
+    /**
+     * 发送视频消息
+     */
     String WEB_WX_SEND_VIDEO_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendvideomsg";
 
+    /**
+     * 发送表情包
+     */
     String WEB_WX_SEND_EMOTICON = "https://%s/cgi-bin/mmwebwx-bin/webwxsendemoticon";
 
+    /**
+     * 发送文件附件消息
+     */
     String WEB_WX_SEND_APP_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxsendappmsg";
 
+    /**
+     * 撤回消息
+     */
     String WEB_WX_REVOKE_MSG = "https://%s/cgi-bin/mmwebwx-bin/webwxrevokemsg";
 
+    /**
+     * 根据MsgId获取那条消息的语音
+     */
     String WEB_WX_GET_VOICE = "https://%s/cgi-bin/mmwebwx-bin/webwxgetvoice";
 
+    /**
+     * 根据MsgId获取那条消息的视频
+     */
     String WEB_WX_GET_VIDEO = "https://%s/cgi-bin/mmwebwx-bin/webwxgetvideo";
 
+    /**
+     * 根据MsgId获取那条消息的附件文件
+     */
     String WEB_WX_GET_MEDIA = "https://file.%s/cgi-bin/mmwebwx-bin/webwxgetmedia";
 
+    /**
+     * 发送或同意好友请求，现在发送好友请求功能已经失效
+     */
     String WEB_WX_VERIFY_USER =  "https://%s/cgi-bin/mmwebwx-bin/webwxverifyuser";
 
+    /**
+     * 修改用户备注
+     */
     String WEB_WX_OP_LOG = "https://%s/cgi-bin/mmwebwx-bin/webwxoplog";
 
+    /**
+     * 添加或移除聊天室成员
+     */
     String WEB_WX_UPDATE_CHAT_ROOM = "https://%s/cgi-bin/mmwebwx-bin/webwxupdatechatroom";
 
+    /**
+     * 文件秒传接口，传输大于25M的文件会先进行检查服务器是否已经存在该文件
+     */
     String WEB_WX_CHECK_UPLOAD = "https://%s/cgi-bin/mmwebwx-bin/webwxcheckupload";
 
+    /**
+     * 文件上传
+     */
     String WEB_WX_UPLOAD_MEDIA = "https://file.%s/cgi-bin/mmwebwx-bin/webwxuploadmedia";
 
+    /**
+     * 登出
+     */
     String WEB_WX_LOGOUT = "https://%s/cgi-bin/mmwebwx-bin/webwxlogout";
 }

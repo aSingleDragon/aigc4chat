@@ -12,6 +12,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxRevokeMs
 import java.util.Map;
 
 /**
+ * 撤回消息请求
  *
  * @author hll
  * @since 2023/03/11
