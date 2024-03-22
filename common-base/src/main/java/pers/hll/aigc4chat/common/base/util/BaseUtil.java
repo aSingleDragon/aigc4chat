@@ -57,18 +57,9 @@ public class BaseUtil {
     }
 
     public String createDeviceId() {
-        //StringBuilder sb = new StringBuilder("e");
-        //for (int i = 0; i < 15; i++) {
-        //    sb.append(RANDOM.nextInt(10));
-        //}
-        //return sb.toString();
         double randomNumber = RANDOM.nextDouble();
         String formattedNumber = String.format("%.14f", randomNumber).substring(2, 16);
         return  "e" + formattedNumber;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(createDeviceId());
     }
 
     public String createMsgId() {

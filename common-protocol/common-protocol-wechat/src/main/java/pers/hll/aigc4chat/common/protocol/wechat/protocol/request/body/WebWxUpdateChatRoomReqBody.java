@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
+ * 更新群聊数据请求 body
  *
  * @author hll
  * @author 2024/03/10

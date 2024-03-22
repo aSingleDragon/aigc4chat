@@ -73,7 +73,7 @@ public class ImageTypeUtils {
     private String bytesToHexString(byte[] headerBytes) {
         StringBuilder stringBuilder = new StringBuilder();
         if (headerBytes == null || headerBytes.length == 0) {
-            return null;
+            return "";
         }
         for (byte b : headerBytes) {
             int v = b & 0xFF;

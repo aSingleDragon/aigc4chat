@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 /**
- * 响应消息体
+ * jsLogin请求响应 body
  * window.QRLogin.code = 200; window.QRLogin.uuid = "YdhFiz5kzw==";
  *
  * @author hll

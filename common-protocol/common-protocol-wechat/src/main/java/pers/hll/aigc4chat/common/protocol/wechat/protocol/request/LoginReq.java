@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 登录请求
  *
  * @author hll
  * @since 2023/03/13
@@ -22,6 +23,9 @@ public class LoginReq extends BaseRequest<LoginReq, LoginResp> {
 
     private String uuid;
 
+    /**
+     * 是否是第一次登录
+     */
     private int firstLogin;
 
     public LoginReq(String uri) {

@@ -89,39 +89,6 @@ public final class XRequest implements XHttpExecutor.Request {
     }
 
     /**
-     * 新建一个POST请求
-     *
-     * @param url 请求url
-     * @return POST请求
-     */
-    @Nonnull
-    public static XRequest POST(@Nonnull String url) {
-        return new XRequest(METHOD_POST, url);
-    }
-
-    /**
-     * 新建一个PUT请求
-     *
-     * @param url 请求url
-     * @return PUT请求
-     */
-    @Nonnull
-    public static XRequest PUT(@Nonnull String url) {
-        return new XRequest(METHOD_PUT, url);
-    }
-
-    /**
-     * 新建一个DELETE请求
-     *
-     * @param url 请求url
-     * @return DELETE请求
-     */
-    @Nonnull
-    public static XRequest DELETE(@Nonnull String url) {
-        return new XRequest(METHOD_DELETE, url);
-    }
-
-    /**
      * 将键值对集合经过url编码后用固定的字符串连接起来
      *
      * @return 连接后的字符串

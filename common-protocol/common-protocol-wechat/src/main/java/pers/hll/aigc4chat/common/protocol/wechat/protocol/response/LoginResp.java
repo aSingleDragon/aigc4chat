@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * 响应消息体
  * window.code=201;window.userAvatar = 'data:img/jpg;base64,/9j/4AAQSkZJRgAB...KKiSRFWD/2Q==';
- * https://github.com/eatmoreapple/openwechat/issues/175
  *
  * @author hll
  * @since 2023/03/12
@@ -27,7 +26,7 @@ public class LoginResp {
     private String userAvatar;
 
     /**
-     *
+     * 重定向Uri
      */
     private String redirectUri;
 }

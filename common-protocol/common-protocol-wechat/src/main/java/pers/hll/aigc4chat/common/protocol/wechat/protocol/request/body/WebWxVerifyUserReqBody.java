@@ -3,13 +3,13 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 微信好友请求 body
+ *
  *
  * @author hll
  * @author 2024/03/10

@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * 简介
  *
  * @author hll
  * @since 2024/03/19

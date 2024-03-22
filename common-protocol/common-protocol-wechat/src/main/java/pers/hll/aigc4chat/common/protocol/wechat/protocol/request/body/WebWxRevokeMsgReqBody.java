@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
+ * 撤回消息请求 body
  *
  * @author hll
  * @since 2024/03/19

@@ -7,17 +7,14 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxSendMsgReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxUploadMediaReqBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSendMsgResp;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxUploadMediaResp;
 
 import java.io.File;
 import java.util.Map;
 
 /**
+ * 上传媒体文件请求
  *
  * @author hll
  * @since 2023/03/11

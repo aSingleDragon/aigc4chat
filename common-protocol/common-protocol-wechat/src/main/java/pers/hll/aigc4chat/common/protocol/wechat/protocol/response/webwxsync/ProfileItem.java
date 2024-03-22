@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**
+ * 简介项
  *
  * @author hll
  * @since 2024/03/19

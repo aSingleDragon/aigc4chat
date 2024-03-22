@@ -1,7 +1,7 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.constant;
 
 /**
- * 微信接口请求参数
+ * 微信接口请求常用 Query 的 Key 的 Value
  *
  * @author hll
  * @since 2024/03/10

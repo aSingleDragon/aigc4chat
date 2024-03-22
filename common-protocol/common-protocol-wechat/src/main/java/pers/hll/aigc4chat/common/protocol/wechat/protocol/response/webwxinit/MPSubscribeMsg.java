@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * 微信公众号订阅消息
  *
  * @author hll
  * @since 2024/03/19

@@ -14,6 +14,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxInitResp
 import java.util.Map;
 
 /**
+ * 初始化请求
  *
  * @author hll
  * @since 2023/03/11

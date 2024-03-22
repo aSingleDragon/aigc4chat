@@ -6,10 +6,6 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -24,21 +20,6 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @UtilityClass
 public class XmlUtil {
-
-    public void parse(String content) throws DocumentException {
-        Document document = DocumentHelper.parseText(content);
-        // 获取根节点,在例子中就是responsedata节点
-        Element rootElement = document.getRootElement();
-        // 获取根节点下的某个元素
-        Element resultcode = rootElement.element("ret");
-        Element message = rootElement.element("message");
-        Element skey = rootElement.element("skey");
-        Element wxsid = rootElement.element("wxsid");
-        Element wxuin = rootElement.element("wxuin");
-        Element pass_ticket = rootElement.element("pass_ticket");
-        Element isgrayscale = rootElement.element("isgrayscale");
-        System.out.println(resultcode.getData());
-    }
 
     /**
      * xml字符串转对象

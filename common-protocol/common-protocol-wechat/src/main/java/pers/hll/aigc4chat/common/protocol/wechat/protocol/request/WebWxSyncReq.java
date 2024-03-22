@@ -3,23 +3,20 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
-import pers.hll.aigc4chat.common.base.constant.StringPool;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxSyncReqBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.SyncCheckResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxStatusNotifyResp;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSyncResp;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
+ * 同步数据请求
+ *
  * @author hll
  * @since 2023/03/11
  */

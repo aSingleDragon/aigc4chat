@@ -10,6 +10,8 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import java.util.Map;
 
 /**
+ * 获取视频请求
+ *
  * @author hll
  * @since 2023/03/11
  */

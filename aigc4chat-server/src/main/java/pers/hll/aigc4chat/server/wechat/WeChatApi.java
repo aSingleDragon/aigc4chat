@@ -483,7 +483,7 @@ public class WeChatApi {
      * 添加或移除聊天室成员
      *
      * @param chatRoom   聊天室的UserName
-     * @param fun        addmember：添加成员，delmember：移除成员
+     * @param fun        addmember: 添加成员; delmember; 移除成员
      * @param name       聊天室名称
      * @param memberList 成员列表
      * @return 添加或移除的结果

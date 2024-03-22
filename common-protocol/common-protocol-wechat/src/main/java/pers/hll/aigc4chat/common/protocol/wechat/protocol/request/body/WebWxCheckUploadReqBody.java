@@ -1,13 +1,12 @@
-package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
+package pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BasePostRequestBaseBody;
 
 /**
- * 检查上传
+ * 检查文件是否已经在微信服务器上请求的 body
  *
  * @author hll
  * @author 2024/03/10

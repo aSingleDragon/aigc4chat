@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /aigc4chat
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:sqlite:/Users/hll/IdeaProjects/aigc/aigc4chat/file/db/pro.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: ALWAYS
+      continue-on-error: false
+      data-locations: classpath*:init.sql
+      schema-locations: classpath*:schema.sql
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  typeAliasesPackage: com.dmo.entity
+  global-config:
+    banner: false
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'

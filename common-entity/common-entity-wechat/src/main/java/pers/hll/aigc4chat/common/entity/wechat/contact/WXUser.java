@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * 微信用户
+ * 用户
  *
  * @author hll
  * @since 2024/03/10
