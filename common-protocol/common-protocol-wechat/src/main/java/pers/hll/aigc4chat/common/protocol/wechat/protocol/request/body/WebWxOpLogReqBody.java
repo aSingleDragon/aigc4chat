@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
+ * 微信修改个人资料请求 body
  *
  * @author hll
  * @author 2024/03/10

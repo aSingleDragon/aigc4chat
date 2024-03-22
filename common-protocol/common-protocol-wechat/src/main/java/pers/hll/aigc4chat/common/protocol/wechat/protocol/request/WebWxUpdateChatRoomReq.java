@@ -6,14 +6,16 @@ import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSendMsgResp;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxUpdateChatRoomReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxUpdateChatRoomResp;
 
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 更新群聊数据请求
+ *
  * @author hll
  * @since 2023/03/11
  */

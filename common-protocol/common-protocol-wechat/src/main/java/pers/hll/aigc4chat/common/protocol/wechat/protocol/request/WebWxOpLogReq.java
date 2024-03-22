@@ -2,22 +2,20 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.VerifyUser;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxOpLogReqBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxVerifyUserReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.BaseResponseBaseBody;
 
-import java.util.List;
 import java.util.Map;
 
 /**
+ * 修改个人资料请求
+ *
  * @author hll
  * @since 2023/03/11
  */

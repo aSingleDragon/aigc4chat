@@ -6,9 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 /**
+ * 状态同步请求 body
  *
  * @author hll
  * @since 2024/03/19

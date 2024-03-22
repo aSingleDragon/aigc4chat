@@ -26,8 +26,6 @@ public class DefaultWeChatListener implements WeChatListener {
 
     @Override
     public void onMessage(@Nonnull WeChatClient client, @Nonnull WXMessage message) {
-        //log.info("获取到消息:{}", BaseUtil.GSON.toJson(message));
-
         if (message instanceof WXVerify wxVerify) {
             // 是好友请求消息，自动同意好友申请
             client.passVerify(wxVerify);

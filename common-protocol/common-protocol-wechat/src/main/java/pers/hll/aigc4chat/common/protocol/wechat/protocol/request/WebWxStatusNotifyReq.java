@@ -14,6 +14,8 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxStatusNo
 import java.util.Map;
 
 /**
+ * 同步状态通知请求
+ *
  * @author hll
  * @since 2023/03/11
  */

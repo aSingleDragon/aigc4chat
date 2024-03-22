@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**
- * https://github.com/eatmoreapple/openwechat/blob/master/base_response.go
+ * <a href="https://github.com/eatmoreapple/openwechat/blob/master/base_response.go">Ret 解释来源</a>
  *
  *
  * @author hll

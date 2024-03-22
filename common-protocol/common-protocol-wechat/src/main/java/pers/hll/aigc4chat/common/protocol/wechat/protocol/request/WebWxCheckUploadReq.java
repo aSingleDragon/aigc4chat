@@ -1,20 +1,19 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
 import lombok.EqualsAndHashCode;
-import me.xuxiaoxiao.xtools.common.XTools;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxSendMsgReqBody;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxCheckUploadReqBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxCheckUploadResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxSendMsgResp;
 
 import java.io.File;
 import java.util.Map;
 
 /**
+ * 检查文件是否已经在微信服务器请求
  *
  * @author hll
  * @since 2023/03/11

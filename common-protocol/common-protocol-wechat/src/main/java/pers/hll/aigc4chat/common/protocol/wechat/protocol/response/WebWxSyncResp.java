@@ -3,7 +3,6 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.response;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
@@ -12,6 +11,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.Pro
 import java.util.List;
 
 /**
+ * 同步数据 响应 body
  *
  * @author hll
  * @author 2024/03/14

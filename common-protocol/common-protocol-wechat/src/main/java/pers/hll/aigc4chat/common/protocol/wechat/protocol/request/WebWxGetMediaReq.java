@@ -4,12 +4,13 @@ import lombok.EqualsAndHashCode;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderValue;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 
 import java.util.Map;
 
 /**
+ * 获取媒体文件请求
+ *
  * @author hll
  * @since 2023/03/11
  */
@@ -51,7 +52,7 @@ public class WebWxGetMediaReq extends BaseRequest<WebWxGetMediaReq, Object> {
         return this;
     }
 
-    public WebWxGetMediaReq setEncryFileName(String fileStreamAvailable) {
+    public WebWxGetMediaReq setEncryFileName(String encryFileName) {
         this.encryFileName = encryFileName;
         return this;
     }

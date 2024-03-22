@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * 微信 Post 类型的接口 基本都要有这部分内容用来鉴权
  *
  * @author hll
  * @since 2024/03/19
@@ -21,7 +22,4 @@ public class BaseRequestBody {
 
     @SerializedName("Skey")
     public final String sKey;
-
-    //@JsonProperty("DeviceID")
-    //public final String deviceID;
 }

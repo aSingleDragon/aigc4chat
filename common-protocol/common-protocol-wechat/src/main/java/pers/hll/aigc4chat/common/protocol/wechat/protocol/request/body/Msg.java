@@ -5,7 +5,7 @@ import lombok.Data;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 
 /**
- *
+ * 消息 body
  *
  * @author hll
  * @since 2024/03/19

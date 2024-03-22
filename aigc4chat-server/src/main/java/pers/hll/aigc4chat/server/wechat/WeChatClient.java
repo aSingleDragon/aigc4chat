@@ -76,7 +76,7 @@ public final class WeChatClient {
 
     private final WeChatApi weChatApi = new WeChatApi();
 
-    private volatile WeChatListener wxListener;
+    private WeChatListener wxListener;
 
     private volatile int status = STATUS_READY;
 

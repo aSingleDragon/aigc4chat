@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 批量获取联系人请求
+ *
  * @author hll
  * @since 2023/03/11
  */

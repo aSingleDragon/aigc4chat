@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
+ * 好友验证请求 body
  *
  * @author hll
  * @since 2024/03/19

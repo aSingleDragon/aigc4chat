@@ -8,6 +8,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.JsLoginResp;
 import java.util.Map;
 
 /**
+ * js登录请求
  *
  * @author hll
  * @since 2023/03/11
@@ -37,6 +38,7 @@ public class JsLoginReq extends BaseRequest<JsLoginReq, JsLoginResp> {
                 .build();
     }
 
+    @Override
     public JsLoginReq build() {
 
         Map<String, Object> requestParamMap = getRequestParamMap();

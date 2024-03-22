@@ -8,6 +8,7 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.Use
 import java.util.List;
 
 /**
+ * 批量获取联系人 响应 body
  *
  * @author hll
  * @author 2024/03/14
