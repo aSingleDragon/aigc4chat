@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -108,7 +111,14 @@ public class QRCodeUtil {
      * @param content 二维码内容
      */
     public void writeInImage(String filePath, String content) {
-
+        Path parentDir = Paths.get(filePath).getParent();
+        if (!Files.exists(parentDir)) {
+            try {
+                Files.createDirectories(parentDir);
+            } catch (IOException e) {
+                log.error("创建目录失败: {}", parentDir.toAbsolutePath(), e);
+            }
+        }
         // com.google.zxing.EncodeHintType：编码提示类型,枚举类型
         Map<EncodeHintType, Serializable> hints = getDefaultConfig();
 
