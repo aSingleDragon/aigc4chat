@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2024/03/21
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/login")
 @RequiredArgsConstructor
 public class LoginController {
 

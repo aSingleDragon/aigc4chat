@@ -34,12 +34,12 @@ public class WXVideo extends WXMessage implements Serializable, Cloneable {
     /**
      * 视频缩略图
      */
-    private File image;
+    private String image;
 
     /**
      * 视频文件
      */
-    private File video;
+    private String video;
 
     @Override
     public WXVideo clone() {

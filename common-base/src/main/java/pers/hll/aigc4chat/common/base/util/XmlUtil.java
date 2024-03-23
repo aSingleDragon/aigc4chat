@@ -32,7 +32,6 @@ public class XmlUtil {
         T xmlObject = null;
         try {
             JAXBContext context = JAXBContext.newInstance(clazz);
-            // 进行将Xml转成对象的核心接口
             Unmarshaller unmarshaller = context.createUnmarshaller();
             StringReader sr = new StringReader(xmlStr);
             xmlObject = clazz.cast(unmarshaller.unmarshal(sr));

@@ -50,19 +50,19 @@ import java.util.Iterator;
 @UtilityClass
 public class ImageTypeUtils {
 
-    public static final String JPG = ".jpg";
+    public final String JPG = ".jpg";
 
-    public static final String GIF = ".gif";
+    public final String GIF = ".gif";
 
-    public static final String PNG = ".png";
+    public final String PNG = ".png";
 
-    public static final String BMP = ".bmp";
+    public final String BMP = ".bmp";
 
-    public static final String WEBP = ".webp";
+    public final String WEBP = ".webp";
 
-    public static final String TIF = ".tif";
+    public final String TIF = ".tif";
 
-    public static final String UNKNOWN = "unknown";
+    public final String UNKNOWN = ".unknown";
 
     /**
      * byte数组转换成16进制字符串
@@ -103,7 +103,6 @@ public class ImageTypeUtils {
     public String typeOf(InputStream fis) throws IOException {
         byte[] headerBytes = new byte[4];
         int bytesRead = IOUtils.readFully(fis, headerBytes);
-        fis.reset();
         if (bytesRead < headerBytes.length) {
             throw new IOException("Not enough data to determine image type");
         }

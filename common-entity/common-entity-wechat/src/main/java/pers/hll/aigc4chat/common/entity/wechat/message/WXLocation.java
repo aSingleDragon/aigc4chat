@@ -27,8 +27,11 @@ public class WXLocation extends WXMessage implements Serializable, Cloneable {
 
     /**
      * 地点的腾讯地图url
+     * <a href="http://apis.map.qq.com/uri/v1/geocoder?coord=30.586099,104.049659">URL 示例</a>
      */
     private String locationUrl;
+
+    private OriContent oriContent;
 
     @Override
     public WXLocation clone() {

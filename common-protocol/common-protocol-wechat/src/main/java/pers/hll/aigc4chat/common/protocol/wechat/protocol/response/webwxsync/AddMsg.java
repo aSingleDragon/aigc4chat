@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import pers.hll.aigc4chat.common.base.util.XmlUtil;
 
 /**
  * 别人发送的消息
@@ -89,4 +90,10 @@ public class AddMsg {
 
     @SerializedName("NewMsgId")
     private long newMsgId;
+
+    @SerializedName("OriContent")
+    private String oriContent;
+
+    @SerializedName("EncryFileName")
+    private String encrFileName;
 }

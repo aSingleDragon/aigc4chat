@@ -29,12 +29,12 @@ public class WXImage extends WXMessage implements Serializable, Cloneable {
     /**
      * 静态图消息中的缩略图，动态图消息中的原图
      */
-    private File image;
+    private String image;
 
     /**
      * 静态图获取原图之前为null，获取原图之后为原图，动态图一开始就是原图
      */
-    private File origin;
+    private String origin;
 
     @Override
     public WXImage clone() {
