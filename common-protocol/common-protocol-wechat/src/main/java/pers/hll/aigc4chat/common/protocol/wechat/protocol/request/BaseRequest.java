@@ -35,10 +35,15 @@ public class BaseRequest<RequestType, ResponseType> implements Builder<RequestTy
      */
     protected boolean fileStreamAvailable = false;
 
+    ///**
+    // * 文件流 默认为空 只有有文件流时才需要
+    // */
+    //protected InputStream inputStream = null;
+
     /**
-     * 文件流 默认为空 只有有文件流时才需要
+     * 将文件流写入的地址
      */
-    protected InputStream inputStream = null;
+    protected String fileStreamSavePath;
 
     /**
      * 请求参数 map
@@ -68,7 +73,7 @@ public class BaseRequest<RequestType, ResponseType> implements Builder<RequestTy
      * @return 对象 (范型支持类)
      */
     public ResponseType convertRespBodyToObj(String stringEntity) {
-        log.warn("响应数据没有转换实现:{}", stringEntity);
+        log.warn("{}响应数据没有转换实现:{}", uri, stringEntity);
         return null;
     }
 

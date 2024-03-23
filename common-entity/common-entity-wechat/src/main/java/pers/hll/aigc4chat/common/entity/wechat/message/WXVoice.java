@@ -24,7 +24,7 @@ public class WXVoice extends WXMessage implements Serializable, Cloneable {
     /**
      * 语音文件
      */
-    private File voice;
+    private String voice;
 
     @Override
     public WXVoice clone() {

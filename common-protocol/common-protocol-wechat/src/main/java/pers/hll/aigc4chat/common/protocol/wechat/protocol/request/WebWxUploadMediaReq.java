@@ -3,11 +3,9 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 import lombok.EqualsAndHashCode;
 import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.*;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.WebWxUploadMediaReqBody;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxUploadMediaResp;
 
 import java.io.File;
@@ -40,7 +38,9 @@ public class WebWxUploadMediaReq extends BasePostRequest<WebWxUploadMediaReq, We
 
     private String passTicket;
 
-    private File file;
+    private Long chunk;
+
+    private Long chunks;
 
     public WebWxUploadMediaReq(String uri) {
         super(uri);
@@ -86,8 +86,13 @@ public class WebWxUploadMediaReq extends BasePostRequest<WebWxUploadMediaReq, We
         return this;
     }
 
-    public WebWxUploadMediaReq setFile(File file) {
-        this.file = file;
+    public WebWxUploadMediaReq setChunk(Long chunk) {
+        this.chunk = chunk;
+        return this;
+    }
+
+    public WebWxUploadMediaReq setChunks(Long chunks) {
+        this.chunks = chunks;
         return this;
     }
 
@@ -104,27 +109,34 @@ public class WebWxUploadMediaReq extends BasePostRequest<WebWxUploadMediaReq, We
 
         Map<String, String> headerMap = getHeaderMap();
         headerMap.put(WXHeaderKey.USER_AGENT, DefaultConfig.USER_AGENT);
-        headerMap.put(WXHeaderKey.CONTENT_TYPE, ContentType.JSON);
-        return this;
-    }
 
-    @Override
-    public String buildRequestBody() {
-        return BaseUtil.GSON.toJson(new WebWxUploadMediaReqBody()
-                .setId(id)
-                .setName(name)
-                .setType(type)
-                .setLastModifiedDate(lastModifiedDate)
-                .setSize(size)
-                .setMediaType(mediaType)
-                .setUploadMediaRequest(uploadMediaRequest)
-                .setWebWxDataTicket(webWxDataTicket)
-                .setPassTicket(passTicket)
-                .setFile(file));
+        Map<String, String> formText = getFormText();
+        formText.put(WXFormKey.ID, id);
+        formText.put(WXFormKey.NAME, name);
+        formText.put(WXFormKey.TYPE, type);
+        formText.put(WXFormKey.LAST_MODIFIED_DATE, lastModifiedDate);
+        formText.put(WXFormKey.SIZE, String.valueOf(size));
+        if (chunks != null) {
+            formText.put(WXFormKey.CHUNKS, String.valueOf(chunks));
+        }
+        if (chunk != null) {
+            formText.put(WXFormKey.CHUNK, String.valueOf(chunk));
+        }
+        formText.put(WXFormKey.MEDIA_TYPE, mediaType);
+        formText.put(WXFormKey.UPLOAD_MEDIA_REQUEST, uploadMediaRequest);
+        formText.put(WXFormKey.WEB_WX_DATA_TICKET, webWxDataTicket);
+        formText.put(WXFormKey.PASS_TICKET, passTicket);
+
+        return this;
     }
 
     @Override
     public WebWxUploadMediaResp convertRespBodyToObj(String strEntity) {
         return BaseUtil.GSON.fromJson(strEntity, WebWxUploadMediaResp.class);
+    }
+
+    public WebWxUploadMediaReq setFormFile(FormFile formFile) {
+        this.formFile = formFile;
+        return this;
     }
 }

@@ -21,10 +21,6 @@ public class WebWxGetMsgImgReq extends BaseRequest<WebWxGetMsgImgReq, Object> {
 
     private String sKey;
 
-    private String type;
-
-    private String passTicket;
-
     public WebWxGetMsgImgReq(String uri) {
         super(uri);
     }
@@ -39,28 +35,15 @@ public class WebWxGetMsgImgReq extends BaseRequest<WebWxGetMsgImgReq, Object> {
         return this;
     }
 
-    public WebWxGetMsgImgReq setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    public WebWxGetMsgImgReq setPassTicket(String passTicket) {
-        this.passTicket = passTicket;
-        return this;
-    }
-
     @Override
     public WebWxGetMsgImgReq build() {
 
         Map<String, String> headerMap = getHeaderMap();
         headerMap.put(WXHeaderKey.USER_AGENT, DefaultConfig.USER_AGENT);
-        headerMap.put(WXHeaderKey.CONTENT_TYPE, ContentType.JSON);
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.MSG_ID, String.valueOf(msgId));
         requestParamMap.put(WXQueryKey.SKEY, sKey);
-        requestParamMap.put(WXQueryKey.TYPE, type);
-        requestParamMap.put(WXQueryKey.PASS_TICKET, passTicket);
         return this;
     }
 

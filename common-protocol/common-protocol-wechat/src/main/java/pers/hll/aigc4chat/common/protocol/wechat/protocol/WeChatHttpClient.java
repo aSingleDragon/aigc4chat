@@ -1,7 +1,10 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol;
 
+import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -11,15 +14,16 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.BasePostRequest;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.BaseRequest;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +41,7 @@ public class WeChatHttpClient {
     /**
      * 复用Cookie信息
      */
+    @Getter
     private CookieStore cookieStore = null;
 
     public <RequestType, ResponseType> ResponseType post(BasePostRequest<RequestType, ResponseType> basePostRequest) {
@@ -46,6 +51,19 @@ public class WeChatHttpClient {
                 .setConnectTimeout(10 * 1000)
                 .setSocketTimeout(60 * 1000)
                 .build();
+
+        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+
+        if (!basePostRequest.getFormText().isEmpty()) {
+            basePostRequest.getFormText().forEach(
+                    (key, value) -> multipartEntityBuilder.addTextBody(key, value, ContentType.TEXT_PLAIN));
+        }
+
+        FormFile formFile = basePostRequest.getFormFile();
+        if (formFile != null ) {
+            multipartEntityBuilder.addBinaryBody(
+                    formFile.formKey(), formFile.fileBytes(), formFile.contentType() , formFile.fileName());
+        }
 
         try (CloseableHttpClient httpClient = HttpClients
                 .custom()
@@ -59,7 +77,12 @@ public class WeChatHttpClient {
             URIBuilder uriBuilder = new URIBuilder(httpPost.getURI());
             basePostRequest.getRequestParamMap().forEach((key, value) -> uriBuilder.addParameter(key, value.toString()));
             httpPost.setURI(uriBuilder.build());
-            httpPost.setEntity(new StringEntity(basePostRequest.buildRequestBody(), ContentType.APPLICATION_JSON));
+
+            if (basePostRequest.buildRequestBody() != null) {
+                httpPost.setEntity(new StringEntity(basePostRequest.buildRequestBody(), ContentType.APPLICATION_JSON));
+            } else {
+                httpPost.setEntity(multipartEntityBuilder.build());
+            }
 
             HttpContext context = HttpClientContext.create();
             context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
@@ -102,7 +125,8 @@ public class WeChatHttpClient {
 
             try (CloseableHttpResponse response = httpClient.execute(httpGet, context)) {
                 if (baseRequest.isFileStreamAvailable()) {
-                    baseRequest.setInputStream(response.getEntity().getContent());
+                    File file = new File(baseRequest.getFileStreamSavePath());
+                    FileUtils.copyInputStreamToFile(response.getEntity().getContent(), file);
                 } else {
                     String strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
                     cookieStore = (CookieStore) context.getAttribute(HttpClientContext.COOKIE_STORE);

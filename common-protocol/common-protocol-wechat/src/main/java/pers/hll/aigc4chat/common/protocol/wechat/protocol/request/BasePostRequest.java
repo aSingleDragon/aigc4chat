@@ -3,6 +3,11 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -19,6 +24,16 @@ public class BasePostRequest<RequestType, ResponseType> extends BaseRequest<Requ
      * 微信响应体的共有部分
      */
     protected BaseRequestBody baseRequestBody;
+
+    /**
+     * form 表单 String
+     */
+    protected Map<String, String> formText = new LinkedHashMap<>();
+
+    /**
+     * from 表单 文件
+     */
+    protected FormFile formFile;
 
     public BasePostRequest(String uri) {
         super(uri);
