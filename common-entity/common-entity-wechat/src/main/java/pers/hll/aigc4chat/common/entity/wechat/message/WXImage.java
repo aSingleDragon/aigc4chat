@@ -3,9 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.File;
-import java.io.Serializable;
-
 /**
  * 微信静态或动态图片消息
  *
@@ -14,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXImage extends WXMessage implements Serializable, Cloneable {
+public class WXImage extends WXMessage{
 
     /**
      * 图片宽度
@@ -35,9 +32,4 @@ public class WXImage extends WXMessage implements Serializable, Cloneable {
      * 静态图获取原图之前为null，获取原图之后为原图，动态图一开始就是原图
      */
     private String origin;
-
-    @Override
-    public WXImage clone() {
-        return (WXImage) super.clone();
-    }
 }

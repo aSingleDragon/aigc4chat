@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pers.hll.aigc4chat.common.base.XTools;
+import pers.hll.aigc4chat.common.base.constant.FilePath;
 import pers.hll.aigc4chat.common.base.http.XHttpTools;
 import pers.hll.aigc4chat.common.base.http.executor.impl.XRequest;
 import pers.hll.aigc4chat.common.base.util.XmlUtil;
@@ -17,6 +18,8 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Cmd;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Op;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.BaseRequest;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.WebWxGetAvatarReq;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
@@ -352,10 +355,51 @@ public final class WeChatClient {
         return wxText;
     }
 
-    public WXText sendEmoji(@Nonnull WXContact wxContact, @Nonnull String text) {
-        log.info("向({}: {})发送Emoji消息：{}}", wxContact.getId(), wxContact.getName(), text);
-        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TYPE_EMOJI, null, 1,
-                text, null, weChatContacts.getMe().getId(), wxContact.getId()));
+    /**
+     * 发送位置消息
+     * <p>
+     * 经纬度坐标可以通过腾讯坐标拾取工具获得(<a href="https://lbs.qq.com/tool/getpoint">腾讯坐标工具</a>)
+     * 其拾取的坐标默认格式为 lat,lon
+     * </p>
+     *
+     * @param wxContact  目标联系人
+     * @param oriContent 位置信息
+     * @return 定位消息
+     */
+    @Nonnull
+    public WXLocation sendLocation(@Nonnull WXContact wxContact, OriContent oriContent) {
+        log.error("向({}: {})发送位置信息: {}", wxContact.getId(), wxContact.getName(), oriContent);
+        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(
+                MsgType.TYPE_LOCATION,
+                null,
+                0,
+                XmlUtil.objectToXmlStr(oriContent, OriContent.class),
+                null,
+                weChatContacts.getMe().getId(),
+                wxContact.getId()));
+        WXLocation wxLocation = new WXLocation();
+        wxLocation.setId(Long.parseLong(rspSendMsg.getMsgId()));
+        wxLocation.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
+        wxLocation.setTimestamp(System.currentTimeMillis());
+        wxLocation.setFromGroup(null);
+        wxLocation.setFromUser(weChatContacts.getMe());
+        wxLocation.setToContact(wxContact);
+        wxLocation.setContent(oriContent.toString());
+        return wxLocation;
+    }
+
+
+    @Deprecated
+    public WXText sendEmoji(@Nonnull WXContact wxContact, String content) {
+        log.info("向({}: {})发送表情消息：{}}", wxContact.getId(), wxContact.getName());
+        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(
+                MsgType.TYPE_EMOJI,
+                null,
+                1,
+                content,
+                null,
+                weChatContacts.getMe().getId(),
+                wxContact.getId()));
         WXText wxText = new WXText();
         wxText.setId(Long.parseLong(rspSendMsg.getMsgId()));
         wxText.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -363,8 +407,32 @@ public final class WeChatClient {
         wxText.setFromGroup(null);
         wxText.setFromUser(weChatContacts.getMe());
         wxText.setToContact(wxContact);
-        wxText.setContent(text);
+        wxText.setContent(null);
         return wxText;
+    }
+    public WXVoice sendVoice(WXContact wxContact, String voiceFilePath) {
+        log.info("向({}: {})发送语音消息：{}}", wxContact.getId(), wxContact.getName(), voiceFilePath);
+        WebWxUploadMediaResp webWxUploadMediaResp = null;
+        try {
+            webWxUploadMediaResp = weChatApi.webWxUploadMedia(weChatContacts.getMe().getId(),
+                    wxContact.getId(), new File(voiceFilePath), null, null);
+        } catch (IOException e) {
+            log.error("发送语音消息异常: ", e);
+        }
+        String mediaId = webWxUploadMediaResp.getMediaId();
+        String voiceContent = "";
+        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TYPE_VOICE, mediaId, 0,
+                null, null, weChatContacts.getMe().getId(), wxContact.getId()));
+        //WXVoice wxVoice = new WXVoice();
+        //wxVoice.setId(Long.parseLong(rspSendMsg.getMsgId()));
+        //wxVoice.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
+        //wxVoice.setTimestamp(System.currentTimeMillis());
+        //wxVoice.setFromGroup(null);
+        //wxVoice.setFromUser(weChatContacts.getMe());
+        //wxVoice.setToContact(wxContact);
+        //wxVoice.setContent(null);
+        //return wxVoice;
+        return null;
     }
 
     /**
@@ -490,39 +558,6 @@ public final class WeChatClient {
     }
 
     /**
-     * 发送位置消息
-     * <p>
-     * 经纬度坐标可以通过腾讯坐标拾取工具获得(<a href="https://lbs.qq.com/tool/getpoint">腾讯坐标工具</a>)
-     * 其拾取的坐标默认格式为 lat,lon
-     * </p>
-     *
-     * @param wxContact  目标联系人
-     * @param oriContent 位置信息
-     * @return 定位消息
-     */
-    @Nonnull
-    public WXLocation sendLocation(@Nonnull WXContact wxContact, OriContent oriContent) {
-        log.error("向({}: {})发送位置信息: {}", wxContact.getId(), wxContact.getName(), oriContent);
-        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(
-                MsgType.TYPE_LOCATION,
-                null,
-                0,
-                XmlUtil.objectToXmlStr(oriContent, OriContent.class),
-                null,
-                weChatContacts.getMe().getId(),
-                wxContact.getId()));
-        WXLocation wxLocation = new WXLocation();
-        wxLocation.setId(Long.parseLong(rspSendMsg.getMsgId()));
-        wxLocation.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
-        wxLocation.setTimestamp(System.currentTimeMillis());
-        wxLocation.setFromGroup(null);
-        wxLocation.setFromUser(weChatContacts.getMe());
-        wxLocation.setToContact(wxContact);
-        wxLocation.setContent(oriContent.toString());
-        return wxLocation;
-    }
-
-    /**
      * 获取用户联系人，如果获取的联系人是群组，则会自动获取群成员的详细信息
      * <strong>在联系人列表中获取到的群，没有群成员，可以通过这个方法，获取群的详细信息</strong>
      *
@@ -552,12 +587,12 @@ public final class WeChatClient {
      */
     @Nonnull
     public WXContact fetchAvatar(@Nonnull WXContact wxContact) {
-        wxContact.setAvatarFile(XTools
-                .http(XHttpTools.EXECUTOR, XRequest.GET(wxContact.getAvatarUrl()))
-                .file(weChatApi.getFolder().getAbsolutePath()
-                        + File.separator
-                        + String.format("avatar-%d.jpg", System.currentTimeMillis()
-                        + new Random().nextInt(1000))));
+        String avatarPath = FilePath.ME + "avatar.jpg";
+        WeChatHttpClient.get(new WebWxGetAvatarReq(wxContact.getAvatarUrl())
+                .setFileStreamAvailable(true)
+                .setFileStreamSavePath(avatarPath)
+                .build());
+        wxContact.setAvatarFile(avatarPath);
         return wxContact;
     }
 
@@ -965,6 +1000,7 @@ public final class WeChatClient {
                         WXVoice wxVoice = parseCommon(msg, new WXVoice());
                         wxVoice.setVoiceLength(msg.getVoiceLength());
                         wxVoice.setVoice(weChatApi.webWxGetVoice(msg.getMsgId()));
+                        wxVoice.setMediaId(msg.getMediaId());
                         return wxVoice;
                     }
                     case MsgType.TYPE_VERIFY: {
@@ -1000,8 +1036,8 @@ public final class WeChatClient {
                         return wxVideo;
                     }
                     case MsgType.TYPE_EMOJI: {
-                        if (StringUtils.isEmpty(msg.getContent()) || msg.getHasProductId() > 0) {
-                            // 表情商店的表情，无法下载图片
+                        if (StringUtils.isEmpty(msg.getContent()) || msg.getHasProductId() != 0) {
+                            // 表情商店的表情，无法下载图片 应该要利用这msgId去获取这个表情的数据
                             WXEmoji wxEmoji = parseCommon(msg, new WXEmoji());
                             wxEmoji.setImgWidth(msg.getImgWidth());
                             wxEmoji.setImgHeight(msg.getImgHeight());
@@ -1011,6 +1047,7 @@ public final class WeChatClient {
                             WXImage wxImage = parseCommon(msg, new WXImage());
                             wxImage.setImgWidth(msg.getImgWidth());
                             wxImage.setImgHeight(msg.getImgHeight());
+                            wxImage.setContent(wxImage.getContent());
                             wxImage.setImage(weChatApi.webWxGetMsgImg(msg.getMsgId(), "slave"));
                             wxImage.setOrigin(wxImage.getImage());
                             return wxImage;

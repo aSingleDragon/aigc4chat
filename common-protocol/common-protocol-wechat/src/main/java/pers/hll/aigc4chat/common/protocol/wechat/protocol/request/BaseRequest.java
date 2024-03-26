@@ -35,11 +35,6 @@ public class BaseRequest<RequestType, ResponseType> implements Builder<RequestTy
      */
     protected boolean fileStreamAvailable = false;
 
-    ///**
-    // * 文件流 默认为空 只有有文件流时才需要
-    // */
-    //protected InputStream inputStream = null;
-
     /**
      * 将文件流写入的地址
      */

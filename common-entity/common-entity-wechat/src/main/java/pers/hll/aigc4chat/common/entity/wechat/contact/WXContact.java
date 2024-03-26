@@ -2,9 +2,6 @@ package pers.hll.aigc4chat.common.entity.wechat.contact;
 
 import lombok.Data;
 
-import java.io.File;
-import java.io.Serializable;
-
 /**
  * 联系人
  *
@@ -12,7 +9,7 @@ import java.io.Serializable;
  * @since 2024/03/10
  */
 @Data
-public abstract class WXContact implements Serializable, Cloneable {
+public abstract class WXContact {
 
     public static final int CONTACT = 1;
 
@@ -64,19 +61,10 @@ public abstract class WXContact implements Serializable, Cloneable {
     /**
      * 账户头像文件
      */
-    protected File avatarFile;
+    protected String avatarFile;
 
     /**
      * 联系人标志字段
      */
     protected int contactFlag;
-
-    @Override
-    public WXContact clone() {
-        try {
-            return (WXContact) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }

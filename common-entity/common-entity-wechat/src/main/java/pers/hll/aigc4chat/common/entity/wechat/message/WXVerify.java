@@ -3,8 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 /**
  * 微信好友请求消息
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXVerify extends WXMessage implements Serializable, Cloneable {
+public class WXVerify extends WXMessage {
 
     /**
      * 请求用户id
@@ -54,9 +52,4 @@ public class WXVerify extends WXMessage implements Serializable, Cloneable {
      * 请求用户票据
      */
     private String ticket;
-
-    @Override
-    public WXVerify clone() {
-        return (WXVerify) super.clone();
-    }
 }

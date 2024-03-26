@@ -3,7 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.contact;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -14,7 +13,7 @@ import java.util.HashMap;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXGroup extends WXContact implements Serializable, Cloneable {
+public class WXGroup extends WXContact {
 
     /**
      * 是否是详细的群信息（主要是是否获取过群成员）。
@@ -31,13 +30,4 @@ public class WXGroup extends WXContact implements Serializable, Cloneable {
      * 群成员id到entity的映射
      */
     private HashMap<String, Member> members;
-
-    @Override
-    public WXGroup clone() {
-        WXGroup wxGroup = (WXGroup) super.clone();
-        if (this.members != null) {
-            wxGroup.members = (HashMap<String, Member>) this.members.clone();
-        }
-        return wxGroup;
-    }
 }
