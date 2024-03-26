@@ -15,6 +15,11 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 @Slf4j
@@ -104,5 +109,24 @@ public class BaseUtil {
             chars[(i << 1) + 1] = HEX[b & 0xf];
         }
         return new String(chars);
+    }
+
+    /**
+     * 获取指定格式的时间
+     * <p> e.g. Sat Mar 23 2024 16:49:50 GMT+0800 (CST)
+     *
+     * @param timestamp 时间戳
+     * @return 时间
+     */
+    public String getWechatTime(long timestamp) {
+        // 将时间戳转换为Instant对象
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        // 将Instant对象转换为ZonedDateTime对象，时区设置为GMT+8
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("GMT+8"));
+        // 创建自定义的日期时间格式化器
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("EEE MMM dd yyyy HH:mm:ss 'GMT+0800 (CST)'", Locale.US);
+        // 格式化日期时间
+        return zonedDateTime.format(formatter);
     }
 }

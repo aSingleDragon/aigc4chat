@@ -24,9 +24,9 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class WebWxSyncReq extends BasePostRequest<WebWxSyncReq, WebWxSyncResp> {
 
-    private String sId;
+    private String sid;
 
-    private String sKey;
+    private String skey;
 
     private String passTicket;
 
@@ -36,13 +36,13 @@ public class WebWxSyncReq extends BasePostRequest<WebWxSyncReq, WebWxSyncResp> {
         super(uri);
     }
 
-    public WebWxSyncReq setSId(String sId) {
-        this.sId = sId;
+    public WebWxSyncReq setSid(String sId) {
+        this.sid = sId;
         return this;
     }
 
-    public WebWxSyncReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxSyncReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -64,8 +64,8 @@ public class WebWxSyncReq extends BasePostRequest<WebWxSyncReq, WebWxSyncResp> {
         headerMap.put(WXHeaderKey.USER_AGENT, DefaultConfig.USER_AGENT);
 
         Map<String, Object> requestParamMap = getRequestParamMap();
-        requestParamMap.put(WXQueryKey.SID, sId);
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
+        requestParamMap.put(WXQueryKey.SID, sid);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
         requestParamMap.put(WXQueryKey.PASS_TICKET, passTicket);
 
         return this;
@@ -73,6 +73,7 @@ public class WebWxSyncReq extends BasePostRequest<WebWxSyncReq, WebWxSyncResp> {
 
     @Override
     public WebWxSyncResp convertRespBodyToObj(String strEntity) {
+        //log.info("微信同步原始消息: {}", strEntity);
         return BaseUtil.GSON.fromJson(strEntity, WebWxSyncResp.class);
     }
 

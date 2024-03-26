@@ -6,9 +6,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import pers.hll.aigc4chat.common.base.config.XConfigTools;
+import org.apache.http.entity.ContentType;
 import pers.hll.aigc4chat.common.base.constant.FilePath;
-import pers.hll.aigc4chat.common.base.http.executor.XHttpExecutor;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.base.util.ImageTypeUtils;
 import pers.hll.aigc4chat.common.base.util.QRCodeUtil;
@@ -18,6 +17,8 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.*;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
+import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.UploadMediaRequest;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 
@@ -26,7 +27,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Date;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -42,10 +44,6 @@ import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXEndP
 @Slf4j
 public class WeChatApi {
 
-    public static final String CFG_WORKDIR = WeChatClient.CFG_PREFIX + "workdir";
-
-    public static final String CFG_WORKDIR_DEFAULT = "";
-
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     private static final String[] HOSTS = {"wx.qq.com", "wx2.qq.com", "wx8.qq.com", "web.wechat.com", "web2.wechat.com"};
@@ -58,9 +56,7 @@ public class WeChatApi {
 
     private String sid;
 
-    private String dataTicket;
-
-    private File folder = new File("/Users/hll/IdeaProjects/aigc/aigc4chat/file");
+    private String webWxDataTicket;
 
     private long time = 0;
 
@@ -127,7 +123,6 @@ public class WeChatApi {
 
     /**
      * 用户登录，返回uin,sid等重要信息，如果该接口返回数据为空，则uin，sid等数据在cookie中获取
-     * https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?ticket=Awa59KcjrwCuCMeaY5NXxcUy@qrticket_0&uuid=gd5NPaW08Q==&lang=zh_CN&scan=1710077422
      *
      * @param url 登录url
      */
@@ -230,8 +225,8 @@ public class WeChatApi {
      */
     public WebWxSyncResp webWxSync() {
         WebWxSyncResp webWxSyncResp = WeChatHttpClient.post(new WebWxSyncReq(String.format(WEB_WX_SYNC, host))
-                .setSId(sid)
-                .setSKey(skey)
+                .setSid(sid)
+                .setSkey(skey)
                 .setPassTicket(passTicket)
                 .setSyncKey(this.syncCheckKey != null ? this.syncCheckKey : this.syncKey)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
@@ -249,6 +244,12 @@ public class WeChatApi {
         return webWxSyncResp;
     }
 
+    private void setClientIdAndLocalId(Msg msg) {
+        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
+        msg.setClientMsgId(id);
+        msg.setLocalId(id);
+    }
+
     /**
      * 发送消息接口
      *
@@ -256,9 +257,7 @@ public class WeChatApi {
      * @return 发送的结果
      */
     public WebWxSendMsgResp webWxSendMsg(Msg msg) {
-        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
-        msg.setClientMsgId(id);
-        msg.setLocalId(id);
+        setClientIdAndLocalId(msg);
         return WeChatHttpClient.post(new WebWxSendMsgReq(String.format(WEB_WX_SEND_MSG, host))
                 .setMsg(msg)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
@@ -272,9 +271,7 @@ public class WeChatApi {
      * @return 发送的结果
      */
     public WebWxSendMsgResp webWxSendMsgImg(Msg msg) {
-        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
-        msg.setClientMsgId(id);
-        msg.setLocalId(id);
+        setClientIdAndLocalId(msg);
         return WeChatHttpClient.post(new WebWxSendMsgFileReq(String.format(WEB_WX_SEND_MSG_IMG, host))
                 .setMsg(msg)
                 .setFun(WXQueryValue.ASYNC)
@@ -289,9 +286,7 @@ public class WeChatApi {
      * @return 发送的结果
      */
     public WebWxSendMsgResp webWxSendVideoMsg(Msg msg) {
-        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
-        msg.setClientMsgId(id);
-        msg.setLocalId(id);
+        setClientIdAndLocalId(msg);
         return WeChatHttpClient.post(new WebWxSendMsgFileReq(String.format(WEB_WX_SEND_VIDEO_MSG, host))
                 .setMsg(msg)
                 .setFun(WXQueryValue.ASYNC)
@@ -307,9 +302,7 @@ public class WeChatApi {
      * @return 发送的结果
      */
     public WebWxSendMsgResp webWxSendEmoticon(Msg msg) {
-        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
-        msg.setClientMsgId(id);
-        msg.setLocalId(id);
+        setClientIdAndLocalId(msg);
         return WeChatHttpClient.post(new WebWxSendMsgFileReq(String.format(WEB_WX_SEND_EMOTICON, host))
                 .setMsg(msg)
                 .setFun(WXQueryValue.SYS)
@@ -324,9 +317,7 @@ public class WeChatApi {
      * @return 发送的结果
      */
     public WebWxSendMsgResp webWxSendAppMsg(Msg msg) {
-        String id = String.valueOf(BaseUtil.getEpochSecond() * 10000);
-        msg.setClientMsgId(id);
-        msg.setLocalId(id);
+        setClientIdAndLocalId(msg);
         return WeChatHttpClient.post(new WebWxSendMsgFileReq(String.format(WEB_WX_SEND_APP_MSG, host))
                 .setMsg(msg)
                 .setFun(WXQueryValue.ASYNC)
@@ -359,20 +350,24 @@ public class WeChatApi {
      * @param type  图片的类型，slave：小图，big：大图，不传该参数则默认获取大图
      * @return 获取到的图片文件
      */
-    public File webWxGetMsgImg(long msgId, String type) throws IOException {
+    public String webWxGetMsgImg(long msgId, String type) throws IOException {
+        // unk 未知图片格式
+        String fileName = String.format("image-%s-%s.unk", type, msgId);
+        String filePath = FilePath.IMAGE + fileName;
         WebWxGetMsgImgReq webWxGetMsgImgReq = new WebWxGetMsgImgReq(String.format(WEB_WX_GET_MSG_IMG, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
-                .setType(type)
-                .setPassTicket(passTicket)
+                .setFileStreamAvailable(true)
+                .setFileStreamSavePath(filePath)
                 .build();
         WeChatHttpClient.get(webWxGetMsgImgReq);
-        String path = folder.getAbsolutePath() + File.separator + String.format("image-%s-%s", type, msgId);
-        File oldFile = new File(path);
-        FileUtils.copyInputStreamToFile(webWxGetMsgImgReq.getInputStream(), oldFile);
-        File newFile = new File(path + ImageTypeUtils.typeOf(path));
-        FileUtils.moveFile(oldFile, newFile);
-        return newFile;
+        // 校正文件类型 重新写入
+        String newFilePath = String.format("%simage-%s-%s.%s",
+                FilePath.IMAGE, type, msgId, WeChatTools.fileSuffix(new File(filePath)));
+        File newFile = new File(newFilePath);
+        FileUtils.copyInputStreamToFile(new FileInputStream(filePath), newFile);
+        FileUtils.delete(new File(filePath));
+        return newFilePath;
     }
 
     /**
@@ -381,17 +376,17 @@ public class WeChatApi {
      * @param msgId 消息ID
      * @return 获取到的语音文件
      */
-    public File webWxGetVoice(long msgId) throws IOException {
+    public String webWxGetVoice(long msgId) {
+        String voiceFilePath = FilePath.VOICE + String.format("voice-%s.mp3", msgId);
         WebWxGetVoiceReq webWxGetVoiceReq = new WebWxGetVoiceReq(String.format(WEB_WX_GET_VOICE, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
                 .setPassTicket(passTicket)
+                .setFileStreamAvailable(true)
+                .setFileStreamSavePath(voiceFilePath)
                 .build();
         WeChatHttpClient.get(webWxGetVoiceReq);
-        String voiceFilepath = folder.getAbsolutePath() + File.separator + String.format("voice-%s.mp3", msgId);
-        File voiceFile = new File(voiceFilepath);
-        FileUtils.copyInputStreamToFile(webWxGetVoiceReq.getInputStream(), voiceFile);
-        return voiceFile;
+        return voiceFilePath;
     }
 
     /**
@@ -400,17 +395,15 @@ public class WeChatApi {
      * @param msgId 消息ID
      * @return 获取到的视频文件
      */
-    public File webWxGetVideo(long msgId) throws IOException {
+    public String webWxGetVideo(long msgId) {
+        String videoFilepath = FilePath.VIDEO + String.format("video-%d.mp4", msgId);
         WebWxGetVideoReq wxGetVideoReq = new WebWxGetVideoReq(String.format(WEB_WX_GET_VIDEO, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
                 .setPassTicket(passTicket)
                 .build();
         WeChatHttpClient.get(wxGetVideoReq);
-        String videoFilepath = folder.getAbsolutePath() + File.separator + String.format("video-%d.mp4", msgId);
-        File videoFile = new File(videoFilepath);
-        FileUtils.copyInputStreamToFile(wxGetVideoReq.getInputStream(), videoFile);
-        return videoFile;
+        return videoFilepath;
     }
 
     /**
@@ -423,20 +416,20 @@ public class WeChatApi {
      * @return 获取到的附件文件
      */
     public File webWxGetMedia(long msgId, String filename, String mediaId, String sender) throws IOException {
+        String videoFormat = filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
+        String mediaFilepath = FilePath.MEDIA + String.format("media-%d%s", msgId, videoFormat);
         WebWxGetMediaReq webWxGetVideoReq = new WebWxGetMediaReq(String.format(WEB_WX_GET_MEDIA, host))
                 .setEncryFileName(filename)
                 .setFromUser(uin)
                 .setMediaId(mediaId)
                 .setPassTicket(passTicket)
                 .setSender(sender)
-                .setWebWxDataTicket(dataTicket)
+                .setWebWxDataTicket(webWxDataTicket)
+                .setFileStreamAvailable(true)
+                .setFileStreamSavePath(mediaFilepath)
                 .build();
         WeChatHttpClient.get(webWxGetVideoReq);
-        String suffix = filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
-        String mediaFilepath = folder.getAbsolutePath() + File.separator + String.format("media-%d%s", msgId, suffix);
-        File mediaFile = new File(mediaFilepath);
-        FileUtils.copyInputStreamToFile(webWxGetVideoReq.getInputStream(), mediaFile);
-        return mediaFile;
+        return new File(mediaFilepath);
     }
 
     /**
@@ -519,73 +512,76 @@ public class WeChatApi {
     /**
      * 上传资源文件，超过1M的文件会被分片上传，每片512K
      *
-     *
      * @param fromUserName 消息的发送方UserName
      * @param toUserName   消息的接收方UserName
      * @param file         要上传的资源文件
      * @return 上传结果，包含了MediaId
      * @throws IOException 文件IO异常
      */
-    //public WebWxUploadMediaResp webWxUploadMedia(String fromUserName, String toUserName, File file, String aesKey, String signature) throws IOException {
-        // FIXME 上传文件分片
-        //int fileId = this.file++;
-        //String fileName = file.getName();
-        //String fileMime = Files.probeContentType(Paths.get(file.getAbsolutePath()));
-        //String fileMd5 = BaseUtil.md5(file);
-        //String fileType = WeChatTools.fileType(file);
-        //long fileLength = file.length();
-        //long clientMediaId = ReqUploadMedia.clientMediaId();
-        //// 文件大小 < 1MB 直接上传
-        //if (file.length() < 1024L * 1024L) {
-        //    return WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
-        //            .setId(String.format("WU_FILE_%d", fileId))
-        //            .setName(fileName)
-        //            .setType(fileMime)
-        //            .setLastModified(new Date(file.lastModified()))
-        //            .setSize(fileLength)
-        //            .setMediaType(fileType)
-        //            .setUploadMediaRequest()
-        //            .setWebWxDataTicket(dataTicket)
-        //            .setPassTicket(StringUtils.isNotEmpty(passTicket) ? "undefined" : passTicket)
-        //            .fileName(file)
-        //            .build());
-        //    //request.content("lastModifiedDate", new Date(file.lastModified()));
-        //    //request.content("uploadmediarequest", GSON.toJson(new ReqUploadMedia(new BaseRequest<W>(uin, sid, skey), clientMediaId, 2, fileLength, 0, fileLength, fileMd5, aesKey, signature, fromUserName, toUserName)));
-        //    //request.content("filename", file);
-        //} else {
-        //    // 分片上传 每片512K
-        //    WebWxUploadMediaResp webWxUploadMediaResp = null;
-        //    byte[] sliceBuffer = new byte[512 * 1024];
-        //    try (BufferedInputStream bfinStream = new BufferedInputStream(new FileInputStream(file))) {
-        //        for (long sliceIndex = 0, sliceCount = (long) Math.ceil(file.length() / 512D / 1024D); sliceIndex < sliceCount; sliceIndex++) {
-        //            WeChatTools.Slice slice = new WeChatTools.Slice("filename", fileName, fileMime, sliceBuffer, 0);
-        //            int readCount;
-        //            while ((readCount = bfinStream.read(sliceBuffer, slice.count, sliceBuffer.length - slice.count)) > 0) {
-        //                slice.count += readCount;
-        //                if (slice.count >= sliceBuffer.length) {
-        //                    break;
-        //                }
-        //            }
-        //            webWxUploadMediaResp = WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
-        //                    .setId(String.format("WU_FILE_%d", fileId))
-        //                    .setName(fileName)
-        //                    .setType(fileMime)
-        //                    .setLastModified(new Date(file.lastModified()))
-        //                    .setSize(fileLength)
-        //                    .setChunks(sliceCount)
-        //                    .setChunk(sliceIndex)
-        //                    .setMediaType(fileType)
-        //                    .setUploadMediaRequest()
-        //                    .setWebWxDataTicket(dataTicket)
-        //                    .setPassTicket(StringUtils.isNotEmpty(passTicket) ? "undefined" : passTicket)
-        //                    .fileName(slice)
-        //                    .build());
-        //            log.info("[{}]第{}次分片上传:", fileName, sliceIndex);
-        //        }
-        //    }
-        //    return webWxUploadMediaResp;
-        //}
-    //}
+    public WebWxUploadMediaResp webWxUploadMedia(String fromUserName, String toUserName, File file, String aesKey, String signature) throws IOException {
+        int fileId = this.file++;
+        String fileName = file.getName();
+        String fileMime = Files.probeContentType(Paths.get(file.getAbsolutePath()));
+        String fileMd5 = BaseUtil.md5(file);
+        String fileType = WeChatTools.fileType(file);
+        long fileLength = file.length();
+        long clientMediaId = BaseUtil.getEpochSecond() * 10;
+        UploadMediaRequest uploadMediaRequest = new UploadMediaRequest(2, clientMediaId , fileLength, 4,
+                fileLength, 4, fromUserName, toUserName, fileMd5, aesKey, signature);
+        uploadMediaRequest.setBaseRequestBody(new BaseRequestBody(uin, sid, skey));
+        String uploadMediaRequestJson = BaseUtil.GSON.toJson(uploadMediaRequest);
+        // 文件大小 < 1MB 直接上传
+        if (file.length() < 1024L * 1024L) {
+            byte[] fileContentInBytes = new byte[0];
+            try {
+                fileContentInBytes = FileUtils.readFileToByteArray(file);
+            } catch (IOException e) {
+                log.error("文件读取失败", e);
+            }
+            return WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
+                    //.setId(String.format("WU_FILE_%d", fileId))
+                    .setId("WU_FILE_0")
+                    .setName(fileName)
+                    .setType(fileMime)
+                    .setLastModifiedDate(BaseUtil.getWechatTime(file.lastModified()))
+                    .setSize(fileLength)
+                    .setMediaType(fileType)
+                    .setUploadMediaRequest(uploadMediaRequestJson)
+                    .setWebWxDataTicket(webWxDataTicket)
+                    .setPassTicket(StringUtils.isEmpty(passTicket) ? "undefined" : passTicket)
+                    .setFormFile(new FormFile("fileName", ContentType.APPLICATION_OCTET_STREAM, fileName, fileContentInBytes))
+                    .build());
+        } else {
+            // 分片上传 每片512K
+            WebWxUploadMediaResp webWxUploadMediaResp = null;
+            final int halfMb = 512 * 1024;
+            byte[] sliceBuffer = new byte[halfMb];
+            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
+                for (long sliceIndex = 0, sliceCount = (long) Math.ceil((double) file.length() / halfMb); sliceIndex < sliceCount; sliceIndex++) {
+                    int readCount;
+                    while ((readCount = bufferedInputStream.read(sliceBuffer)) != -1) {
+                        log.info("sliceIndex: {}, readCount: {}", sliceIndex, readCount);
+                    }
+                    webWxUploadMediaResp = WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
+                            .setId(String.format("WU_FILE_%d", fileId))
+                            .setName(fileName)
+                            .setType(fileMime)
+                            .setLastModifiedDate(BaseUtil.getWechatTime(file.lastModified()))
+                            .setSize(fileLength)
+                            .setChunks(sliceCount)
+                            .setChunk(sliceIndex)
+                            .setMediaType(fileType)
+                            .setUploadMediaRequest(uploadMediaRequestJson)
+                            .setWebWxDataTicket(webWxDataTicket)
+                            .setPassTicket(StringUtils.isNotEmpty(passTicket) ? "undefined" : passTicket)
+                            .setFormFile(new FormFile("fileName", ContentType.APPLICATION_OCTET_STREAM, fileName, sliceBuffer))
+                            .build());
+                    log.info("[{}]第{}次分片上传:", fileName, sliceIndex);
+                }
+            }
+            return webWxUploadMediaResp;
+        }
+    }
 
     /**
      * 退出登录接口

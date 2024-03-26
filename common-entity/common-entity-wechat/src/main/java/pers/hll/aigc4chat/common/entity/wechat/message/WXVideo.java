@@ -3,9 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.File;
-import java.io.Serializable;
-
 /**
  * 微信视频消息
  *
@@ -14,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXVideo extends WXMessage implements Serializable, Cloneable {
+public class WXVideo extends WXMessage {
 
     /**
      * 视频缩略图宽度
@@ -34,15 +31,10 @@ public class WXVideo extends WXMessage implements Serializable, Cloneable {
     /**
      * 视频缩略图
      */
-    private File image;
+    private String image;
 
     /**
      * 视频文件
      */
-    private File video;
-
-    @Override
-    public WXVideo clone() {
-        return (WXVideo) super.clone();
-    }
+    private String video;
 }

@@ -23,7 +23,7 @@ final class WeChatTools {
      */
     public static String fileType(File file) {
         return switch (WeChatTools.fileSuffix(file)) {
-            case "bmp", "png", "jpeg", "jpg" -> "pic";
+            case "jpg", "png", "bmp", "jpeg" -> "pic";
             case "mp4" -> "video";
             default -> "doc";
         };

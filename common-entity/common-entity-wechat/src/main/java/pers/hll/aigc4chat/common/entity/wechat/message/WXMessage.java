@@ -5,8 +5,6 @@ import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
 
-import java.io.Serializable;
-
 /**
  * 微信消息
  *
@@ -14,7 +12,7 @@ import java.io.Serializable;
  * @since 2024/03/10
  */
 @Data
-public abstract class WXMessage implements Serializable, Cloneable {
+public abstract class WXMessage {
 
     /**
      * 消息的id
@@ -50,24 +48,4 @@ public abstract class WXMessage implements Serializable, Cloneable {
      * 消息的内容
      */
     protected String content;
-
-    @Override
-    public WXMessage clone() {
-        try {
-            WXMessage wxMessage = (WXMessage) super.clone();
-            if (wxMessage.fromGroup != null) {
-                wxMessage.fromGroup = this.fromGroup.clone();
-            }
-            if (wxMessage.fromUser != null) {
-                wxMessage.fromUser = this.fromUser.clone();
-            }
-            if (wxMessage.toContact != null) {
-                wxMessage.toContact = this.toContact.clone();
-            }
-            return wxMessage;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
 }

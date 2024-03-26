@@ -3,7 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -14,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXVoice extends WXMessage implements Serializable, Cloneable {
+public class WXVoice extends WXMessage {
 
     /**
      * 语音长度，毫秒
@@ -24,10 +23,7 @@ public class WXVoice extends WXMessage implements Serializable, Cloneable {
     /**
      * 语音文件
      */
-    private File voice;
+    private String voice;
 
-    @Override
-    public WXVoice clone() {
-        return (WXVoice) super.clone();
-    }
+    private String mediaId;
 }

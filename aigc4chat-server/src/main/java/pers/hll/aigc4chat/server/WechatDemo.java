@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
+import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
 import pers.hll.aigc4chat.common.entity.wechat.message.WXUnknown;
 import pers.hll.aigc4chat.common.entity.wechat.message.WXVerify;
 import pers.hll.aigc4chat.server.wechat.DefaultWeChatListener;
@@ -25,7 +26,7 @@ public class WechatDemo {
         // 新建一个模拟微信客户端
         WeChatClient wechatClient = new WeChatClient();
         // 为模拟微信客户端设置监听器
-        wechatClient.setListener(new DefaultWeChatListener());
+        wechatClient.setWeChatListener(new DefaultWeChatListener());
         // 启动模拟微信客户端
         wechatClient.startup();
         Scanner scanner = new Scanner(System.in);
@@ -50,29 +51,31 @@ public class WechatDemo {
                         log.info("toContactId:");
                         String toContactId = scanner.nextLine();
                         log.info("filePath:");
-                        File file = new File(scanner.nextLine());
                         WXContact contact = wechatClient.userContact(toContactId);
                         if (contact != null) {
-                            log.info("success:{}", wechatClient.sendFile(contact, file));
+                            log.info("success:{}", wechatClient.sendFile(contact, scanner.nextLine()));
                         } else {
                             log.info("联系人[{}]未找到!", toContactId);
                         }
                     }
                     break;
                     case "sendLocation": {
+                        OriContent oriContent = new OriContent();
+                        OriContent.Location location = new OriContent.Location();
+                        oriContent.setLocation(location);
                         log.info("toContactId:");
                         String toContactId = scanner.nextLine();
                         log.info("longitude:");
-                        String longitude = scanner.nextLine();
+                        location.setX(Double.parseDouble(scanner.nextLine()));
                         log.info("latitude:");
-                        String latitude = scanner.nextLine();
+                        location.setY(Double.parseDouble(scanner.nextLine()));
                         log.info("title:");
-                        String title = scanner.nextLine();
-                        log.info("lable:");
-                        String lable = scanner.nextLine();
+                        location.setPoiName(scanner.nextLine());
+                        log.info("label:");
+                        location.setLabel(scanner.nextLine());
                         WXContact contact = wechatClient.userContact(toContactId);
                         if (contact != null) {
-                            log.info("success:{}", wechatClient.sendLocation(contact, longitude, latitude, title, lable));
+                            log.info("success:{}", wechatClient.sendLocation(contact, oriContent));
                         } else {
                             log.info("联系人未找到");
                         }
