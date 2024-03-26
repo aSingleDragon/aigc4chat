@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.File;
-import java.io.Serializable;
 
 /**
  * 微信文件消息
@@ -14,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXFile extends WXMessage implements Serializable, Cloneable {
+public class WXFile extends WXMessage {
 
     /**
      * 文件id，用于获取文件
@@ -35,9 +34,4 @@ public class WXFile extends WXMessage implements Serializable, Cloneable {
      * 文件内容，刚开始为null，需要手动获取之后才会有内容
      */
     private File file;
-
-    @Override
-    public WXFile clone() {
-        return (WXFile) super.clone();
-    }
 }

@@ -1,6 +1,8 @@
 package pers.hll.aigc4chat.server.wechat;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import pers.hll.aigc4chat.common.base.util.XmlUtil;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.message.*;
 
@@ -51,10 +53,11 @@ public class DefaultWeChatListener implements WeChatListener {
             // 是语音消息 并且发送消息的人不是自己 发送相同内容的消息
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
-                client.sendFile(message.getFromGroup(), wxVoice.getVoice());
+                //client.sendFile(message.getFromGroup(), wxVoice.getVoice());
             } else {
                 // 用户消息
-                client.sendFile(message.getFromUser(), wxVoice.getVoice());
+                //client.sendFile(message.getFromUser(), wxVoice.getVoice());
+                client.sendVoice(message.getFromUser(), wxVoice.getVoice());
             }
         } else if (message instanceof WXEmoji wxEmoji
                 && !message.getFromUser().getId().equals(client.userMe().getId())) {
@@ -64,7 +67,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 // do nothing
             } else {
                 // 用户消息
-                client.sendEmoji(message.getFromUser(), message.getContent());
+                //client.sendEmoji(message.getFromUser(), message.getContent());
             }
         } else if (message instanceof WXImage wxImage
                 && !message.getFromUser().getId().equals(client.userMe().getId())) {

@@ -3,8 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.contact;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 /**
  * 用户
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXUser extends WXContact implements Serializable, Cloneable {
+public class WXUser extends WXContact {
 
     public static final int GENDER_UNKNOWN = 0;
 
@@ -70,9 +68,4 @@ public class WXUser extends WXContact implements Serializable, Cloneable {
      * 认证标志字段
      */
     private int verifyFlag;
-
-    @Override
-    public WXUser clone() {
-        return (WXUser) super.clone();
-    }
 }

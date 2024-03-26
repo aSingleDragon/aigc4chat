@@ -1,5 +1,7 @@
 package pers.hll.aigc4chat.common.base.constant;
 
+import java.io.File;
+
 /**
  *
  * @author hll
@@ -7,5 +9,21 @@ package pers.hll.aigc4chat.common.base.constant;
  */
 public interface FilePath {
 
-    String LOGIN_QR_CODE = "./qrcode/login.png";
+    String BASE_PATH = "./file";
+
+    String SEP = File.separator;
+
+    String LOGIN_QR_CODE = BASE_PATH + SEP + "qrcode" + SEP + "login.png";
+
+    String IMAGE = BASE_PATH + SEP + "image" + SEP;
+
+    String VOICE = BASE_PATH + SEP + "voice" + SEP;
+
+    String VIDEO = BASE_PATH + SEP + "video" + SEP;
+
+    String MEDIA = BASE_PATH + SEP + "video" + SEP;
+
+    String ME = BASE_PATH + SEP + "me" + SEP;
+
+    String DB = BASE_PATH + SEP + "db" + SEP;
 }

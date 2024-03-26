@@ -3,8 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 /**
  * 微信名片消息
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXRecommend extends WXMessage implements Serializable, Cloneable {
+public class WXRecommend extends WXMessage {
 
     /**
      * 名片用户id
@@ -49,9 +47,4 @@ public class WXRecommend extends WXMessage implements Serializable, Cloneable {
      * 名片用户验证标志位
      */
     private int verifyFlag;
-
-    @Override
-    public WXRecommend clone() {
-        return (WXRecommend) super.clone();
-    }
 }

@@ -3,8 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 /**
  * 微信位置消息
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXLocation extends WXMessage implements Serializable, Cloneable {
+public class WXLocation extends WXMessage {
 
     /**
      * 地点名称
@@ -32,9 +30,4 @@ public class WXLocation extends WXMessage implements Serializable, Cloneable {
     private String locationUrl;
 
     private OriContent oriContent;
-
-    @Override
-    public WXLocation clone() {
-        return (WXLocation) super.clone();
-    }
 }

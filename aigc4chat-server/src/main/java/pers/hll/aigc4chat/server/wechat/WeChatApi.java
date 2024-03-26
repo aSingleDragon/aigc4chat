@@ -58,8 +58,6 @@ public class WeChatApi {
 
     private String webWxDataTicket;
 
-    private File folder = new File("/Users/hll/IdeaProjects/aigc/aigc4chat/file");
-
     private long time = 0;
 
     private int file = 0;
@@ -353,10 +351,9 @@ public class WeChatApi {
      * @return 获取到的图片文件
      */
     public String webWxGetMsgImg(long msgId, String type) throws IOException {
-        String path = folder.getAbsolutePath() + File.separator;
         // unk 未知图片格式
         String fileName = String.format("image-%s-%s.unk", type, msgId);
-        String filePath = path + fileName;
+        String filePath = FilePath.IMAGE + fileName;
         WebWxGetMsgImgReq webWxGetMsgImgReq = new WebWxGetMsgImgReq(String.format(WEB_WX_GET_MSG_IMG, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -366,9 +363,10 @@ public class WeChatApi {
         WeChatHttpClient.get(webWxGetMsgImgReq);
         // 校正文件类型 重新写入
         String newFilePath = String.format("%simage-%s-%s.%s",
-                path, type, msgId, WeChatTools.fileSuffix(new File(filePath)));
+                FilePath.IMAGE, type, msgId, WeChatTools.fileSuffix(new File(filePath)));
         File newFile = new File(newFilePath);
         FileUtils.copyInputStreamToFile(new FileInputStream(filePath), newFile);
+        FileUtils.delete(new File(filePath));
         return newFilePath;
     }
 
@@ -379,7 +377,7 @@ public class WeChatApi {
      * @return 获取到的语音文件
      */
     public String webWxGetVoice(long msgId) {
-        String voiceFilePath = folder.getAbsolutePath() + File.separator + String.format("voice-%s.mp3", msgId);
+        String voiceFilePath = FilePath.VOICE + String.format("voice-%s.mp3", msgId);
         WebWxGetVoiceReq webWxGetVoiceReq = new WebWxGetVoiceReq(String.format(WEB_WX_GET_VOICE, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -398,7 +396,7 @@ public class WeChatApi {
      * @return 获取到的视频文件
      */
     public String webWxGetVideo(long msgId) {
-        String videoFilepath = folder.getAbsolutePath() + File.separator + String.format("video-%d.mp4", msgId);
+        String videoFilepath = FilePath.VIDEO + String.format("video-%d.mp4", msgId);
         WebWxGetVideoReq wxGetVideoReq = new WebWxGetVideoReq(String.format(WEB_WX_GET_VIDEO, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -419,7 +417,7 @@ public class WeChatApi {
      */
     public File webWxGetMedia(long msgId, String filename, String mediaId, String sender) throws IOException {
         String videoFormat = filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
-        String mediaFilepath = folder.getAbsolutePath() + File.separator + String.format("media-%d%s", msgId, videoFormat);
+        String mediaFilepath = FilePath.MEDIA + String.format("media-%d%s", msgId, videoFormat);
         WebWxGetMediaReq webWxGetVideoReq = new WebWxGetMediaReq(String.format(WEB_WX_GET_MEDIA, host))
                 .setEncryFileName(filename)
                 .setFromUser(uin)

@@ -3,8 +3,6 @@ package pers.hll.aigc4chat.common.entity.wechat.message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 /**
  * 微信状态消息
  *
@@ -13,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXNotify extends WXMessage implements Serializable, Cloneable {
+public class WXNotify extends WXMessage {
 
     public static final int NOTIFY_READED = 1;
 
@@ -34,9 +32,4 @@ public class WXNotify extends WXMessage implements Serializable, Cloneable {
      * 关联联系人
      */
     private String notifyContact;
-
-    @Override
-    public WXNotify clone() {
-        return (WXNotify) super.clone();
-    }
 }
