@@ -2,6 +2,8 @@ package pers.hll.aigc4chat.server.wechat;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import pers.hll.aigc4chat.common.base.XTools;
 import pers.hll.aigc4chat.common.base.http.XHttpTools;
 import pers.hll.aigc4chat.common.base.http.executor.impl.XRequest;
@@ -24,10 +26,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpCookie;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -844,7 +843,10 @@ public final class WeChatClient {
                         }
                     }
                     retryCount = 0;
-                    if (syncCheckResp.getRetCode() > 0) {
+                    if (Objects.isNull(syncCheckResp)) {
+                        log.error("请求超时，当前监听异常");
+                        return null;
+                    } else if (syncCheckResp.getRetCode() > 0) {
                         log.warn("停止监听信息, 同步检查响应信息: {}", syncCheckResp);
                         return null;
                     } else if (syncCheckResp.getSelector() > 0) {

@@ -2,6 +2,9 @@ package pers.hll.aigc4chat.common.entity.wechat.contact;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 
@@ -13,6 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class WXUser extends WXContact implements Serializable, Cloneable {
 
     public static final int GENDER_UNKNOWN = 0;
@@ -74,5 +78,10 @@ public class WXUser extends WXContact implements Serializable, Cloneable {
     @Override
     public WXUser clone() {
         return (WXUser) super.clone();
+    }
+
+    public static void main(String[] args) {
+        WXUser wxUser = new WXUser();
+        System.out.println(wxUser);
     }
 }
