@@ -18,6 +18,7 @@
         <module>common-entity</module>
         <module>common-protocol</module>
         <module>common-base</module>
+        <module>common-ai</module>
         <module>aigc4chat-server</module>
     </modules>
     <properties>

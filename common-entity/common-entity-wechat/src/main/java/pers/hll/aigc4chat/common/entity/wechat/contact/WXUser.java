@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.common.entity.wechat.contact;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 用户
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
  * @since 2024/03/10
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class WXUser extends WXContact {
 
