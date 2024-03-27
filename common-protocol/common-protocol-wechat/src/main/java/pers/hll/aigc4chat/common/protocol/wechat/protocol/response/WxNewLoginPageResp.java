@@ -22,7 +22,7 @@ import lombok.Data;
  * </pre></blockquote>
  *
  * @author hll
- * @since 2023/03/12
+ * @since 2024/03/12
  */
 @Data
 @XmlRootElement(name = "error")

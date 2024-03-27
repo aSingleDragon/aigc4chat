@@ -4,7 +4,7 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.constant;
  * 默认配置
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 public interface DefaultConfig {
 

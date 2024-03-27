@@ -9,7 +9,7 @@ import lombok.Data;
  * window.QRLogin.code = 200; window.QRLogin.uuid = "YdhFiz5kzw==";
  *
  * @author hll
- * @since 2023/03/12
+ * @since 2024/03/12
  */
 @Data
 @Builder

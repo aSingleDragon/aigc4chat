@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * mybatisplus 配置
+ * MybatisPlus 配置
+ *
+ * @author hll
+ * @since 2024/03/27
  */
 @Configuration
 public class MybatisPlusConfig {

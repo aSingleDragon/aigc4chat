@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import pers.hll.aigc4chat.common.base.constant.FilePath;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
-import pers.hll.aigc4chat.common.base.util.ImageTypeUtils;
 import pers.hll.aigc4chat.common.base.util.QRCodeUtil;
+import pers.hll.aigc4chat.common.base.util.ImgTypeUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.*;
@@ -363,7 +363,7 @@ public class WeChatApi {
         WeChatHttpClient.get(webWxGetMsgImgReq);
         // 校正文件类型 重新写入
         String newFilePath = String.format("%simage-%s-%s.%s",
-                FilePath.IMAGE, type, msgId, WeChatTools.fileSuffix(new File(filePath)));
+                FilePath.IMAGE, type, msgId, ImgTypeUtil.fileSuffix(new File(filePath)));
         File newFile = new File(newFilePath);
         FileUtils.copyInputStreamToFile(new FileInputStream(filePath), newFile);
         FileUtils.delete(new File(filePath));
@@ -523,7 +523,7 @@ public class WeChatApi {
         String fileName = file.getName();
         String fileMime = Files.probeContentType(Paths.get(file.getAbsolutePath()));
         String fileMd5 = BaseUtil.md5(file);
-        String fileType = WeChatTools.fileType(file);
+        String fileType = ImgTypeUtil.fileType(file);
         long fileLength = file.length();
         long clientMediaId = BaseUtil.getEpochSecond() * 10;
         UploadMediaRequest uploadMediaRequest = new UploadMediaRequest(2, clientMediaId , fileLength, 4,

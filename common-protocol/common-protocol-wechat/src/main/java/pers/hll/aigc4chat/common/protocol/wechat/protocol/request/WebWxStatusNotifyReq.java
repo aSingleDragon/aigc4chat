@@ -17,7 +17,7 @@ import java.util.Map;
  * 同步状态通知请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 @EqualsAndHashCode(callSuper = true)
 public class WebWxStatusNotifyReq extends BasePostRequest<WebWxStatusNotifyReq, WebWxStatusNotifyResp> {

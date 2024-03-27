@@ -1,14 +1,12 @@
 package pers.hll.aigc4chat.server.base;
 
-import java.io.Serializable;
-
 /**
  * 响应码接口
  *
  * @author hll
  * @since 2024/03/21
  */
-public interface IResultCode extends Serializable {
+public interface IResultCode {
 
     /**
      * 消息

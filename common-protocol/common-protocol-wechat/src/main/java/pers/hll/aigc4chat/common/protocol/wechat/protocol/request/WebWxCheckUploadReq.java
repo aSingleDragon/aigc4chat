@@ -16,7 +16,7 @@ import java.util.Map;
  * 检查文件是否已经在微信服务器请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 @EqualsAndHashCode(callSuper = true)
 public class WebWxCheckUploadReq extends BasePostRequest<WebWxCheckUploadReq, WebWxCheckUploadResp> {

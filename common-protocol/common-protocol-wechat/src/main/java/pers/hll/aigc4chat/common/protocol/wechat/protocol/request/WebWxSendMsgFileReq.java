@@ -18,7 +18,7 @@ import java.util.Map;
  * 发送文件请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 @EqualsAndHashCode(callSuper = true)
 public class WebWxSendMsgFileReq extends BasePostRequest<WebWxSendMsgFileReq, WebWxSendMsgResp> {

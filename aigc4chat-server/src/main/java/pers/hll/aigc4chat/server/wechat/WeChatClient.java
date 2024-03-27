@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pers.hll.aigc4chat.common.base.constant.FilePath;
+import pers.hll.aigc4chat.common.base.util.ImgTypeUtil;
 import pers.hll.aigc4chat.common.base.util.XmlUtil;
 import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
@@ -39,7 +40,7 @@ import java.util.regex.Pattern;
  * 模拟网页微信客户端
  *
  * @author hll
- * @since 2023/03/10
+ * @since 2024/03/10
  */
 @Slf4j
 public final class WeChatClient {
@@ -442,7 +443,7 @@ public final class WeChatClient {
     @Nullable
     public WXMessage sendFile(@Nonnull WXContact wxContact, @Nonnull String filePath) {
         File file = new File(filePath);
-        String suffix = WeChatTools.fileSuffix(file);
+        String suffix = ImgTypeUtil.fileSuffix(file);
         if ("mp4".equals(suffix) && filePath.length() >= 20L * 1024L * 1024L) {
             log.warn("向({}: {})发送的视频文件大于20M，无法发送", wxContact.getId(), wxContact.getName());
             return null;
@@ -463,7 +464,7 @@ public final class WeChatClient {
                     mediaId = webWxUploadMediaResp.getMediaId();
                 }
                 if (StringUtils.isNotEmpty(mediaId)) {
-                    switch (WeChatTools.fileType(file)) {
+                    switch (ImgTypeUtil.fileType(file)) {
                         case "pic": {
                             WebWxSendMsgResp webWxSendMsgResp = weChatApi.webWxSendMsgImg(new Msg(MsgType.TYPE_IMAGE, mediaId,
                                     null, "", signature, weChatContacts.getMe().getId(), wxContact.getId()));
