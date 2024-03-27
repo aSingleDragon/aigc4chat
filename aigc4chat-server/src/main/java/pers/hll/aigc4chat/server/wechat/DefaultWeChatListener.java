@@ -47,7 +47,7 @@ public class DefaultWeChatListener implements WeChatListener {
             // 如果对方告诉我他的位置，发送消息的不是自己，则我也告诉他我的位置
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
-                // client.sendLocation(message.getFromGroup(), wxLocation.getOriContent());
+                 client.sendLocation(message.getFromGroup(), wxLocation.getOriContent());
             } else {
                 // 用户消息
                 client.sendLocation(message.getFromUser(), wxLocation.getOriContent());
@@ -57,14 +57,15 @@ public class DefaultWeChatListener implements WeChatListener {
 
             // 获取对话结果
             AiModCallServiceImpl aiModCallService = new AiModCallServiceImpl();
-            String content = aiModCallService.call(message.getContent(), gainReplyMod(message.getFromUser().getId()));
+            //String content = aiModCallService.call(message.getContent(), gainReplyMod(message.getFromUser().getId()));
+            String content = aiModCallService.call(message.getContent(), "Agent");
             if (StringUtils.isBlank(content)) {
                 return;
             }
             // 回复指定用户
             if (message.getFromGroup() != null) {
                 // 群消息
-                //client.sendText(message.getFromGroup(), content);
+                client.sendText(message.getFromGroup(), content);
             } else {
                 // 用户消息
                 client.sendText(message.getFromUser(), content);
@@ -74,7 +75,7 @@ public class DefaultWeChatListener implements WeChatListener {
             // 是语音消息 并且发送消息的人不是自己 发送相同内容的消息
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
-                //client.sendFile(message.getFromGroup(), wxVoice.getVoice());
+                client.sendFile(message.getFromGroup(), wxVoice.getVoice());
             } else {
                 // 用户消息
                 //client.sendFile(message.getFromUser(), wxVoice.getVoice());
@@ -94,7 +95,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 && !message.getFromUser().getId().equals(client.userMe().getId())) {
             if (message.getFromGroup() != null) {
                 // do nothing
-                //client.sendFile(message.getFromGroup(), wxImage.getImage());
+                client.sendFile(message.getFromGroup(), wxImage.getImage());
             } else {
                 // 用户消息
                 client.sendFile(message.getFromUser(), wxImage.getImage());
