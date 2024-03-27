@@ -11,7 +11,7 @@ import java.util.Map;
  * js登录请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 @Slf4j
 public class JsLoginReq extends BaseRequest<JsLoginReq, JsLoginResp> {

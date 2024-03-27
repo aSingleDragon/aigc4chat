@@ -1,17 +1,22 @@
-package pers.hll.aigc4chat.server.wechat;
+package pers.hll.aigc4chat.common.base.util;
 
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import pers.hll.aigc4chat.common.base.http.executor.impl.XRequest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
 
+/**
+ * 判断图片类型工具类
+ *
+ * @author hll
+ * @since 2024/03/27
+ */
 @Slf4j
-final class WeChatTools {
+@UtilityClass
+public class ImgTypeUtil {
 
     private static final char[] HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
@@ -22,7 +27,7 @@ final class WeChatTools {
      * @return 文件的media类型
      */
     public static String fileType(File file) {
-        return switch (WeChatTools.fileSuffix(file)) {
+        return switch (ImgTypeUtil.fileSuffix(file)) {
             case "jpg", "png", "bmp", "jpeg" -> "pic";
             case "mp4" -> "video";
             default -> "doc";
@@ -76,52 +81,5 @@ final class WeChatTools {
             chars[(i << 1) + 1] = HEX[b & 0xf];
         }
         return new String(chars);
-    }
-
-    /**
-     * 文件分片的请求体Part，微信在上传文件时，超过1M的文件，会进行分片上传，每片大小会根据网速等因素调整。
-     * 为了简单起见，本库每片大小512KB
-     */
-    public static final class Slice extends XRequest.MultipartContent.Part {
-
-        /**
-         * 文件名称
-         */
-        public String fileName;
-
-        /**
-         * 文件的MIME类型
-         */
-        public String fileMime;
-
-        /**
-         * 字节数组内容的数量，字节数组大小总是512K而实际内容可能并没有这么多
-         */
-        public int count;
-
-        public Slice(String name, String fileName, String fileMime, byte[] slice, int count) {
-            super(name, slice);
-            this.fileName = fileName;
-            this.fileMime = fileMime;
-            this.count = count;
-        }
-
-        @Override
-        public String[] headers() throws IOException {
-            String disposition = String.format("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"", name,
-                    URLEncoder.encode(fileName, "utf-8"));
-            String type = String.format("Content-Type: %s", fileMime);
-            return new String[]{disposition, type};
-        }
-
-        @Override
-        public long partLength() {
-            return count;
-        }
-
-        @Override
-        public void partWrite(OutputStream doStream) throws IOException {
-            doStream.write((byte[]) value, 0, count);
-        }
     }
 }

@@ -1,12 +1,11 @@
 package pers.hll.aigc4chat.server.base;
 
-import lombok.*;
-import org.springframework.util.ObjectUtils;
-import org.springframework.lang.Nullable;
-
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.Serial;
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
+
 import java.util.Optional;
 
 /**
@@ -17,10 +16,7 @@ import java.util.Optional;
  */
 @Data
 @NoArgsConstructor
-public class R<T> implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class R<T> {
 
     private int code;
 

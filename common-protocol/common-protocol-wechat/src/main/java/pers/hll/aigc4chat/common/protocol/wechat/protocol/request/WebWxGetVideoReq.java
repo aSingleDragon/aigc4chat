@@ -13,7 +13,7 @@ import java.util.Map;
  * 获取视频请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 @EqualsAndHashCode(callSuper = true)
 public class WebWxGetVideoReq extends BaseRequest<WebWxGetVideoReq, Object> {

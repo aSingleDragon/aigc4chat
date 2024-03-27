@@ -9,7 +9,7 @@ import lombok.Data;
  * window.code=201;window.userAvatar = 'data:img/jpg;base64,/9j/4AAQSkZJRgAB...KKiSRFWD/2Q==';
  *
  * @author hll
- * @since 2023/03/12
+ * @since 2024/03/12
  */
 @Data
 @Builder

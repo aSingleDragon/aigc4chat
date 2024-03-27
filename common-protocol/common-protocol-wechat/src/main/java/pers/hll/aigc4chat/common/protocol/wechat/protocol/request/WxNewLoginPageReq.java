@@ -11,7 +11,7 @@ import java.util.Map;
  * 跳转新登录页面请求
  *
  * @author hll
- * @since 2023/03/11
+ * @since 2024/03/11
  */
 public class WxNewLoginPageReq extends BaseRequest<WxNewLoginPageReq, WxNewLoginPageResp> {
 
