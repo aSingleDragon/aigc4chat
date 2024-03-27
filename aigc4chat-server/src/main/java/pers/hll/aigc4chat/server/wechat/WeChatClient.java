@@ -1,15 +1,11 @@
 package pers.hll.aigc4chat.server.wechat;
 
+import ch.qos.logback.core.testUtil.RandomUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import pers.hll.aigc4chat.common.base.XTools;
 import pers.hll.aigc4chat.common.base.constant.FilePath;
-import pers.hll.aigc4chat.common.base.http.XHttpTools;
-import pers.hll.aigc4chat.common.base.http.executor.impl.XRequest;
 import pers.hll.aigc4chat.common.base.util.XmlUtil;
 import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
@@ -20,7 +16,6 @@ import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Cmd;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Op;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.BaseRequest;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.WebWxGetAvatarReq;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
@@ -32,12 +27,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpCookie;
-import java.util.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -349,8 +342,9 @@ public final class WeChatClient {
         WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TYPE_TEXT, null, 0,
                 text, null, weChatContacts.getMe().getId(), wxContact.getId()));
         WXText wxText = new WXText();
-        wxText.setId(Long.parseLong(rspSendMsg.getMsgId()));
-        wxText.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
+        // 自己给自己发送消息时, localId和msgId都为空字符串, parseLong会异常, 因此随机一个数
+        wxText.setId(StringUtils.isBlank(rspSendMsg.getMsgId()) ? RandomUtil.getPositiveInt() : Long.parseLong(rspSendMsg.getMsgId()));
+        wxText.setIdLocal(StringUtils.isBlank(rspSendMsg.getLocalId()) ? RandomUtil.getPositiveInt() : Long.parseLong(rspSendMsg.getLocalId()));
         wxText.setTimestamp(System.currentTimeMillis());
         wxText.setFromGroup(null);
         wxText.setFromUser(weChatContacts.getMe());
@@ -358,7 +352,6 @@ public final class WeChatClient {
         wxText.setContent(text);
         return wxText;
     }
-
     /**
      * 发送位置消息
      * <p>
