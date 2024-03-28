@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:sqlite:./file/project/db/pro.db
+    url: jdbc:sqlite:./file/project/db/aigc4chat-sqlite.db
     driver-class-name: org.sqlite.JDBC
   sql:
     init:

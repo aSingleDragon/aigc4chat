@@ -585,12 +585,11 @@ public final class WeChatClient {
      */
     @Nonnull
     public WXContact fetchAvatar(@Nonnull WXContact wxContact) {
-        String avatarPath = FilePath.ME + "avatar.jpg";
         WeChatHttpClient.get(new WebWxGetAvatarReq(wxContact.getAvatarUrl())
                 .setFileStreamAvailable(true)
-                .setFileStreamSavePath(avatarPath)
+                .setFileStreamSavePath(FilePath.WECHAT_ME)
                 .build());
-        wxContact.setAvatarFile(avatarPath);
+        wxContact.setAvatarFile(FilePath.WECHAT_ME);
         return wxContact;
     }
 

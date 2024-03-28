@@ -86,9 +86,9 @@ public class WeChatApi {
         } else {
             this.uuid = jsLoginResp.getUuid();
             String qrCodeUri = String.format(QR_CODE, uuid);
-            QRCodeUtil.writeInImage(FilePath.LOGIN_QR_CODE, qrCodeUri);
+            QRCodeUtil.writeInImage(FilePath.WECHAT_LOGIN_QR_CODE, qrCodeUri);
             try {
-                Desktop.getDesktop().open(new File(FilePath.LOGIN_QR_CODE));
+                Desktop.getDesktop().open(new File(FilePath.WECHAT_LOGIN_QR_CODE));
             } catch (IOException e) {
                 log.error("打开二维码图片失败:", e);
             }
@@ -353,7 +353,7 @@ public class WeChatApi {
     public String webWxGetMsgImg(long msgId, String type) throws IOException {
         // unk 未知图片格式
         String fileName = String.format("image-%s-%s.unk", type, msgId);
-        String filePath = FilePath.IMAGE + fileName;
+        String filePath = FilePath.WECHAT_IMAGE + fileName;
         WebWxGetMsgImgReq webWxGetMsgImgReq = new WebWxGetMsgImgReq(String.format(WEB_WX_GET_MSG_IMG, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -363,7 +363,7 @@ public class WeChatApi {
         WeChatHttpClient.get(webWxGetMsgImgReq);
         // 校正文件类型 重新写入
         String newFilePath = String.format("%simage-%s-%s.%s",
-                FilePath.IMAGE, type, msgId, ImgTypeUtil.fileSuffix(new File(filePath)));
+                FilePath.WECHAT_IMAGE, type, msgId, ImgTypeUtil.fileSuffix(new File(filePath)));
         File newFile = new File(newFilePath);
         FileUtils.copyInputStreamToFile(new FileInputStream(filePath), newFile);
         FileUtils.delete(new File(filePath));
@@ -377,7 +377,7 @@ public class WeChatApi {
      * @return 获取到的语音文件
      */
     public String webWxGetVoice(long msgId) {
-        String voiceFilePath = FilePath.VOICE + String.format("voice-%s.mp3", msgId);
+        String voiceFilePath = FilePath.WECHAT_VOICE + String.format("voice-%s.mp3", msgId);
         WebWxGetVoiceReq webWxGetVoiceReq = new WebWxGetVoiceReq(String.format(WEB_WX_GET_VOICE, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -396,7 +396,7 @@ public class WeChatApi {
      * @return 获取到的视频文件
      */
     public String webWxGetVideo(long msgId) {
-        String videoFilepath = FilePath.VIDEO + String.format("video-%d.mp4", msgId);
+        String videoFilepath = FilePath.WECHAT_VIDEO + String.format("video-%d.mp4", msgId);
         WebWxGetVideoReq wxGetVideoReq = new WebWxGetVideoReq(String.format(WEB_WX_GET_VIDEO, host))
                 .setMsgId(msgId)
                 .setSKey(skey)
@@ -417,7 +417,7 @@ public class WeChatApi {
      */
     public File webWxGetMedia(long msgId, String filename, String mediaId, String sender) throws IOException {
         String videoFormat = filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
-        String mediaFilepath = FilePath.MEDIA + String.format("media-%d%s", msgId, videoFormat);
+        String mediaFilepath = FilePath.WECHAT_MEDIA + String.format("media-%d%s", msgId, videoFormat);
         WebWxGetMediaReq webWxGetVideoReq = new WebWxGetMediaReq(String.format(WEB_WX_GET_MEDIA, host))
                 .setEncryFileName(filename)
                 .setFromUser(uin)

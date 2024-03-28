@@ -3,27 +3,30 @@ package pers.hll.aigc4chat.common.base.constant;
 import java.io.File;
 
 /**
- *
  * @author hll
  * @since 2024/03/10
  */
 public interface FilePath {
 
-    String BASE_PATH = "./file";
-
     String SEP = File.separator;
 
-    String LOGIN_QR_CODE = BASE_PATH + SEP + "qrcode" + SEP + "login.png";
+    String BASE_PATH = "./file";
 
-    String IMAGE = BASE_PATH + SEP + "image" + SEP;
+    String CHAT_HISTORY = BASE_PATH + SEP + "chat-history";
 
-    String VOICE = BASE_PATH + SEP + "voice" + SEP;
+    String WECHAT_HISTORY = CHAT_HISTORY + SEP + "wechat";
 
-    String VIDEO = BASE_PATH + SEP + "video" + SEP;
+    String WECHAT_LOGIN_QR_CODE = WECHAT_HISTORY + SEP + "qrcode" + SEP + "login.png";
 
-    String MEDIA = BASE_PATH + SEP + "video" + SEP;
+    String WECHAT_IMAGE = WECHAT_HISTORY  + SEP + "image" + SEP;
 
-    String ME = BASE_PATH + SEP + "me" + SEP;
+    String WECHAT_VOICE = WECHAT_HISTORY + SEP + "voice" + SEP;
+
+    String WECHAT_VIDEO = WECHAT_HISTORY + SEP + "video" + SEP;
+
+    String WECHAT_MEDIA = WECHAT_HISTORY  + SEP + "video" + SEP;
+
+    String WECHAT_ME = WECHAT_HISTORY + SEP + "me" + SEP + "avatar.jpg";
 
     String DB = BASE_PATH + SEP + "db" + SEP;
 }
