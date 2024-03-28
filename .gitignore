@@ -32,5 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-### QR Code Image ###
-qrcode
+### Chat History ###
+./file/chat-history/
+
+### SQLite Local DB ###
+./file/project/db/
