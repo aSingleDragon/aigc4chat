@@ -1,6 +1,5 @@
 package pers.hll.aigc4chat.common.protocol.wechat.protocol;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -91,9 +90,11 @@ public class WeChatHttpClient {
                 String strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
                 cookieStore = (CookieStore) context.getAttribute(HttpClientContext.COOKIE_STORE);
                 return basePostRequest.convertRespBodyToObj(strEntity);
+            } catch (Exception exception) {
+                log.error("发起Post请求[{}]异常:", basePostRequest.getUri(), exception);
             }
         } catch (IOException | URISyntaxException e) {
-            log.error("构造Post请求出错: ", e);
+            log.error("构造Post请求[{}]出错, 请求信息: {}", basePostRequest.getUri(), basePostRequest, e);
         }
         return null;
     }
@@ -134,7 +135,7 @@ public class WeChatHttpClient {
                 }
             }
         } catch (IOException | URISyntaxException e) {
-            log.error("构造Get请求出错: ", e);
+            log.error("构造Get请求[{}]出错, 请求信息: {}", baseRequest.getUri(), baseRequest, e);
         }
         return null;
     }
