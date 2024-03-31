@@ -32,6 +32,4 @@ public class AgentResp {
 
         private String text;
     }
-
-
 }

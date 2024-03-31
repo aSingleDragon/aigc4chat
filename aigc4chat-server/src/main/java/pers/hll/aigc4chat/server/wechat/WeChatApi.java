@@ -60,7 +60,7 @@ public class WeChatApi {
 
     private long time = 0;
 
-    private int file = 0;
+    private int fileId = 0;
 
     private String uuid;
 
@@ -84,7 +84,7 @@ public class WeChatApi {
         if (200 != jsLoginResp.getCode()) {
             throw new IllegalStateException("获取登录二维码出错");
         } else {
-            this.uuid = jsLoginResp.getUuid();
+            uuid = jsLoginResp.getUuid();
             String qrCodeUri = String.format(QR_CODE, uuid);
             QRCodeUtil.writeInImage(FilePath.WECHAT_LOGIN_QR_CODE, qrCodeUri);
             try {
@@ -106,11 +106,11 @@ public class WeChatApi {
                 .setFirstLogin(firstLogin.getAndSet(false) ? 1 : 0)
                 .setUuid(uuid)
                 .build());
-        this.time = BaseUtil.getEpochSecond() * 1000;
+        time = BaseUtil.getEpochSecond() * 1000;
         if (StringUtils.isNotEmpty(loginResp.getRedirectUri())) {
             for (String h : HOSTS) {
                 if (loginResp.getRedirectUri().contains(h)) {
-                    this.host = h;
+                    host = h;
                     break;
                 }
             }
@@ -130,11 +130,11 @@ public class WeChatApi {
         WxNewLoginPageResp wxNewLoginPageResp = WeChatHttpClient.get(new WxNewLoginPageReq(url)
                 .setRedirectsEnabled(false)
                 .build());
-        this.uin = wxNewLoginPageResp.getWxUin();
-        this.sid = wxNewLoginPageResp.getWxSid();
-        this.skey = wxNewLoginPageResp.getSKey() == null ? "" : wxNewLoginPageResp.getSKey();
-        this.passTicket = wxNewLoginPageResp.getPassTicket();
-        this.deviceId = BaseUtil.createDeviceId();
+        uin = wxNewLoginPageResp.getWxUin();
+        sid = wxNewLoginPageResp.getWxSid();
+        skey = wxNewLoginPageResp.getSKey() == null ? "" : wxNewLoginPageResp.getSKey();
+        passTicket = wxNewLoginPageResp.getPassTicket();
+        deviceId = BaseUtil.createDeviceId();
     }
 
     /**
@@ -148,11 +148,11 @@ public class WeChatApi {
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
                 .build());
         log.info("初始化: {}", webWxInitResp);
-        this.skey = webWxInitResp.getSKey();
-        if (this.skey == null) {
-            this.skey = "";
+        skey = webWxInitResp.getSKey();
+        if (skey == null) {
+            skey = "";
         }
-        this.syncKey = webWxInitResp.getSyncKey();
+        syncKey = webWxInitResp.getSyncKey();
         return webWxInitResp;
     }
 
@@ -195,7 +195,7 @@ public class WeChatApi {
     public WebWxBatchGetContactResp webWxBatchGetContact(List<Contact> contactList) {
         String url = String.format(WEB_WX_BATCH_GET_CONTACT, host);
         return WeChatHttpClient.post(new WebWxBatchGetContactReq(url)
-                .setPassTicket(this.passTicket)
+                .setPassTicket(passTicket)
                 .setCount(contactList.size())
                 .setList(contactList)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
@@ -213,7 +213,7 @@ public class WeChatApi {
                 .setSId(sid)
                 .setUin(uin)
                 .setDeviceId(BaseUtil.createDeviceId())
-                .setSyncKey(this.syncCheckKey != null ? this.syncCheckKey : this.syncKey)
+                .setSyncKey(syncCheckKey != null ? syncCheckKey : syncKey)
                 .setLoginTime(time++)
                 .build());
     }
@@ -228,18 +228,18 @@ public class WeChatApi {
                 .setSid(sid)
                 .setSkey(skey)
                 .setPassTicket(passTicket)
-                .setSyncKey(this.syncCheckKey != null ? this.syncCheckKey : this.syncKey)
+                .setSyncKey(syncCheckKey != null ? syncCheckKey : syncKey)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))
                 .build());
         if (webWxSyncResp.getSyncKey() != null
                 && webWxSyncResp.getSyncKey().getList() != null
                 && webWxSyncResp.getSyncKey().getCount() > 0) {
-            this.syncKey = webWxSyncResp.getSyncKey();
+            syncKey = webWxSyncResp.getSyncKey();
         }
         if (webWxSyncResp.getSyncCheckKey() != null
                 && webWxSyncResp.getSyncCheckKey().getList() != null
                 && webWxSyncResp.getSyncCheckKey().getCount() > 0) {
-            this.syncCheckKey = webWxSyncResp.getSyncCheckKey();
+            syncCheckKey = webWxSyncResp.getSyncCheckKey();
         }
         return webWxSyncResp;
     }
@@ -519,7 +519,6 @@ public class WeChatApi {
      * @throws IOException 文件IO异常
      */
     public WebWxUploadMediaResp webWxUploadMedia(String fromUserName, String toUserName, File file, String aesKey, String signature) throws IOException {
-        int fileId = this.file++;
         String fileName = file.getName();
         String fileMime = Files.probeContentType(Paths.get(file.getAbsolutePath()));
         String fileMd5 = BaseUtil.md5(file);
@@ -539,7 +538,7 @@ public class WeChatApi {
                 log.error("文件读取失败", e);
             }
             return WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
-                    //.setId(String.format("WU_FILE_%d", fileId))
+                    //.setId(String.format("WU_FILE_%d", fileId++))
                     .setId("WU_FILE_0")
                     .setName(fileName)
                     .setType(fileMime)
@@ -563,7 +562,7 @@ public class WeChatApi {
                         log.info("sliceIndex: {}, readCount: {}", sliceIndex, readCount);
                     }
                     webWxUploadMediaResp = WeChatHttpClient.post(new WebWxUploadMediaReq(String.format(WEB_WX_UPLOAD_MEDIA, host))
-                            .setId(String.format("WU_FILE_%d", fileId))
+                            .setId(String.format("WU_FILE_%d", fileId++))
                             .setName(fileName)
                             .setType(fileMime)
                             .setLastModifiedDate(BaseUtil.getWechatTime(file.lastModified()))

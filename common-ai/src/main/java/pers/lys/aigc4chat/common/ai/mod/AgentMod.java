@@ -1,28 +1,10 @@
 package pers.lys.aigc4chat.common.ai.mod;
 
-import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.lys.aigc4chat.common.ai.entity.agent.AgentReq;
 import pers.lys.aigc4chat.common.ai.entity.agent.AgentResp;
-import pers.lys.aigc4chat.common.ai.entity.ernie.ErnieReq;
-import pers.lys.aigc4chat.common.ai.entity.ernie.ErnieResp;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

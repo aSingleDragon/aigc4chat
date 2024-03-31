@@ -1,7 +1,6 @@
 package pers.lys.aigc4chat.common.ai.mod;
 
 import com.google.gson.JsonSyntaxException;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -14,11 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.apache.poi.ss.formula.functions.T;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
-import pers.lys.aigc4chat.common.ai.entity.agent.AgentReq;
-import pers.lys.aigc4chat.common.ai.entity.agent.AgentResp;
-import pers.lys.aigc4chat.common.ai.entity.ernie.ErnieReq;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -54,13 +49,13 @@ public class BaseModCall {
             // 构造http请求对象
             HttpPost httpPost = new HttpPost(url);
             URIBuilder uriBuilder = new URIBuilder(httpPost.getURI());
-            //添加Query参数
+            // 添加Query参数
             if(Objects.nonNull(param) && !param.isEmpty()) {
                 param.forEach(uriBuilder::addParameter);
             }
             HttpContext context = HttpClientContext.create();
             httpPost.setURI(uriBuilder.build());
-            //添加Header
+            // 添加Header
             if(Objects.nonNull(header) && !header.isEmpty()) {
                 header.forEach(httpPost::addHeader);
             }

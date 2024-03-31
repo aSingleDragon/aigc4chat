@@ -65,7 +65,7 @@ public final class WeChatClient {
 
     public static final int STATUS_LOGOUT = 4;
 
-    private static final Pattern REX_GROUPMSG = Pattern.compile("(@[0-9a-zA-Z]+):<br/>([\\s\\S]*)");
+    private static final Pattern REX_GROUP_MSG = Pattern.compile("(@[0-9a-zA-Z]+):<br/>([\\s\\S]*)");
 
     private static final Pattern REX_REVOKE_ID = Pattern.compile("&lt;msgid&gt;(\\d+)&lt;/msgid&gt;");
 
@@ -931,7 +931,7 @@ public final class WeChatClient {
                     // 如果群不存在，或者是未获取成员的群。获取并保存群的详细信息
                     message.setFromGroup((WXGroup) fetchContact(msg.getFromUserName()));
                 }
-                Matcher mGroupMsg = REX_GROUPMSG.matcher(msg.getContent());
+                Matcher mGroupMsg = REX_GROUP_MSG.matcher(msg.getContent());
                 if (mGroupMsg.matches()) {
                     // 是群成员发送的消息
                     message.setFromUser((WXUser) weChatContacts.getContact(mGroupMsg.group(1)));
