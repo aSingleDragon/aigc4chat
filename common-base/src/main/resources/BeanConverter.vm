@@ -1,0 +1,39 @@
+package ${package};
+import ${srcClassFullName};
+import ${targetClassFullName};
+
+import lombok.experimental.UtilityClass;
+import java.util.Collections;
+import java.util.List;
+
+/**
+* 实体类转换Converter
+* <p> 代码由 ConverterUtil 生成
+*
+* @author ${author}
+* @since ${since}
+*/
+@UtilityClass
+public class ${converterName} {
+
+    public static ${targetClassName} from(${srcClassName} ${srcClassVarName}) {
+        if (${srcClassVarName} == null) {
+            return null;
+        }
+        ${targetClassName} ${targetClassVarName} = new ${targetClassName}();
+        #foreach($copyProperty in $copyPropertyList)
+        $copyProperty
+        #end
+        return ${targetClassVarName};
+    }
+
+    public static List<${targetClassName}> from(List<${srcClassName}> ${srcClassVarName}List) {
+        if (${srcClassVarName}List == null) {
+            return Collections.emptyList();
+        }
+        return ${srcClassVarName}List
+                .stream()
+                .map(${converterName}::from)
+                .toList();
+    }
+}

@@ -9,8 +9,10 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import pers.hll.aigc4chat.common.base.constant.FilePath;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -107,11 +109,11 @@ public class QRCodeUtil {
     /**
      * 生成二维码
      *
-     * @param filePath 二维码图片保存路径
+     * @param path 二维码图片保存路径
      * @param content 二维码内容
      */
-    public void writeInImage(String filePath, String content) {
-        Path parentDir = Paths.get(filePath).getParent();
+    public void writeInImage(String path, String content) {
+        Path parentDir = Paths.get(path).getParent();
         if (!Files.exists(parentDir)) {
             try {
                 Files.createDirectories(parentDir);
@@ -126,7 +128,7 @@ public class QRCodeUtil {
         hints.put(EncodeHintType.MARGIN, 1);
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        BitMatrix bitMatrix = null;
+        BitMatrix bitMatrix;
         try {
             bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, CODE_WIDTH, CODE_HEIGHT, hints);
             BufferedImage bufferedImage = new BufferedImage(CODE_WIDTH, CODE_HEIGHT, BufferedImage.TYPE_INT_BGR);
@@ -135,9 +137,25 @@ public class QRCodeUtil {
                     bufferedImage.setRGB(x, y, bitMatrix.get(x, y) ? FRONT_COLOR : BACKGROUND_COLOR);
                 }
             }
-            ImageIO.write(bufferedImage, "png", new File(filePath));
+            ImageIO.write(bufferedImage, "png", new File(path));
         } catch (WriterException | IOException e) {
             log.error("二维码图片写入异常:", e);
+        }
+    }
+
+    /**
+     * 将由content生成的二维码，利用系统的接口打开并展示该二维码
+     * <p> 如果在Spring的服务里调用这个方法回报错
+     *
+     * @param path 二维码图片保存路径
+     * @param content 要生成二维码的内容
+     */
+    public void writeInImageAndOpen(String path, String content) {
+        writeInImage(path, content);
+        try {
+            Desktop.getDesktop().open(new File(path));
+        } catch (IOException e) {
+            log.error("打开二维码图片失败:", e);
         }
     }
 }

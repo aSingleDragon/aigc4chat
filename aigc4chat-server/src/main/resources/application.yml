@@ -17,7 +17,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
-  typeAliasesPackage: com.dmo.entity
+  typeAliasesPackage: pers.hll.aigc4chat.server.entity
   global-config:
     banner: false
   configuration:

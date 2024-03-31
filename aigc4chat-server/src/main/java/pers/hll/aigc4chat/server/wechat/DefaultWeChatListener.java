@@ -20,11 +20,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
-<<<<<<< HEAD
-=======
  * 默认监听器 复读机
  *
->>>>>>> main
  * @author hll
  * @since 2024/03/19
  */

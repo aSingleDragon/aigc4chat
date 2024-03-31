@@ -64,7 +64,7 @@ public class LoginReq extends BaseRequest<LoginReq, LoginResp> {
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.LOGIN_ICON, String.valueOf(true));
         requestParamMap.put(WXQueryKey.UUID, uuid);
-        requestParamMap.put(WXQueryKey.TIP, firstLogin);
+        requestParamMap.put(WXQueryKey.TIP, 1);
         requestParamMap.put(WXQueryKey.R, (int) ((-epochSecond) / 1579));
         requestParamMap.put(StringPool.UNDERSCORE, epochSecond);
         return this;

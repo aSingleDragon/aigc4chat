@@ -30,7 +30,7 @@ public class AiModCallServiceImpl {
             AgentMod agentMod = new AgentMod();
             message = agentMod.getMessage(content);
         }
-        // todo: 复读机模式
+        // TODO 复读机模式
 
         return message;
     }

@@ -1,8 +1,69 @@
-create table if not exists t_user
+CREATE TABLE IF NOT EXISTS wechat_user
 (
-    `id`          int primary key not null,
-    `username`    char(50)        not null,
-    `pwd`         char(50)        not null,
-    `create_time` datetime        not null,
-    `update_time` datetime
+    -- 用户唯一标识符
+    uin                  INTEGER PRIMARY KEY,
+    -- 用户名
+    user_name            TEXT NOT NULL,
+    -- 昵称
+    nick_name            TEXT,
+    -- 头像URL
+    head_img_url         TEXT,
+    -- 备注名称
+    remark_name          TEXT,
+    -- 拼音首字母缩写
+    py_initial           TEXT,
+    -- 拼音全拼
+    py_quan_pin          TEXT,
+    -- 备注拼音首字母缩写
+    remark_py_initial    TEXT,
+    -- 备注拼音全拼
+    remark_py_quan_pin   TEXT,
+    -- 隐藏输入栏标志位
+    hide_input_bar_flag  INTEGER,
+    -- 是否星标好友
+    star_friend          INTEGER,
+    -- 性别
+    sex                  INTEGER,
+    -- 个性签名
+    signature            TEXT,
+    -- 是否为公众号或应用账号
+    app_account_flag     INTEGER,
+    -- 验证标志位
+    verify_flag          INTEGER,
+    -- 联系人标志位
+    contact_flag         INTEGER,
+    -- Web微信插件开关
+    web_wx_plugin_switch INTEGER,
+    -- 头像标志位
+    head_img_flag        INTEGER,
+    -- SNS标志位
+    sns_flag             INTEGER,
+    -- 所属用户的uin
+    owner_uin            INTEGER,
+    -- 成员数量
+    member_count         INTEGER,
+    -- 状态
+    statues              INTEGER,
+    -- 属性状态
+    attr_status          INTEGER,
+    -- 成员状态
+    member_status        INTEGER,
+    -- 省份
+    province             TEXT,
+    -- 城市
+    city                 TEXT,
+    -- 别名
+    alias                TEXT,
+    -- 是否为统一朋友
+    uni_friend           INTEGER,
+    -- 展示名称
+    display_name         TEXT,
+    -- 群聊ID
+    chat_room_id         INTEGER,
+    -- 关键词
+    key_word             TEXT,
+    -- 是否为群主
+    is_owner             INTEGER,
+    -- 加密的群聊ID
+    encrypt_chat_room_id TEXT
 );

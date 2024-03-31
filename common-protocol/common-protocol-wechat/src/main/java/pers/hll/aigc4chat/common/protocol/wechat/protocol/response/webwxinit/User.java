@@ -15,7 +15,7 @@ import java.util.List;
 public class User {
 
     @SerializedName("Uin")
-    private long uin;
+    private Long uin;
 
     @SerializedName("UserName")
     private String userName;
@@ -30,64 +30,64 @@ public class User {
     private String remarkName;
 
     @SerializedName("PYInitial")
-    private String pYInitial;
+    private String pyInitial;
 
     @SerializedName("PYQuanPin")
-    private String pYQuanPin;
+    private String pyQuanPin;
 
     @SerializedName("RemarkPYInitial")
-    private String remarkPYInitial;
+    private String remarkPyInitial;
 
     @SerializedName("RemarkPYQuanPin")
-    private String remarkPYQuanPin;
+    private String remarkPyQuanPin;
 
     @SerializedName("HideInputBarFlag")
-    private int hideInputBarFlag;
+    private Integer hideInputBarFlag;
 
     @SerializedName("StarFriend")
-    private int starFriend;
+    private Integer starFriend;
 
     @SerializedName("Sex")
-    private int sex;
+    private Integer sex;
 
     @SerializedName("Signature")
     private String signature;
 
     @SerializedName("AppAccountFlag")
-    private int appAccountFlag;
+    private Integer appAccountFlag;
 
     @SerializedName("VerifyFlag")
-    private int verifyFlag;
+    private Integer verifyFlag;
 
     @SerializedName("ContactFlag")
-    private int contactFlag;
+    private Integer contactFlag;
 
     @SerializedName("WebWxPluginSwitch")
-    private int webWxPluginSwitch;
+    private Integer webWxPluginSwitch;
 
     @SerializedName("HeadImgFlag")
-    private int headImgFlag;
+    private Integer headImgFlag;
 
     @SerializedName("SnsFlag")
-    private int snsFlag;
+    private Integer snsFlag;
 
     @SerializedName("OwnerUin")
-    private long ownerUin;
+    private Long ownerUin;
 
     @SerializedName("MemberCount")
-    private int memberCount;
+    private Integer memberCount;
 
     @SerializedName("MemberList")
     private List<User> memberList;
 
     @SerializedName("Statues")
-    private long statues;
+    private Integer statues;
 
     @SerializedName("AttrStatus")
-    private long attrStatus;
+    private Integer attrStatus;
 
     @SerializedName("MemberStatus")
-    private long memberStatus;
+    private Integer memberStatus;
 
     @SerializedName("Province")
     private String province;
@@ -99,20 +99,20 @@ public class User {
     private String alias;
 
     @SerializedName("UniFriend")
-    private long uniFriend;
+    private Long uniFriend;
 
     @SerializedName("DisplayName")
     private String displayName;
 
     @SerializedName("ChatRoomId")
-    private long chatRoomId;
+    private Long chatRoomId;
 
     @SerializedName("KeyWord")
     private String keyWord;
 
     @SerializedName("IsOwner")
-    private int isOwner;
+    private Integer isOwner;
 
     @SerializedName("EncryChatRoomId")
-    private String encryChatRoomId;
+    private String encryptChatRoomId;
 }
