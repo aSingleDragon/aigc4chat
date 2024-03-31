@@ -586,10 +586,8 @@ public class WeChatApi {
      * 退出登录接口
      */
     public void webWxLogout() {
-        WeChatHttpClient.post(new WebWxLogoutReq(String.format(WEB_WX_LOGOUT, host))
-                .setSKey(skey)
-                .setUin(uin)
-                .setSid(sid)
+        WeChatHttpClient.get(new WebWxLogoutReq(String.format(WEB_WX_LOGOUT, host))
+                .setSkey(skey)
                 .build());
     }
 }

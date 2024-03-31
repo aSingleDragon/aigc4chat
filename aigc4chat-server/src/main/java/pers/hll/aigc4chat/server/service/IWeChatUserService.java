@@ -1,16 +1,16 @@
 package pers.hll.aigc4chat.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import pers.hll.aigc4chat.server.entity.User;
+import pers.hll.aigc4chat.server.entity.WeChatUser;
 
 /**
  * <p>
  * 用户表 服务类
  * </p>
  *
- * @author Leo825
- * @since 2022-07-05
+ * @author hll
+ * @since 2024/03/31
  */
-public interface IUserService extends IService<User> {
+public interface IWeChatUserService extends IService<WeChatUser> {
 
 }

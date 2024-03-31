@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import me.xuxiaoxiao.xtools.common.XTools;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,10 +16,15 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+/**
+ * 基础工具类
+ *
+ * @author hll
+ * @since 2024/03/31
+ */
 @Slf4j
 @UtilityClass
 public class BaseUtil {
