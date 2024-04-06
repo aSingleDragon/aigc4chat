@@ -1,7 +1,7 @@
 package pers.hll.aigc4chat.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import pers.hll.aigc4chat.server.entity.WeChatUser;
+import pers.hll.aigc4chat.server.entity.WeChatMessage;
 
 /**
  * <p>
@@ -11,9 +11,6 @@ import pers.hll.aigc4chat.server.entity.WeChatUser;
  * @author hll
  * @since 2024/03/31
  */
-public interface IWeChatUserService extends IService<WeChatUser> {
+public interface IWeChatMessageService extends IService<WeChatMessage> {
 
-    void saveOrUpdateMe(WeChatUser me);
-
-    WeChatUser selectMe();
 }

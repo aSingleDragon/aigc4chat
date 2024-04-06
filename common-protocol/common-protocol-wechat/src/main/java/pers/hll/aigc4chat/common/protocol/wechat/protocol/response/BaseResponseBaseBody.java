@@ -14,4 +14,8 @@ public class BaseResponseBaseBody {
 
     @SerializedName("BaseResponse")
     private BaseResponseBody baseResponseBody;
+
+    public boolean isSuccess() {
+        return baseResponseBody != null && baseResponseBody.getRet() == 0;
+    }
 }

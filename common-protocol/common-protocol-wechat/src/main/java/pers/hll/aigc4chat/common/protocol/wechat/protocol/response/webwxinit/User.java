@@ -84,7 +84,7 @@ public class User {
     private Integer statues;
 
     @SerializedName("AttrStatus")
-    private Integer attrStatus;
+    private Long attrStatus;
 
     @SerializedName("MemberStatus")
     private Integer memberStatus;

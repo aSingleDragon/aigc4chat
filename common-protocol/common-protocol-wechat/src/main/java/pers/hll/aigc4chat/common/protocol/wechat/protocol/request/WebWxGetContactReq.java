@@ -21,7 +21,7 @@ public class WebWxGetContactReq extends BaseRequest<WebWxGetContactReq, WebWxGet
 
     private int seq;
 
-    private String sKey;
+    private String skey;
 
     private String passTicket;
 
@@ -34,8 +34,8 @@ public class WebWxGetContactReq extends BaseRequest<WebWxGetContactReq, WebWxGet
         return this;
     }
 
-    public WebWxGetContactReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxGetContactReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -49,7 +49,7 @@ public class WebWxGetContactReq extends BaseRequest<WebWxGetContactReq, WebWxGet
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.R, BaseUtil.getEpochSecond());
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
         requestParamMap.put(WXQueryKey.SEQ, seq);
 
         Map<String, String> headerMap = getHeaderMap();

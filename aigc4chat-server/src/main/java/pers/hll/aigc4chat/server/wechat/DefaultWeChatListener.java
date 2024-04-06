@@ -12,8 +12,6 @@ import pers.lys.aigc4chat.common.ai.enums.ReplyModeEnum;
 import pers.lys.aigc4chat.common.ai.AiModCallServiceImpl;
 import pers.hll.aigc4chat.common.entity.wechat.message.*;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,18 +27,13 @@ import java.util.*;
 public class DefaultWeChatListener implements WeChatListener {
 
     @Override
-    public void onLogin(@Nonnull WeChatClient client) {
-        log.info("onLogin：您有{}名好友、活跃微信群{}个", client.userFriends().size(), client.userGroups().size());
-    }
-
-    @Override
-    public void onMessage(@Nonnull WeChatClient client, @Nonnull WXMessage message) {
+    public void onMessage(WeChatClient client, WXMessage message) {
 
         if (message instanceof WXVerify wxVerify) {
             // 是好友请求消息，自动同意好友申请
             client.passVerify(wxVerify);
         } else if (message instanceof WXLocation wxLocation && message.getFromUser() != null
-                && !message.getFromUser().getId().equals(client.userMe().getId())) {
+                && !message.getFromUser().getUserName().equals(client.userMe().getUserName())) {
             // 如果对方告诉我他的位置，发送消息的不是自己，则我也告诉他我的位置
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
@@ -50,7 +43,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 client.sendLocation(message.getFromUser(), wxLocation.getOriContent());
             }
         } else if (message instanceof WXText && message.getFromUser() != null
-                && !message.getFromUser().getId().equals(client.userMe().getId())) {
+                && !message.getFromUser().getUserName().equals(client.userMe().getUserName())) {
 
             // 获取对话结果
             AiModCallServiceImpl aiModCallService = new AiModCallServiceImpl();
@@ -68,7 +61,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 client.sendText(message.getFromUser(), content);
             }
         } else if (message instanceof WXVoice wxVoice
-                && !message.getFromUser().getId().equals(client.userMe().getId())) {
+                && !message.getFromUser().getUserName().equals(client.userMe().getUserName())) {
             // 是语音消息 并且发送消息的人不是自己 发送相同内容的消息
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
@@ -79,7 +72,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 client.sendVoice(message.getFromUser(), wxVoice.getVoice());
             }
         } else if (message instanceof WXEmoji wxEmoji
-                && !message.getFromUser().getId().equals(client.userMe().getId())) {
+                && !message.getFromUser().getUserName().equals(client.userMe().getUserName())) {
             // 是语音消息 并且发送消息的人不是自己 发送相同内容的消息
             if (message.getFromGroup() != null) {
                 // 群消息 默认注释 小心被喷
@@ -89,7 +82,7 @@ public class DefaultWeChatListener implements WeChatListener {
                 //client.sendEmoji(message.getFromUser(), message.getContent());
             }
         } else if (message instanceof WXImage wxImage
-                && !message.getFromUser().getId().equals(client.userMe().getId())) {
+                && !message.getFromUser().getUserName().equals(client.userMe().getUserName())) {
             if (message.getFromGroup() != null) {
                 // do nothing
                 client.sendFile(message.getFromGroup(), wxImage.getImage());
@@ -101,9 +94,9 @@ public class DefaultWeChatListener implements WeChatListener {
     }
 
     @Override
-    public void onContact(@Nonnull WeChatClient client, @Nullable WXContact oldContact, @Nullable WXContact newContact) {
+    public void onContact(WeChatClient client, WXContact oldContact, WXContact newContact) {
         log.info("检测到联系人变更:旧联系人名称：{}:新联系人名称：{}",
-                (oldContact == null ? "null" : oldContact.getName()), (newContact == null ? "null" : newContact.getName()));
+                (oldContact == null ? "null" : oldContact.getNickName()), (newContact == null ? "null" : newContact.getNickName()));
     }
 
     /**

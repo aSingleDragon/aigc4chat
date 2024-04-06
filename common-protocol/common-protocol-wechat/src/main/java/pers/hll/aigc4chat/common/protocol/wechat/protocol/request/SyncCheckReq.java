@@ -2,14 +2,12 @@ package pers.hll.aigc4chat.common.protocol.wechat.protocol.request;
 
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import pers.hll.aigc4chat.common.base.constant.ContentType;
 import pers.hll.aigc4chat.common.base.constant.StringPool;
 import pers.hll.aigc4chat.common.base.util.BaseUtil;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.DefaultConfig;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXHeaderKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryKey;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.SyncCheckResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.WebWxGetContactResp;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
 
 import java.util.Map;
@@ -26,9 +24,9 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class SyncCheckReq extends BaseRequest<SyncCheckReq, SyncCheckResp> {
 
-    private String sId;
+    private String sid;
 
-    private String sKey;
+    private String skey;
 
     private String uin;
 
@@ -42,13 +40,13 @@ public class SyncCheckReq extends BaseRequest<SyncCheckReq, SyncCheckResp> {
         super(uri);
     }
 
-    public SyncCheckReq setSId(String sId) {
-        this.sId = sId;
+    public SyncCheckReq setSid(String sId) {
+        this.sid = sId;
         return this;
     }
 
-    public SyncCheckReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public SyncCheckReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -80,8 +78,8 @@ public class SyncCheckReq extends BaseRequest<SyncCheckReq, SyncCheckResp> {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.R, BaseUtil.getEpochSecond() * 1000);
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
-        requestParamMap.put(WXQueryKey.SID, sId);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
+        requestParamMap.put(WXQueryKey.SID, sid);
         requestParamMap.put(WXQueryKey.UIN, uin);
         requestParamMap.put(WXQueryKey.DEVICE_ID, deviceId);
         requestParamMap.put(WXQueryKey.SYNC_KEY, syncKey.toString());

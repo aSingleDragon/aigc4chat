@@ -31,8 +31,8 @@ public final class WeChatContacts {
     private static <T extends WXContact> T parseContact(String host, User contact) {
         if (contact.getUserName().startsWith("@@")) {
             WXGroup group = new WXGroup();
-            group.setId(contact.getUserName());
-            group.setName(contact.getNickName());
+            group.setUserName(contact.getUserName());
+            group.setNickName(contact.getNickName());
             group.setNamePY(contact.getPyInitial());
             group.setNameQP(contact.getPyQuanPin());
             group.setAvatarUrl(String.format("https://%s%s", host, contact.getHeadImgUrl()));
@@ -50,8 +50,8 @@ public final class WeChatContacts {
             return (T) group;
         } else {
             WXUser user = new WXUser();
-            user.setId(contact.getUserName());
-            user.setName(contact.getNickName());
+            user.setUserName(contact.getUserName());
+            user.setNickName(contact.getNickName());
             user.setNamePY(contact.getPyInitial());
             user.setNameQP(contact.getPyQuanPin());
             user.setAvatarUrl(String.format("https://%s%s", host, contact.getHeadImgUrl()));
@@ -105,18 +105,18 @@ public final class WeChatContacts {
      */
     public void setMe(String host, User userMe) {
         this.me = WeChatContacts.parseContact(host, userMe);
-        this.contacts.put(this.me.getId(), this.me);
+        this.contacts.put(this.me.getUserName(), this.me);
     }
 
     public void putContact(String host, User userContact) {
         WXContact contact = WeChatContacts.parseContact(host, userContact);
-        this.contacts.put(contact.getId(), contact);
+        this.contacts.put(contact.getUserName(), contact);
         if (contact instanceof WXGroup wxGroup) {
-            groups.put(wxGroup.getId(), wxGroup);
+            groups.put(wxGroup.getUserName(), wxGroup);
         } else {
             WXUser user = (WXUser) contact;
             if ((user.getContactFlag() & WXContact.CONTACT) > 0) {
-                friends.put(user.getId(), user);
+                friends.put(user.getUserName(), user);
             }
         }
     }
@@ -124,11 +124,11 @@ public final class WeChatContacts {
     /**
      * 移除联系人
      *
-     * @param userId 联系人id
+     * @param userName 联系人id
      */
-    public WXContact rmvContact(String userId) {
-        this.groups.remove(userId);
-        this.friends.remove(userId);
-        return this.contacts.remove(userId);
+    public WXContact rmvContact(String userName) {
+        this.groups.remove(userName);
+        this.friends.remove(userName);
+        return this.contacts.remove(userName);
     }
 }

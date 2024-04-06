@@ -25,23 +25,23 @@ public abstract class WXContact {
 
     public static final int CONTACT_FAVOUR = 64;
 
-    public static final int CONTACT_3RDAPP = 128;
+    public static final int CONTACT_3RD_APP = 128;
 
-    public static final int CONTACT_SNSBLACKLIST = 256;
+    public static final int CONTACT_SNS_BLACKLIST = 256;
 
-    public static final int CONTACT_NOTIFYCLOSE = 512;
+    public static final int CONTACT_NOTIFY_CLOSE = 512;
 
     public static final int CONTACT_TOP = 2048;
 
     /**
      * 账户id，以@@开头的是群组，以@开头的是普通用户，其他的是特殊用户比如文件助手等
      */
-    protected String id;
+    protected String userName;
 
     /**
      * 账户的名称
      */
-    protected String name;
+    protected String nickName;
 
     /**
      * 账户名称的拼音的首字母
