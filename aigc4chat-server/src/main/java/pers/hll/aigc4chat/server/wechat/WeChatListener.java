@@ -3,7 +3,6 @@ package pers.hll.aigc4chat.server.wechat;
 import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
 import pers.hll.aigc4chat.common.entity.wechat.message.WXMessage;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -20,7 +19,8 @@ public interface WeChatListener {
      * @param client 微信客户端
      * @param qrCode 用户登录二维码的url
      */
-    default void onQRCode(@Nonnull WeChatClient client, @Nonnull String qrCode) {
+    default void onQrCode(WeChatClient client, String qrCode) {
+        // ignored
     }
 
     /**
@@ -29,7 +29,8 @@ public interface WeChatListener {
      * @param client       微信客户端
      * @param base64Avatar base64编码的用户头像
      */
-    default void onAvatar(@Nonnull WeChatClient client, @Nonnull String base64Avatar) {
+    default void onAvatar(WeChatClient client, String base64Avatar) {
+        // ignored
     }
 
     /**
@@ -38,7 +39,7 @@ public interface WeChatListener {
      * @param client 微信客户端
      * @param reason 错误原因
      */
-    default void onFailure(@Nonnull WeChatClient client, @Nonnull String reason) {
+    default void onFailure(WeChatClient client, String reason) {
         client.dump();
     }
 
@@ -47,7 +48,8 @@ public interface WeChatListener {
      *
      * @param client 微信客户端
      */
-    default void onLogin(@Nonnull WeChatClient client) {
+    default void onLogin(WeChatClient client) {
+        // ignored
     }
 
     /**
@@ -56,7 +58,8 @@ public interface WeChatListener {
      * @param client  微信客户端
      * @param message 用户获取到的消息
      */
-    default void onMessage(@Nonnull WeChatClient client, @Nonnull WXMessage message) {
+    default void onMessage(WeChatClient client, WXMessage message) {
+        // ignored
     }
 
     /**
@@ -66,7 +69,8 @@ public interface WeChatListener {
      * @param oldContact 旧联系人，新增联系人时为null
      * @param newContact 新联系人，删除联系人时为null
      */
-    default void onContact(@Nonnull WeChatClient client, @Nullable WXContact oldContact, @Nullable WXContact newContact) {
+    default void onContact(WeChatClient client, @Nullable WXContact oldContact, @Nullable WXContact newContact) {
+        // ignored
     }
 
     /**
@@ -74,7 +78,7 @@ public interface WeChatListener {
      *
      * @param client 微信客户端
      */
-    default void onLogout(@Nonnull WeChatClient client) {
+    default void onLogout(WeChatClient client) {
         client.dump();
     }
 }

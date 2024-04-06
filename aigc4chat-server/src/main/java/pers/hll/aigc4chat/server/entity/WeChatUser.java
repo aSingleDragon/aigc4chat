@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.server.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 个人信息
@@ -12,11 +13,12 @@ import lombok.Data;
  */
 @Data
 @TableName("wechat_user")
-public class WeChatUser {
+@EqualsAndHashCode(callSuper = true)
+public class WeChatUser extends BaseEntity {
 
-    @TableId
     private Long uin;
 
+    @TableId
     private String userName;
 
     private String nickName;
@@ -59,7 +61,7 @@ public class WeChatUser {
 
     private Integer statues;
 
-    private Integer attrStatus;
+    private Long attrStatus;
 
     private Integer memberStatus;
 

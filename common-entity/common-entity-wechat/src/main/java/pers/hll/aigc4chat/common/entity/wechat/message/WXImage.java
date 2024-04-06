@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WXImage extends WXMessage{
+public class WXImage extends WXMessage {
 
     /**
      * 图片宽度

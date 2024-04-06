@@ -86,12 +86,13 @@ public class WeChatHttpClient {
             HttpContext context = HttpClientContext.create();
             context.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
 
+            String strEntity = null;
             try (CloseableHttpResponse response = httpClient.execute(httpPost, context)) {
-                String strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
+                strEntity = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8.name());
                 cookieStore = (CookieStore) context.getAttribute(HttpClientContext.COOKIE_STORE);
                 return basePostRequest.convertRespBodyToObj(strEntity);
             } catch (Exception exception) {
-                log.error("发起Post请求[{}]异常:", basePostRequest.getUri(), exception);
+                log.error("发起Post请求[{}], 响应信息: {}, 异常信息: ", basePostRequest.getUri(), strEntity, exception);
             }
         } catch (IOException | URISyntaxException e) {
             log.error("构造Post请求[{}]出错, 请求信息: {}", basePostRequest.getUri(), basePostRequest, e);

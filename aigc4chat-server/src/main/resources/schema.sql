@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS wechat_user
 (
     -- 用户唯一标识符
-    uin                  INTEGER PRIMARY KEY,
+    uin                  INTEGER,
     -- 用户名
-    user_name            TEXT NOT NULL,
+    user_name            TEXT PRIMARY KEY,
     -- 昵称
     nick_name            TEXT,
     -- 头像URL
@@ -65,5 +65,89 @@ CREATE TABLE IF NOT EXISTS wechat_user
     -- 是否为群主
     is_owner             INTEGER,
     -- 加密的群聊ID
-    encrypt_chat_room_id TEXT
+    encrypt_chat_room_id TEXT,
+    -- 创建时间
+    created_time         DATETIME,
+    -- 更新时间
+    updated_time         DATETIME
+);
+
+-- 群成员
+CREATE TABLE IF NOT EXISTS wechat_group_member
+(
+    -- 主键
+    uuid            TEXT PRIMARY KEY,
+    -- 群名称
+    group_user_name TEXT NOT NULL,
+    -- 用户名称
+    user_name       TEXT NOT NULL,
+    -- 昵称
+    nick_name       TEXT,
+    -- 名片
+    display_name    TEXT,
+    -- 创建时间
+    created_time    DATETIME,
+    -- 更新时间
+    updated_time    DATETIME
+);
+
+-- 创建微信消息表
+CREATE TABLE IF NOT EXISTS wechat_message
+(
+    -- 消息ID
+    msg_id                  INTEGER PRIMARY KEY,
+    -- 发送者用户名
+    from_user_name          TEXT    NOT NULL,
+    -- 接收者用户名
+    to_user_name            TEXT    NOT NULL,
+    -- 消息类型（文本、图片、语音、视频等）
+    msg_type                INTEGER NOT NULL,
+    -- 消息内容（文本消息时有效）
+    content                 TEXT,
+    -- 消息状态
+    status                  INTEGER,
+    -- 图片状态
+    img_status              INTEGER,
+    -- 消息创建时间（Unix时间戳）
+    create_time             INTEGER NOT NULL,
+    -- 语音消息长度（单位：秒）
+    voice_length            INTEGER,
+    -- 音频播放长度
+    play_length             INTEGER,
+    -- 文件名（附件消息时有效）
+    file_name               TEXT,
+    -- 文件大小（附件消息时有效）
+    file_size               TEXT,
+    -- 媒体资源ID（多媒体消息时有效）
+    media_id                TEXT,
+    -- 资源URL（多媒体消息时有效）
+    url                     TEXT,
+    -- 应用消息类型
+    app_msg_type            INTEGER,
+    -- 状态通知代码
+    status_notify_code      INTEGER,
+    -- 状态通知用户名
+    status_notify_user_name TEXT,
+    -- 是否转发消息标志
+    forward_flag            INTEGER,
+    -- 是否包含商品ID标志
+    has_product_id          INTEGER,
+    -- 验证票据（用于获取临时素材时使用）
+    ticket                  TEXT,
+    -- 图片高度（图片消息时有效）
+    img_height              INTEGER,
+    -- 图片宽度（图片消息时有效）
+    img_width               INTEGER,
+    -- 子消息类型
+    sub_msg_type            INTEGER,
+    -- 新消息ID（主要用于撤回/重发消息时使用）
+    new_msg_id              INTEGER,
+    -- 原始内容（用于撤回/编辑消息时使用）
+    ori_content             TEXT,
+    -- 加密后的文件名（加密消息时有效）
+    encr_file_name          TEXT,
+    -- 创建时间
+    created_time            DATETIME,
+    -- 更新时间
+    updated_time            DATETIME
 );

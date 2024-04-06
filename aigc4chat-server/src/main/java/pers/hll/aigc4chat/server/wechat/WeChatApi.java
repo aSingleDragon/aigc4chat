@@ -181,7 +181,7 @@ public class WeChatApi {
     public WebWxGetContactResp webWxGetContact() {
         return WeChatHttpClient.get(new WebWxGetContactReq(String.format(WEB_WX_GET_GET_CONTACT, host))
                 .setSeq(0)
-                .setSKey(skey)
+                .setSkey(skey)
                 .setPassTicket(passTicket)
                 .build());
     }
@@ -209,8 +209,8 @@ public class WeChatApi {
      */
     public SyncCheckResp syncCheck() {
         return WeChatHttpClient.get(new SyncCheckReq(String.format(SYNC_CHECK, host))
-                .setSKey(skey)
-                .setSId(sid)
+                .setSkey(skey)
+                .setSid(sid)
                 .setUin(uin)
                 .setDeviceId(BaseUtil.createDeviceId())
                 .setSyncKey(syncCheckKey != null ? syncCheckKey : syncKey)

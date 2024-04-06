@@ -93,7 +93,7 @@ public final class WeChatClient {
         this.status = STATUS_SCAN;
         WeChatListener listener = this.weChatListener;
         if (listener != null) {
-            listener.onQRCode(this, qrcode);
+            listener.onQrCode(this, qrcode);
         }
     }
 
@@ -228,7 +228,7 @@ public final class WeChatClient {
      */
     public void dump() {
         try {
-            log.info("微信用户: {}", userMe().getName());
+            log.info("微信用户: {}", userMe().getNickName());
             StringBuilder sbLogin = new StringBuilder("登录信息：");
             sbLogin.append("\n\thost：").append(weChatApi.getHost());
             sbLogin.append("\n\tuin：").append(weChatApi.getUin());
@@ -339,9 +339,9 @@ public final class WeChatClient {
      * @return 文本消息
      */
     public WXText sendText(@Nonnull WXContact wxContact, @Nonnull String text) {
-        log.info("向({}: {})发送文字消息：{}}", wxContact.getId(), wxContact.getName(), text);
-        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TYPE_TEXT, null, 0,
-                text, null, weChatContacts.getMe().getId(), wxContact.getId()));
+        log.info("向({}: {})发送文字消息：{}}", wxContact.getUserName(), wxContact.getNickName(), text);
+        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TEXT, null, 0,
+                text, null, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
         WXText wxText = new WXText();
         // 自己给自己发送消息时, localId和msgId都为空字符串, parseLong会异常, 因此随机一个数
         wxText.setId(StringUtils.isBlank(rspSendMsg.getMsgId()) ? RandomUtil.getPositiveInt() : Long.parseLong(rspSendMsg.getMsgId()));
@@ -366,15 +366,15 @@ public final class WeChatClient {
      */
     @Nonnull
     public WXLocation sendLocation(@Nonnull WXContact wxContact, OriContent oriContent) {
-        log.error("向({}: {})发送位置信息: {}", wxContact.getId(), wxContact.getName(), oriContent);
+        log.error("向({}: {})发送位置信息: {}", wxContact.getUserName(), wxContact.getNickName(), oriContent);
         WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(
-                MsgType.TYPE_LOCATION,
+                MsgType.LOCATION,
                 null,
                 0,
                 XmlUtil.objectToXmlStr(oriContent, OriContent.class),
                 null,
-                weChatContacts.getMe().getId(),
-                wxContact.getId()));
+                weChatContacts.getMe().getUserName(),
+                wxContact.getUserName()));
         WXLocation wxLocation = new WXLocation();
         wxLocation.setId(Long.parseLong(rspSendMsg.getMsgId()));
         wxLocation.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -389,15 +389,15 @@ public final class WeChatClient {
 
     @Deprecated
     public WXText sendEmoji(@Nonnull WXContact wxContact, String content) {
-        log.info("向({}: {})发送表情消息：{}}", wxContact.getId(), wxContact.getName());
+        log.info("向({}: {})发送表情消息：{}}", wxContact.getUserName(), wxContact.getNickName());
         WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(
-                MsgType.TYPE_EMOJI,
+                MsgType.EMOJI,
                 null,
                 1,
                 content,
                 null,
-                weChatContacts.getMe().getId(),
-                wxContact.getId()));
+                weChatContacts.getMe().getUserName(),
+                wxContact.getUserName()));
         WXText wxText = new WXText();
         wxText.setId(Long.parseLong(rspSendMsg.getMsgId()));
         wxText.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -409,18 +409,18 @@ public final class WeChatClient {
         return wxText;
     }
     public WXVoice sendVoice(WXContact wxContact, String voiceFilePath) {
-        log.info("向({}: {})发送语音消息：{}}", wxContact.getId(), wxContact.getName(), voiceFilePath);
+        log.info("向({}: {})发送语音消息：{}}", wxContact.getUserName(), wxContact.getNickName(), voiceFilePath);
         WebWxUploadMediaResp webWxUploadMediaResp = null;
         try {
-            webWxUploadMediaResp = weChatApi.webWxUploadMedia(weChatContacts.getMe().getId(),
-                    wxContact.getId(), new File(voiceFilePath), null, null);
+            webWxUploadMediaResp = weChatApi.webWxUploadMedia(weChatContacts.getMe().getUserName(),
+                    wxContact.getUserName(), new File(voiceFilePath), null, null);
         } catch (IOException e) {
             log.error("发送语音消息异常: ", e);
         }
         String mediaId = webWxUploadMediaResp.getMediaId();
         String voiceContent = "";
-        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.TYPE_VOICE, mediaId, 0,
-                null, null, weChatContacts.getMe().getId(), wxContact.getId()));
+        WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.VOICE, mediaId, 0,
+                null, null, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
         //WXVoice wxVoice = new WXVoice();
         //wxVoice.setId(Long.parseLong(rspSendMsg.getMsgId()));
         //wxVoice.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -445,29 +445,29 @@ public final class WeChatClient {
         File file = new File(filePath);
         String suffix = ImgTypeUtil.fileSuffix(file);
         if ("mp4".equals(suffix) && filePath.length() >= 20L * 1024L * 1024L) {
-            log.warn("向({}: {})发送的视频文件大于20M，无法发送", wxContact.getId(), wxContact.getName());
+            log.warn("向({}: {})发送的视频文件大于20M，无法发送", wxContact.getUserName(), wxContact.getNickName());
             return null;
         } else {
             try {
-                log.info("向({}: {})发送文件: {}", wxContact.getId(), wxContact.getName(), file.getAbsolutePath());
+                log.info("向({}: {})发送文件: {}", wxContact.getUserName(), wxContact.getNickName(), file.getAbsolutePath());
                 String mediaId = null, aesKey = null, signature = null;
                 // 如果文件大于25M，则检查文件是否已经在微信服务器上
                 if (filePath.length() >= 25L * 1024L * 1024L) {
-                    WebWxCheckUploadResp rspCheckUpload = weChatApi.webWxCheckUpload(file, weChatContacts.getMe().getId(), wxContact.getId());
+                    WebWxCheckUploadResp rspCheckUpload = weChatApi.webWxCheckUpload(file, weChatContacts.getMe().getUserName(), wxContact.getUserName());
                     mediaId = rspCheckUpload.getMediaId();
                     aesKey = rspCheckUpload.getAseKey();
                     signature = rspCheckUpload.getSignature();
                 }
                 // 如果文件不在微信服务器上，则上传文件
                 if (StringUtils.isEmpty(mediaId)) {
-                    WebWxUploadMediaResp webWxUploadMediaResp = weChatApi.webWxUploadMedia(weChatContacts.getMe().getId(), wxContact.getId(), file, aesKey, signature);
+                    WebWxUploadMediaResp webWxUploadMediaResp = weChatApi.webWxUploadMedia(weChatContacts.getMe().getUserName(), wxContact.getUserName(), file, aesKey, signature);
                     mediaId = webWxUploadMediaResp.getMediaId();
                 }
                 if (StringUtils.isNotEmpty(mediaId)) {
                     switch (ImgTypeUtil.fileType(file)) {
                         case "pic": {
-                            WebWxSendMsgResp webWxSendMsgResp = weChatApi.webWxSendMsgImg(new Msg(MsgType.TYPE_IMAGE, mediaId,
-                                    null, "", signature, weChatContacts.getMe().getId(), wxContact.getId()));
+                            WebWxSendMsgResp webWxSendMsgResp = weChatApi.webWxSendMsgImg(new Msg(MsgType.IMAGE, mediaId,
+                                    null, "", signature, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
                             WXImage wxImage = new WXImage();
                             wxImage.setId(Long.parseLong(webWxSendMsgResp.getMsgId()));
                             wxImage.setIdLocal(Long.parseLong(webWxSendMsgResp.getLocalId()));
@@ -482,7 +482,7 @@ public final class WeChatClient {
                             return wxImage;
                         }
                         case "video": {
-                            WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendVideoMsg(new Msg(MsgType.TYPE_VIDEO, mediaId, null, "", signature, weChatContacts.getMe().getId(), wxContact.getId()));
+                            WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendVideoMsg(new Msg(MsgType.VIDEO, mediaId, null, "", signature, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
                             WXVideo wxVideo = new WXVideo();
                             wxVideo.setId(Long.parseLong(rspSendMsg.getMsgId()));
                             wxVideo.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -499,7 +499,7 @@ public final class WeChatClient {
                         }
                         default:
                             if ("gif".equals(suffix)) {
-                                WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendEmoticon(new Msg(MsgType.TYPE_EMOJI, mediaId, 2, "", signature, weChatContacts.getMe().getId(), wxContact.getId()));
+                                WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendEmoticon(new Msg(MsgType.EMOJI, mediaId, 2, "", signature, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
                                 WXImage wxImage = new WXImage();
                                 wxImage.setId(Long.parseLong(rspSendMsg.getMsgId()));
                                 wxImage.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -529,7 +529,7 @@ public final class WeChatClient {
                                 sbAppMsg.append("</appattach>");
                                 sbAppMsg.append("<extinfo></extinfo>");
                                 sbAppMsg.append("</appmsg>");
-                                WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendAppMsg(new Msg(6, null, null, sbAppMsg.toString(), signature, weChatContacts.getMe().getId(), wxContact.getId()));
+                                WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendAppMsg(new Msg(6, null, null, sbAppMsg.toString(), signature, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
                                 WXFile wxFile = new WXFile();
                                 wxFile.setId(Long.parseLong(rspSendMsg.getMsgId()));
                                 wxFile.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -546,10 +546,10 @@ public final class WeChatClient {
                             }
                     }
                 } else {
-                    log.error("向({}: {})发送的文件发送失败", wxContact.getId(), wxContact.getName());
+                    log.error("向({}: {})发送的文件发送失败", wxContact.getUserName(), wxContact.getNickName());
                 }
             } catch (IOException e) {
-                log.error("向({}: {})发送的文件发送失败, 异常信息: ", wxContact.getId(), wxContact.getName(), e);
+                log.error("向({}: {})发送的文件发送失败, 异常信息: ", wxContact.getUserName(), wxContact.getNickName(), e);
             }
         }
         return null;
@@ -569,7 +569,7 @@ public final class WeChatClient {
         if (contact instanceof WXGroup wxGroup) {
             List<Contact> contacts = new LinkedList<>();
             for (Member member : wxGroup.getMembers().values()) {
-                contacts.add(new Contact(member.getId(), wxGroup.getId()));
+                contacts.add(new Contact(member.getId(), wxGroup.getUserName()));
             }
             loadContacts(contacts, true);
             ((WXGroup) contact).setDetail(true);
@@ -638,7 +638,7 @@ public final class WeChatClient {
     @Nonnull
     public WXFile fetchFile(@Nonnull WXFile wxFile) throws IOException {
         wxFile.setFile(weChatApi.webWxGetMedia(
-                wxFile.getId(), wxFile.getFileName(), wxFile.getFileId(), wxFile.getFromUser().getId()));
+                wxFile.getId(), wxFile.getFileName(), wxFile.getFileId(), wxFile.getFromUser().getUserName()));
         return wxFile;
     }
 
@@ -648,9 +648,9 @@ public final class WeChatClient {
      * @param wxMessage 需要撤回的微信消息
      */
     public void revokeMsg(@Nonnull WXMessage wxMessage) {
-        log.info("撤回向({}:{})发送的消息: {}, {}}", wxMessage.getToContact().getId(), wxMessage.getToContact().getName(),
+        log.info("撤回向({}:{})发送的消息: {}, {}}", wxMessage.getToContact().getUserName(), wxMessage.getToContact().getNickName(),
                 wxMessage.getIdLocal(), wxMessage.getId());
-        weChatApi.webWxRevokeMsg(wxMessage.getIdLocal(), wxMessage.getId(), wxMessage.getToContact().getId());
+        weChatApi.webWxRevokeMsg(wxMessage.getIdLocal(), wxMessage.getId(), wxMessage.getToContact().getUserName());
     }
 
     /**
@@ -670,8 +670,8 @@ public final class WeChatClient {
      * @param remark 备注名称
      */
     public void editRemark(@Nonnull WXUser wxUser, @Nonnull String remark) {
-        log.info("修改({}:{})的备注: {}", wxUser.getId(), wxUser.getName(), remark);
-        weChatApi.webWxOpLog(Cmd.CMD_REMARK, Op.OP_NONE, wxUser.getId(), remark);
+        log.info("修改({}:{})的备注: {}", wxUser.getUserName(), wxUser.getNickName(), remark);
+        weChatApi.webWxOpLog(Cmd.CMD_REMARK, Op.OP_NONE, wxUser.getUserName(), remark);
     }
 
     /**
@@ -681,8 +681,8 @@ public final class WeChatClient {
      * @param isTop     是否置顶
      */
     public void topContact(@Nonnull WXContact wxContact, boolean isTop) {
-        log.info("设置({}, {})的置顶状态: {}", wxContact.getId(), wxContact.getName(), isTop);
-        weChatApi.webWxOpLog(Cmd.CMD_TOP, isTop ? Op.OP_TOP_TRUE : Op.OP_TOP_FALSE, wxContact.getId(), null);
+        log.info("设置({}, {})的置顶状态: {}", wxContact.getUserName(), wxContact.getNickName(), isTop);
+        weChatApi.webWxOpLog(Cmd.CMD_TOP, isTop ? Op.OP_TOP_TRUE : Op.OP_TOP_FALSE, wxContact.getUserName(), null);
     }
 
     /**
@@ -692,8 +692,8 @@ public final class WeChatClient {
      * @param name    目标名称
      */
     public void setGroupName(@Nonnull WXGroup wxGroup, @Nonnull String name) {
-        log.info("将群({}:{})的名称修改为: {}", wxGroup.getId(), wxGroup.getName(), name);
-        weChatApi.webWxUpdateChatRoom(wxGroup.getId(), "modtopic", name, new LinkedList<>());
+        log.info("将群({}:{})的名称修改为: {}", wxGroup.getUserName(), wxGroup.getNickName(), name);
+        weChatApi.webWxUpdateChatRoom(wxGroup.getUserName(), "modtopic", name, new LinkedList<>());
     }
 
 
@@ -807,7 +807,7 @@ public final class WeChatClient {
 
                 // 发送初始化状态信息
                 WebWxStatusNotifyResp webWxStatusNotifyResp =
-                        weChatApi.webWxStatusNotify(weChatContacts.getMe().getId(), WXNotify.NOTIFY_INITED);
+                        weChatApi.webWxStatusNotify(weChatContacts.getMe().getUserName(), WXNotify.NOTIFY_INITED);
                 log.info("状态通知结果:{}", webWxStatusNotifyResp);
 
                 // 获取好友、保存的群聊、公众号列表。
@@ -829,7 +829,6 @@ public final class WeChatClient {
          *
          * @return 同步消息的异常原因，为null表示正常结束
          */
-        @Nullable
         private String listen() {
             int retryCount = 0;
             try {
@@ -863,7 +862,7 @@ public final class WeChatClient {
                             // 被移出群不会触发（会收到一条被移出群的addMsg）
                             for (User user : webWxSyncResp.getDelContactList()) {
                                 WXContact oldContact = weChatContacts.rmvContact(user.getUserName());
-                                if (oldContact != null && StringUtils.isNotEmpty(oldContact.getName())) {
+                                if (oldContact != null && StringUtils.isNotEmpty(oldContact.getNickName())) {
                                     log.info("删除联系人:{}", user.getUserName());
                                     handleContact(oldContact, null);
                                 }
@@ -877,12 +876,12 @@ public final class WeChatClient {
                             for (User user : webWxSyncResp.getModContactList()) {
                                 //由于在这里获取到的联系人（无论是群还是用户）的信息是不全的，所以使用接口重新获取
                                 WXContact oldContact = weChatContacts.getContact(user.getUserName());
-                                if (oldContact != null && StringUtils.isEmpty(oldContact.getName())) {
+                                if (oldContact != null && StringUtils.isEmpty(oldContact.getNickName())) {
                                     weChatContacts.rmvContact(user.getUserName());
                                     oldContact = null;
                                 }
                                 WXContact newContact = fetchContact(user.getUserName());
-                                if (newContact != null && StringUtils.isEmpty(newContact.getName())) {
+                                if (newContact != null && StringUtils.isEmpty(newContact.getNickName())) {
                                     weChatContacts.rmvContact(user.getUserName());
                                     newContact = null;
                                 }
@@ -975,10 +974,10 @@ public final class WeChatClient {
         private WXMessage parseMessage(@Nonnull AddMsg msg) {
             try {
                 switch (msg.getMsgType()) {
-                    case MsgType.TYPE_TEXT: {
+                    case MsgType.TEXT: {
                         if (msg.getSubMsgType() == 0) {
                             return parseCommon(msg, new WXText());
-                        } else if (msg.getSubMsgType() == MsgType.TYPE_LOCATION) {
+                        } else if (msg.getSubMsgType() == MsgType.LOCATION) {
                             WXLocation wxLocation = parseCommon(msg, new WXLocation());
                             wxLocation.setLocationName(wxLocation.getContent().substring(0, wxLocation.getContent().indexOf(':')));
                             wxLocation.setLocationImage(String.format("https://%s%s", weChatApi.getHost(),
@@ -989,21 +988,21 @@ public final class WeChatClient {
                         }
                         break;
                     }
-                    case MsgType.TYPE_IMAGE: {
+                    case MsgType.IMAGE: {
                         WXImage wxImage = parseCommon(msg, new WXImage());
                         wxImage.setImgWidth(msg.getImgWidth());
                         wxImage.setImgHeight(msg.getImgHeight());
                         wxImage.setImage(weChatApi.webWxGetMsgImg(msg.getMsgId(), "slave"));
                         return wxImage;
                     }
-                    case MsgType.TYPE_VOICE: {
+                    case MsgType.VOICE: {
                         WXVoice wxVoice = parseCommon(msg, new WXVoice());
                         wxVoice.setVoiceLength(msg.getVoiceLength());
                         wxVoice.setVoice(weChatApi.webWxGetVoice(msg.getMsgId()));
                         wxVoice.setMediaId(msg.getMediaId());
                         return wxVoice;
                     }
-                    case MsgType.TYPE_VERIFY: {
+                    case MsgType.VERIFY: {
                         WXVerify wxVerify = parseCommon(msg, new WXVerify());
                         wxVerify.setUserId(msg.getRecommendInfo().getUserName());
                         wxVerify.setUserName(msg.getRecommendInfo().getNickName());
@@ -1015,7 +1014,7 @@ public final class WeChatClient {
                         wxVerify.setTicket(msg.getRecommendInfo().getTicket());
                         return wxVerify;
                     }
-                    case MsgType.TYPE_RECOMMEND: {
+                    case MsgType.RECOMMEND: {
                         WXRecommend wxRecommend = parseCommon(msg, new WXRecommend());
                         wxRecommend.setUserId(msg.getRecommendInfo().getUserName());
                         wxRecommend.setUserName(msg.getRecommendInfo().getNickName());
@@ -1026,7 +1025,7 @@ public final class WeChatClient {
                         wxRecommend.setVerifyFlag(msg.getRecommendInfo().getVerifyFlag());
                         return wxRecommend;
                     }
-                    case MsgType.TYPE_VIDEO: {
+                    case MsgType.VIDEO: {
                         // 视频貌似可以分片，后期测试
                         WXVideo wxVideo = parseCommon(msg, new WXVideo());
                         wxVideo.setImgWidth(msg.getImgWidth());
@@ -1035,7 +1034,7 @@ public final class WeChatClient {
                         wxVideo.setImage(weChatApi.webWxGetMsgImg(msg.getMsgId(), "slave"));
                         return wxVideo;
                     }
-                    case MsgType.TYPE_EMOJI: {
+                    case MsgType.EMOJI: {
                         if (StringUtils.isEmpty(msg.getContent()) || msg.getHasProductId() != 0) {
                             // 表情商店的表情，无法下载图片 应该要利用这msgId去获取这个表情的数据
                             WXEmoji wxEmoji = parseCommon(msg, new WXEmoji());
@@ -1053,7 +1052,7 @@ public final class WeChatClient {
                             return wxImage;
                         }
                     }
-                    case MsgType.TYPE_OTHER: {
+                    case MsgType.OTHER: {
                         if (msg.getAppMsgType() == 2) {
                             WXImage wxImage = parseCommon(msg, new WXImage());
                             wxImage.setImgWidth(msg.getImgWidth());
@@ -1084,16 +1083,16 @@ public final class WeChatClient {
                         }
                         break;
                     }
-                    case MsgType.TYPE_NOTIFY: {
+                    case MsgType.READ: {
                         WXNotify wxNotify = parseCommon(msg, new WXNotify());
                         wxNotify.setNotifyCode(msg.getStatusNotifyCode());
                         wxNotify.setNotifyContact(msg.getStatusNotifyUserName());
                         return wxNotify;
                     }
-                    case MsgType.TYPE_SYSTEM: {
+                    case MsgType.SYSTEM: {
                         return parseCommon(msg, new WXSystem());
                     }
-                    case MsgType.TYPE_REVOKE:
+                    case MsgType.REVOKE:
                         WXRevoke wxRevoke = parseCommon(msg, new WXRevoke());
                         Matcher idMatcher = REX_REVOKE_ID.matcher(wxRevoke.getContent());
                         if (idMatcher.find()) {
