@@ -418,9 +418,15 @@ public final class WeChatClient {
             log.error("发送语音消息异常: ", e);
         }
         String mediaId = webWxUploadMediaResp.getMediaId();
-        String voiceContent = "";
+        VoiceMsg voiceMsg = new VoiceMsg();
+        voiceMsg.setVoice(new VoiceMsg.Voice(mediaId));
+        voiceMsg.setMsgType("voice");
+        voiceMsg.setCreateTime(System.currentTimeMillis());
+        voiceMsg.setFromUserName(weChatContacts.getMe().getUserName());
+        voiceMsg.setToUserName(wxContact.getUserName());
+        String voiceContent = XmlUtil.objectToXmlStr(voiceMsg, VoiceMsg.class);
         WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.VOICE, mediaId, 0,
-                null, null, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
+                voiceContent, null, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
         //WXVoice wxVoice = new WXVoice();
         //wxVoice.setId(Long.parseLong(rspSendMsg.getMsgId()));
         //wxVoice.setIdLocal(Long.parseLong(rspSendMsg.getLocalId()));
@@ -444,7 +450,7 @@ public final class WeChatClient {
     public WXMessage sendFile(@Nonnull WXContact wxContact, @Nonnull String filePath) {
         File file = new File(filePath);
         String suffix = ImgTypeUtil.fileSuffix(file);
-        if ("mp4".equals(suffix) && filePath.length() >= 20L * 1024L * 1024L) {
+        if ("mp4".equals(suffix) && file.length() >= 20L * 1024L * 1024L) {
             log.warn("向({}: {})发送的视频文件大于20M，无法发送", wxContact.getUserName(), wxContact.getNickName());
             return null;
         } else {
@@ -452,8 +458,8 @@ public final class WeChatClient {
                 log.info("向({}: {})发送文件: {}", wxContact.getUserName(), wxContact.getNickName(), file.getAbsolutePath());
                 String mediaId = null, aesKey = null, signature = null;
                 // 如果文件大于25M，则检查文件是否已经在微信服务器上
-                if (filePath.length() >= 25L * 1024L * 1024L) {
-                    WebWxCheckUploadResp rspCheckUpload = weChatApi.webWxCheckUpload(file, weChatContacts.getMe().getUserName(), wxContact.getUserName());
+                if (file.length() >= 25L * 1024L * 1024L) {
+                    WebWxCheckUploadResp rspCheckUpload = weChatApi.webWxCheckUpload(filePath, weChatContacts.getMe().getUserName(), wxContact.getUserName());
                     mediaId = rspCheckUpload.getMediaId();
                     aesKey = rspCheckUpload.getAseKey();
                     signature = rspCheckUpload.getSignature();

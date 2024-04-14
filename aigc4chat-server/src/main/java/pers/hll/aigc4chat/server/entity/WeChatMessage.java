@@ -20,7 +20,7 @@ public class WeChatMessage extends BaseEntity {
      * 消息ID
      */
     @TableId
-    private long msgId;
+    private Long msgId;
 
     /**
      * 发送者用户名

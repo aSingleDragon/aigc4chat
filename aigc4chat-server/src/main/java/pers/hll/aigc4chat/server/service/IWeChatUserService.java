@@ -1,11 +1,13 @@
 package pers.hll.aigc4chat.server.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.WeChatUser;
 
 /**
  * <p>
- * 用户表 服务类
+ * 用户 接口
  * </p>
  *
  * @author hll
@@ -16,4 +18,8 @@ public interface IWeChatUserService extends IService<WeChatUser> {
     void saveOrUpdateMe(WeChatUser me);
 
     WeChatUser selectMe();
+
+    IPage<WeChatUser> pageGroup(WeChatUserPageQuery query);
+
+    IPage<WeChatUser> pageFriend(WeChatUserPageQuery query);
 }

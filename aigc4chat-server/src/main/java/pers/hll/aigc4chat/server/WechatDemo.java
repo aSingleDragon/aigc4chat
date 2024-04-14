@@ -10,7 +10,6 @@ import pers.hll.aigc4chat.common.entity.wechat.message.WXVerify;
 import pers.hll.aigc4chat.server.wechat.DefaultWeChatListener;
 import pers.hll.aigc4chat.server.wechat.WeChatClient;
 
-import java.io.File;
 import java.util.Scanner;
 
 /**

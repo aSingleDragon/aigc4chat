@@ -495,14 +495,14 @@ public class WeChatApi {
     /**
      * 文件秒传接口，传输大于25M的文件会先进行检查服务器是否已经存在该文件
      *
-     * @param file         需要传输的文件
+     * @param filePath         需要传输的文件地址
      * @param fromUserName 消息的发送方UserName
      * @param toUserName   消息的接收方UserName
      * @return 秒传结果，
      */
-    public WebWxCheckUploadResp webWxCheckUpload(File file, String fromUserName, String toUserName) {
+    public WebWxCheckUploadResp webWxCheckUpload(String filePath, String fromUserName, String toUserName) {
         return WeChatHttpClient.post(new WebWxCheckUploadReq(String.format(WEB_WX_CHECK_UPLOAD, host))
-                .setFile(file)
+                .setFilePath(filePath)
                 .setFromUserName(fromUserName)
                 .setToUserName(toUserName)
                 .setBaseRequestBody(new BaseRequestBody(uin, sid, skey))

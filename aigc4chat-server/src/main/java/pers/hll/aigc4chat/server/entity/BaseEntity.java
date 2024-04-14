@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * 基础实体类
+ *
  * @author hll
  * @since 2024/04/06
  */

@@ -11,11 +11,11 @@ import java.util.List;
 
 /**
  * <p>
- * 用户表 服务实现类
+ * 群成员 服务实现类
  * </p>
  *
- * @author Leo825
- * @since 2022-07-05
+ * @author hll
+ * @since 2024-04-14
  */
 @Service
 public class WeChatGroupMemeberServiceImpl extends ServiceImpl<WeChatGroupMemberMapper, WeChatGroupMember>

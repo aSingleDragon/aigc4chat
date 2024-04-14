@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * <p>
- * 用户表 服务类
+ * 群成员 接口
  * </p>
  *
  * @author hll
