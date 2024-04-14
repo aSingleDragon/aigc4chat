@@ -69,6 +69,7 @@ public class DefaultWeChatListener implements WeChatListener {
             } else {
                 // 用户消息
                 //client.sendFile(message.getFromUser(), wxVoice.getVoice());
+                long voiceLength = ((WXVoice) message).getVoiceLength();
                 client.sendVoice(message.getFromUser(), wxVoice.getVoice());
             }
         } else if (message instanceof WXEmoji wxEmoji

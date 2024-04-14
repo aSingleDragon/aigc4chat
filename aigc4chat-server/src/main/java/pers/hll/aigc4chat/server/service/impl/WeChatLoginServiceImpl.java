@@ -1,11 +1,12 @@
 package pers.hll.aigc4chat.server.service.impl;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import pers.hll.aigc4chat.common.base.util.StringUtil;
 import pers.hll.aigc4chat.common.entity.wechat.message.WXNotify;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
@@ -62,8 +63,8 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
     private static final int SYNC_CHECK_ERROR_THRESHOLD = 5;
 
     @Override
-    public void login() {
-        weChatApiService.jsLogin();
+    public void login(HttpServletResponse response) {
+        weChatApiService.jsLogin(response);
         Runnable loginTask = () -> {
             if (!resultReceived.get()) {
                 LoginResp loginResp = weChatApiService.login();
