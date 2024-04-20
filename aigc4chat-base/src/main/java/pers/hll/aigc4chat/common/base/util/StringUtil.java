@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -73,5 +74,12 @@ public class StringUtil {
 
     public List<String> splitToList(String str) {
         return splitToList(str, ",", String::valueOf);
+    }
+
+    public boolean notNullOrEmpty(Object obj) {
+        if (obj instanceof CharSequence cs) {
+            return StringUtils.isNotEmpty(cs);
+        }
+        return Objects.nonNull(obj);
     }
 }

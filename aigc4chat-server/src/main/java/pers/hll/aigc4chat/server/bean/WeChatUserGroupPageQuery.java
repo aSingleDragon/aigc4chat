@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2024/04/14
  */
 @Data
-public class WeChatUserPageQuery extends PageQuery {
+public class WeChatUserGroupPageQuery extends PageQuery {
 
     private String userName;
 }

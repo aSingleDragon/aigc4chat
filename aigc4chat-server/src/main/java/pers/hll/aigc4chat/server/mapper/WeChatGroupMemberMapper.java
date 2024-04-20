@@ -1,7 +1,13 @@
 package pers.hll.aigc4chat.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
+import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
+import pers.hll.aigc4chat.server.entity.WeChatUser;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +19,7 @@ import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
  */
 public interface WeChatGroupMemberMapper extends BaseMapper<WeChatGroupMember> {
 
+    IPage<WeChatUser> pageGroupMember(@Param("query") WeChatUserPageQuery query, IPage<WeChatUser> page);
 
+    List<WeChatUser> listGroupMember(String groupUserName);
 }

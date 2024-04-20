@@ -31,7 +31,7 @@ public class SwaggerConfig {
     }
     private ExternalDocumentation externalDocumentation() {
         return new ExternalDocumentation()
-                .description("欢迎Star|Fork|Issue|Commit.")
+                .description("欢迎 Star | Fork | Commit | Issue.")
                 .url("https://gitee.com/aSingleDragon/aigc4chat");
     }
 

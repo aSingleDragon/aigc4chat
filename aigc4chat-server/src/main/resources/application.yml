@@ -12,8 +12,8 @@ spring:
     init:
       mode: ALWAYS
       continue-on-error: false
-      data-locations: classpath*:init.sql
-      schema-locations: classpath*:schema.sql
+      data-locations: classpath*:sql/init.sql
+      schema-locations: classpath*:sql/schema.sql
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.WeChatUser;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户 接口
@@ -22,4 +24,6 @@ public interface IWeChatUserService extends IService<WeChatUser> {
     IPage<WeChatUser> pageGroup(WeChatUserPageQuery query);
 
     IPage<WeChatUser> pageFriend(WeChatUserPageQuery query);
+
+    List<WeChatUser> listByName(String name);
 }

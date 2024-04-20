@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import pers.hll.aigc4chat.common.base.util.EasyCollUtil;
 import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.BaseEntity;
 import pers.hll.aigc4chat.server.entity.WeChatUser;
 import pers.hll.aigc4chat.server.mapper.WeChatUserMapper;
 import pers.hll.aigc4chat.server.service.IWeChatUserService;
 import pers.hll.aigc4chat.server.util.PageUtil;
+
+import java.util.List;
 
 /**
  * <p>
@@ -57,5 +60,15 @@ public class WeChatUserServiceImpl extends ServiceImpl<WeChatUserMapper, WeChatU
                 .notLike(WeChatUser::getUserName, "@@%")
                 .like(StringUtils.isNotEmpty(query.getUserName()), WeChatUser::getNickName, query.getUserName())
                 .orderByAsc(BaseEntity::getUpdatedTime));
+    }
+
+    @Override
+    public List<WeChatUser> listByName(String name) {
+        return list(new LambdaQueryWrapper<WeChatUser>()
+                .like(WeChatUser::getUserName, name)
+                .or()
+                .like(WeChatUser::getNickName, name)
+                .or()
+                .like(WeChatUser::getRemarkName, name));
     }
 }
