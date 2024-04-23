@@ -14,6 +14,8 @@ public interface FilePath {
 
     String CHAT_HISTORY = BASE_PATH + SEP + "chat-history";
 
+    String UPLOAD = BASE_PATH + SEP + "upload";
+
     String WECHAT_HISTORY = CHAT_HISTORY + SEP + "wechat";
 
     String WECHAT_LOGIN_QR_CODE = WECHAT_HISTORY + SEP + "qrcode" + SEP + "login.png";

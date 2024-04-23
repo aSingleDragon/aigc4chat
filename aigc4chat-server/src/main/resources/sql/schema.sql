@@ -151,3 +151,15 @@ CREATE TABLE IF NOT EXISTS wechat_message
     -- 更新时间
     updated_time            DATETIME
 );
+
+CREATE TABLE IF NOT EXISTS wechat_message_handler_config
+(
+    -- 用户名称
+    user_name    TEXT PRIMARY KEY,
+    -- 消息处理函数
+    handler_name TEXT NOT NULL,
+    -- 创建时间
+    created_time DATETIME,
+    -- 更新时间
+    updated_time DATETIME
+);

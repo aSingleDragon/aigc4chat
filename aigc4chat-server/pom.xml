@@ -12,7 +12,7 @@
     <artifactId>aigc4chat-server</artifactId>
 
     <properties>
-        <sqlite-jdbc.version>3.45.2.0</sqlite-jdbc.version>
+        <sqlite-jdbc.version>3.45.3.0</sqlite-jdbc.version>
         <mybatis-plus-spring-boot3-starter.version>3.5.6</mybatis-plus-spring-boot3-starter.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
         <knife4j-openapi3-jakarta-spring-boot-starter.version>4.5.0</knife4j-openapi3-jakarta-spring-boot-starter.version>
@@ -72,23 +72,10 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>spring</id>
-            <url>https://maven.aliyun.com/repository/spring</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 
 </project>

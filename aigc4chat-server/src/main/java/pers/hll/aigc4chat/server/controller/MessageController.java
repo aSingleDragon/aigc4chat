@@ -3,11 +3,12 @@ package pers.hll.aigc4chat.server.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pers.hll.aigc4chat.common.base.util.MultipartFileUtil;
 import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.LoginResp;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.SyncCheckResp;
@@ -17,19 +18,21 @@ import pers.hll.aigc4chat.server.entity.WeChatMessage;
 import pers.hll.aigc4chat.server.service.IWeChatApiService;
 import pers.hll.aigc4chat.server.service.IWeChatMessageService;
 
+import java.io.IOException;
+
 /**
  * 消息控制器
  *
  * @author hll
  * @since 2024/04/14
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/message")
 @Tag(name = "MessageController", description = "消息控制器")
 public class MessageController {
 
-    private static final Logger log = LoggerFactory.getLogger(MessageController.class);
     private final IWeChatMessageService weChatMessageService;
 
     private final IWeChatApiService weChatApiService;
@@ -41,40 +44,35 @@ public class MessageController {
 
     @PostMapping("/send/text")
     public R<LoginResp> sendText(@RequestParam String text, @RequestParam String toUserName) {
-        if (!syncCheck()) {
-            return R.fail("已断开连接!");
-        }
+        syncCheck();
         weChatApiService.sendTextMessage(text, toUserName);
         return R.success();
     }
 
     @PostMapping("/send/location")
     public R<LoginResp> sendLocation(@RequestBody OriContent location, @RequestParam String toUserName) {
-        if (!syncCheck()) {
-            return R.fail("已断开连接!");
-        }
+        syncCheck();
         weChatApiService.sendLocationMessage(location, toUserName);
         return R.success();
     }
 
-    @PostMapping("/send/file")
-    public R<LoginResp> sendFile(HttpServletRequest request, @RequestParam String toUserName) {
-        if (!syncCheck()) {
-            return R.fail("已断开连接!");
-        }
-        // TODO 上传文件
-        String filePath = "";
+    @PostMapping(value = "/send/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public R<LoginResp> sendFile(@RequestPart("file") MultipartFile file, @RequestParam String toUserName) throws IOException {
+        syncCheck();
+        String filePath = MultipartFileUtil.saveFile(file);
         weChatApiService.sendFileMessage(filePath, toUserName);
-        return R.success();
+        return R.success(filePath);
     }
 
-    private boolean syncCheck() {
+    private void syncCheck() {
         try {
             SyncCheckResp syncCheckResp = weChatApiService.syncCheck();
-            return syncCheckResp != null && syncCheckResp.getRetCode() == 0;
+            if (syncCheckResp == null || syncCheckResp.getRetCode() != 0) {
+                throw new IllegalStateException("同步检查失败");
+            }
         } catch (Exception e) {
             log.error("同步检查失败", e);
-            return false;
+            throw new IllegalStateException("同步检查失败: ", e);
         }
     }
 }

@@ -26,4 +26,6 @@ public interface IWeChatUserService extends IService<WeChatUser> {
     IPage<WeChatUser> pageFriend(WeChatUserPageQuery query);
 
     List<WeChatUser> listByName(String name);
+
+    String getOneByName(String name);
 }

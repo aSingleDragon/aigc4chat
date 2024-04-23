@@ -71,4 +71,16 @@ public class WeChatUserServiceImpl extends ServiceImpl<WeChatUserMapper, WeChatU
                 .or()
                 .like(WeChatUser::getRemarkName, name));
     }
+
+    @Override
+    public String getOneByName(String name) {
+        List<WeChatUser> weChatUserList = listByName(name);
+        if (weChatUserList.isEmpty()) {
+            throw new IllegalArgumentException("未找到[" + name + "]对应的微信用户!");
+        }
+        if (weChatUserList.size() > 1) {
+            throw new IllegalArgumentException("找到多个[" + name + "]对应的微信用户!");
+        }
+        return weChatUserList.get(0).getUserName();
+    }
 }

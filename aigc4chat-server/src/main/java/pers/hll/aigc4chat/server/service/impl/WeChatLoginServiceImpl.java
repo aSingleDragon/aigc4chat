@@ -4,9 +4,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import pers.hll.aigc4chat.common.base.util.EasyCollUtil;
 import pers.hll.aigc4chat.common.base.util.StringUtil;
 import pers.hll.aigc4chat.common.entity.wechat.message.WXNotify;
 import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
@@ -21,6 +23,8 @@ import pers.hll.aigc4chat.server.converter.WeChatMessageConverter;
 import pers.hll.aigc4chat.server.converter.WeChatUserConverter;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
 import pers.hll.aigc4chat.server.entity.WeChatUser;
+import pers.hll.aigc4chat.server.handler.MessageHandler;
+import pers.hll.aigc4chat.server.handler.MessageHandlerName;
 import pers.hll.aigc4chat.server.service.*;
 import pers.hll.aigc4chat.server.wechat.WeChatRequestCache;
 import pers.hll.aigc4chat.server.wechat.WeChatTool;
@@ -29,6 +33,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,6 +59,10 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
 
     private final IWeChatMessageService weChatMessageService;
 
+    private final IWechatMessageHandlerConfigService wechatMessageHandlerConfigService;
+
+    private final ApplicationContext applicationContext;
+
     private final TaskScheduler taskScheduler;
 
     private final AtomicBoolean resultReceived = new AtomicBoolean(false);
@@ -68,10 +77,8 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
         Runnable loginTask = () -> {
             if (!resultReceived.get()) {
                 LoginResp loginResp = weChatApiService.login();
-                // 检查响应结果是否满意，如果不满意则继续轮询
                 if (isAuthorized(loginResp)) {
                     resultReceived.set(true);
-                    // 处理满意的结果
                     handleSuccessfulResponse(loginResp);
                 }
             }
@@ -126,8 +133,6 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
         initial();
         listen();
     }
-
-
 
     /**
      * 处理超时(二维码生成了一分钟了 这个集霸还tm不扫)
@@ -187,13 +192,8 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
     }
 
     private void handleDeleteContactList(List<User> deleteUserList) {
-        if (CollectionUtils.isEmpty(deleteUserList)) {
-            return;
-        }
         // 删除好友立刻触发; 删除群后的任意一条消息触发; 被移出群不会触发（会收到一条被移出群的addMsg）
-        for (User user : deleteUserList) {
-            weChatUserService.removeById(user.getUserName());
-        }
+        weChatUserService.removeBatchByIds(EasyCollUtil.getFieldList(deleteUserList, User::getUserName));
     }
 
     private void handleAddMessage(List<AddMsg> addMsgList) {
@@ -208,8 +208,12 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
                 // 会话同步，网页微信仅仅只获取了相关联系人详情
                 loadContacts(addMsg.getStatusNotifyUserName(), false);
             }
-            // 最后交给监听器处理
-            //handleMessage(wxMessage);
+            // 不处理自己发的消息
+            if (!Objects.equals(addMsg.getFromUserName(), weChatUserService.selectMe().getUserName())) {
+                String messageHandlerName = wechatMessageHandlerConfigService.getHandlerName(addMsg.getFromUserName());
+                MessageHandler messageHandler = getMessageHandler(messageHandlerName);
+                messageHandler.handle(addMsg);
+            }
         }
     }
 
@@ -255,8 +259,6 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
         return weChatUser;
     }
 
-
-
     /**
      * 获取并保存不限数量和类型的联系人信息
      *
@@ -295,5 +297,12 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
         if (!contacts.isEmpty()) {
             weChatApiService.webWxBatchGetContact(contacts);
         }
+    }
+
+    private MessageHandler getMessageHandler(String beanName) {
+        if (StringUtils.isEmpty(beanName)) {
+            return (MessageHandler) applicationContext.getBean(MessageHandlerName.DEFAULT_MESSAGE_HANDLER);
+        }
+        return (MessageHandler) applicationContext.getBean(beanName);
     }
 }

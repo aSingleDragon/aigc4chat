@@ -31,7 +31,13 @@
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
         <!-- 解析xml 需要的 -->
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
+        <!-- BeanUtil 平替 mapstruct -->
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <!-- 解决 mapstruct 和 lombok 冲突 -->
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <junit.version>4.13.2</junit.version>
+        <!-- 模版引擎 代码生成器 -->
+        <velocity-engine-code.version>2.3</velocity-engine-code.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +92,22 @@
             <version>${jaxb-runtime.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>${lombok-mapstruct-binding.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
@@ -93,6 +115,15 @@
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity-engine-code.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
@@ -110,4 +141,20 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>spring</id>
+            <url>https://maven.aliyun.com/repository/spring</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>
