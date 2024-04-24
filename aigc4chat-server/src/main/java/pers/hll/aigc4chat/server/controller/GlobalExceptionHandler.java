@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public R<String> handleNullPointerException(NullPointerException ex) {
         return R.fail(ResultCode.INTERNAL_SERVER_ERROR,"空指针异常：" + ex.getMessage());
     }
-
+    
     @ExceptionHandler(Exception.class)
     public R<String> handleException(Exception ex) {
         return R.fail(ex.getMessage());

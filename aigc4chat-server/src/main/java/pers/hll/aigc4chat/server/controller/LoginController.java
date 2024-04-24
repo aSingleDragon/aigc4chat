@@ -28,9 +28,8 @@ public class LoginController {
 
     @GetMapping("/login")
     @Operation(summary = "login", description = "登录(二维码)")
-    public R<LoginResp> login(HttpServletResponse response) {
+    public void login(HttpServletResponse response) {
         wechatLoginService.login(response);
-        return R.success();
     }
 
     @GetMapping("/logout")
