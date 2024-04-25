@@ -1,7 +1,7 @@
 package pers.hll.aigc4chat.server.wechat;
 
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXMessage;
+import pers.hll.aigc4chat.entity.wechat.contact.WXContact;
+import pers.hll.aigc4chat.entity.wechat.message.WXMessage;
 
 import javax.annotation.Nullable;
 

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.LoginResp;
+import pers.hll.aigc4chat.protocol.wechat.response.LoginResp;
 import pers.hll.aigc4chat.server.base.R;
 import pers.hll.aigc4chat.server.service.IWeChatLoginService;
 

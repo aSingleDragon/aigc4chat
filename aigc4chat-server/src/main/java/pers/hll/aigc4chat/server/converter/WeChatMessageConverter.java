@@ -1,5 +1,5 @@
 package pers.hll.aigc4chat.server.converter;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 import pers.hll.aigc4chat.server.entity.WeChatMessage;
 
 import lombok.experimental.UtilityClass;

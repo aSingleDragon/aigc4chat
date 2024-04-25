@@ -8,17 +8,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import pers.hll.aigc4chat.common.base.util.EasyCollUtil;
-import pers.hll.aigc4chat.common.base.util.StringUtil;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXNotify;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WeChatCookieKey;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WeChatLoginStatus;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.base.util.EasyCollUtil;
+import pers.hll.aigc4chat.base.util.StringUtil;
+import pers.hll.aigc4chat.entity.wechat.message.WXNotify;
+import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
+import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
+import pers.hll.aigc4chat.protocol.wechat.constant.WeChatCookieKey;
+import pers.hll.aigc4chat.protocol.wechat.constant.WeChatLoginStatus;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.User;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 import pers.hll.aigc4chat.server.converter.WeChatMessageConverter;
 import pers.hll.aigc4chat.server.converter.WeChatUserConverter;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
@@ -38,7 +38,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WeChatWebApiConstant.HOST_LIST;
+import static pers.hll.aigc4chat.protocol.wechat.constant.WeChatWebApiConstant.HOST_LIST;
 
 /**
  * 登录服务

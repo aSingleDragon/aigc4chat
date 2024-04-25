@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>pers.hll</groupId>
-            <artifactId>aigc4chat-model</artifactId>
+            <artifactId>aigc4chat-model-baidu</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -7,19 +7,22 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.springframework.stereotype.Service;
-import pers.hll.aigc4chat.common.base.util.*;
-import pers.hll.aigc4chat.common.entity.wechat.message.AppMsg;
-import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.UploadMediaRequest;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
+import pers.hll.aigc4chat.base.util.BaseUtil;
+import pers.hll.aigc4chat.base.util.ImgTypeUtil;
+import pers.hll.aigc4chat.base.util.QRCodeUtil;
+import pers.hll.aigc4chat.base.util.XmlUtil;
+import pers.hll.aigc4chat.entity.wechat.message.AppMsg;
+import pers.hll.aigc4chat.entity.wechat.message.OriContent;
+import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
+import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
+import pers.hll.aigc4chat.protocol.wechat.constant.WXQueryValue;
+import pers.hll.aigc4chat.protocol.wechat.request.*;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Msg;
+import pers.hll.aigc4chat.protocol.wechat.request.form.FormFile;
+import pers.hll.aigc4chat.protocol.wechat.request.form.UploadMediaRequest;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.User;
 import pers.hll.aigc4chat.server.converter.WeChatGroupMemberConverter;
 import pers.hll.aigc4chat.server.converter.WeChatUserConverter;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
@@ -35,7 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXEndPoint.*;
+import static pers.hll.aigc4chat.protocol.wechat.constant.WXEndPoint.*;
 
 /**
  * 微信接口服务实现类
@@ -225,7 +228,7 @@ public class WeChatApiServiceImpl implements IWeChatApiService {
                 MsgType.LOCATION,
                 null,
                 0,
-                XmlUtil.objectToXmlStr(oriContent, OriContent.class),
+                XmlUtil.objectToXmlStr(oriContent),
                 null,
                 getFromUserName(),
                 toUserName);
@@ -441,7 +444,7 @@ public class WeChatApiServiceImpl implements IWeChatApiService {
                 6,
                 null,
                 null,
-                XmlUtil.objectToXmlStr(appMsg, AppMsg.class),
+                XmlUtil.objectToXmlStr(appMsg),
                 signature,
                 getFromUserName(), toUserName);
         setClientIdAndLocalId(msg);

@@ -1,9 +1,9 @@
 package pers.hll.aigc4chat.server.service;
 
 import jakarta.servlet.http.HttpServletResponse;
-import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
+import pers.hll.aigc4chat.entity.wechat.message.OriContent;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
 
 import java.util.List;
 

@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author hll
  * @since 2024/03/09
  */
-@SpringBootApplication
 @MapperScan(value = "pers.hll.aigc4chat.server.mapper")
+@SpringBootApplication(scanBasePackages = "pers.hll.aigc4chat.*")
 public class Aigc4ChatApplication {
 
     public static void main(String[] args) {

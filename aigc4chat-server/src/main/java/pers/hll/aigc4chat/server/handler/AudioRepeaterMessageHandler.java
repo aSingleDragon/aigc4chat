@@ -2,9 +2,9 @@ package pers.hll.aigc4chat.server.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pers.hll.aigc4chat.common.base.util.XmlUtil;
-import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.base.util.XmlUtil;
+import pers.hll.aigc4chat.entity.wechat.message.OriContent;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 import pers.hll.aigc4chat.server.service.IWeChatApiService;
 
 /**

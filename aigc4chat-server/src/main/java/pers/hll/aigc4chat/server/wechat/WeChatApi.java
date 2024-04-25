@@ -7,20 +7,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
-import pers.hll.aigc4chat.common.base.constant.FilePath;
-import pers.hll.aigc4chat.common.base.util.BaseUtil;
-import pers.hll.aigc4chat.common.base.util.QRCodeUtil;
-import pers.hll.aigc4chat.common.base.util.ImgTypeUtil;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.UploadMediaRequest;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
+import pers.hll.aigc4chat.base.constant.FilePath;
+import pers.hll.aigc4chat.base.util.BaseUtil;
+import pers.hll.aigc4chat.base.util.QRCodeUtil;
+import pers.hll.aigc4chat.base.util.ImgTypeUtil;
+import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
+import pers.hll.aigc4chat.protocol.wechat.constant.WXQueryValue;
+import pers.hll.aigc4chat.protocol.wechat.request.*;
+import pers.hll.aigc4chat.protocol.wechat.request.body.BaseRequestBody;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Msg;
+import pers.hll.aigc4chat.protocol.wechat.request.form.FormFile;
+import pers.hll.aigc4chat.protocol.wechat.request.form.UploadMediaRequest;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.SyncKey;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXEndPoint.*;
+import static pers.hll.aigc4chat.protocol.wechat.constant.WXEndPoint.*;
 
 /**
  * 网页版微信全部接口

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import pers.hll.aigc4chat.common.base.util.EasyCollUtil;
 import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.BaseEntity;
 import pers.hll.aigc4chat.server.entity.WeChatUser;

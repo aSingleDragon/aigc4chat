@@ -1,7 +1,7 @@
 package pers.hll.aigc4chat.server.handler;
 
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 
 /**
  * 消息处理器

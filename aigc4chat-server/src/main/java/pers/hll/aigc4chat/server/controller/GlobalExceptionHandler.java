@@ -7,6 +7,9 @@ import pers.hll.aigc4chat.server.base.ResultCode;
 
 /**
  * 全局异常处理
+ *
+ * @author hll
+ * @since 2024/04/25
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,7 +23,7 @@ public class GlobalExceptionHandler {
     public R<String> handleNullPointerException(NullPointerException ex) {
         return R.fail(ResultCode.INTERNAL_SERVER_ERROR,"空指针异常：" + ex.getMessage());
     }
-    
+
     @ExceptionHandler(Exception.class)
     public R<String> handleException(Exception ex) {
         return R.fail(ex.getMessage());

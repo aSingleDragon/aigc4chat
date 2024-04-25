@@ -1,6 +1,6 @@
 package pers.hll.aigc4chat.server.service.impl;
 
-import pers.hll.aigc4chat.common.base.util.ConstantUtil;
+import pers.hll.aigc4chat.base.util.ConstantUtil;
 import pers.hll.aigc4chat.server.entity.WechatMessageHandlerConfig;
 import pers.hll.aigc4chat.server.handler.MessageHandlerName;
 import pers.hll.aigc4chat.server.mapper.WechatMessageHandlerConfigMapper;

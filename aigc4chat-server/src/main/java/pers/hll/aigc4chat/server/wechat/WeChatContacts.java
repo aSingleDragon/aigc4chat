@@ -1,11 +1,11 @@
 package pers.hll.aigc4chat.server.wechat;
 
 import lombok.Getter;
-import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
+import pers.hll.aigc4chat.entity.wechat.contact.Member;
+import pers.hll.aigc4chat.entity.wechat.contact.WXContact;
+import pers.hll.aigc4chat.entity.wechat.contact.WXGroup;
+import pers.hll.aigc4chat.entity.wechat.contact.WXUser;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.User;
 
 import java.util.HashMap;
 

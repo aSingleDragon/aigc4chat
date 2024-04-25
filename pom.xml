@@ -29,7 +29,6 @@
         <httpclient.version>4.5.14</httpclient.version>
         <!-- 解析xml -->
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
-        <!-- 解析xml 需要的 -->
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
         <!-- BeanUtil 平替 mapstruct -->
         <mapstruct.version>1.5.5.Final</mapstruct.version>
@@ -38,6 +37,8 @@
         <junit.version>4.13.2</junit.version>
         <!-- 模版引擎 代码生成器 -->
         <velocity-engine-code.version>2.3</velocity-engine-code.version>
+        <!-- 轮子工具 -->
+        <hutool-all.version>5.8.25</hutool-all.version>
     </properties>
     <dependencies>
         <dependency>
@@ -113,6 +114,8 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
@@ -121,6 +124,11 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity-engine-code.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -149,7 +157,7 @@
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
