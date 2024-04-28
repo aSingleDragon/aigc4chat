@@ -10,6 +10,10 @@ import java.util.Base64;
 
 /**
  * <a href="https://apifox.com/apiskills/how-to-use-gemini-api/">如何使用Gemini API</a>
+ * Gemini 测试 随便写写 不要在意
+ *
+ * @author hll
+ * @since 2024/04/26
  */
 public class GeminiExample {
 

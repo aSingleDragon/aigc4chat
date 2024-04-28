@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pers.hll.aigc4chat.base.constant.FilePath;
+import pers.hll.aigc4chat.base.exception.BizException;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +28,12 @@ public class MultipartFileUtil {
     public String saveFile(MultipartFile file) throws IOException {
         String folderPath = FilePath.UPLOAD + FilePath.SEP + LocalDate.now().format(FORMATTER);
         File folder = new File(folderPath);
-        if (!folder.isDirectory()) {
-            folder.mkdirs();
+        if (!folder.isDirectory() && !folder.mkdirs()) {
+            throw BizException.of("文件夹创建失败:{}", folderPath);
         }
         String oldName = file.getOriginalFilename();
         assert oldName != null;
-        String newName = UUID.randomUUID() + oldName.substring(oldName.lastIndexOf("."), oldName.length());
+        String newName = UUID.randomUUID() + oldName.substring(oldName.lastIndexOf("."));
         String filePath = folderPath + newName;
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));

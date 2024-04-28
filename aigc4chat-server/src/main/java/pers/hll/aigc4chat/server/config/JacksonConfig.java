@@ -14,6 +14,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
+    /**
+     * 配置jackson
+     * <p>
+     *     不序列化实例对象值为null的字段
+     * </p>
+     *
+     * @return Jackson2ObjectMapperBuilderCustomizer
+     */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer addModules() {
         return builder -> builder.serializationInclusion(JsonInclude.Include.NON_NULL);

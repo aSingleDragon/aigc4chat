@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * 微信好友请求 body
  *
- *
  * @author hll
  * @author 2024/03/10
  */

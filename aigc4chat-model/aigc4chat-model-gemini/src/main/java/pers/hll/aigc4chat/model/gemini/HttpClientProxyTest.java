@@ -16,6 +16,12 @@ import pers.hll.aigc4chat.base.xml.ProxyConfig;
 
 import java.io.IOException;
 
+/**
+ * Http代理测试  随便写写 不要在意
+ *
+ * @author hll
+ * @since 2024/04/26
+ */
 public class HttpClientProxyTest {
     public static void main(String[] args) throws IOException {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();

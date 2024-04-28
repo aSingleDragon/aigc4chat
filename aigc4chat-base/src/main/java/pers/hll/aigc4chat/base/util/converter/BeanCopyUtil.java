@@ -11,8 +11,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * 复制Bean属性工具类
+ *
  * @author hll
- * @since 2023-08-24
+ * @since 2024/04/26
  */
 @Slf4j
 @UtilityClass

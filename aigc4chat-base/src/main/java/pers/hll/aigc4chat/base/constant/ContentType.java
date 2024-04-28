@@ -1,5 +1,11 @@
 package pers.hll.aigc4chat.base.constant;
 
+/**
+ * ContentType 常量类
+ *
+ * @author hll
+ * @since 2024/04/26
+ */
 public interface ContentType {
 
     String JSON = "application/json; charset=UTF-8";

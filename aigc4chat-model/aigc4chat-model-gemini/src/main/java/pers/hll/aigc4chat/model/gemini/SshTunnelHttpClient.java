@@ -13,6 +13,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.event.Level;
 
+/**
+ * Socks代理测试  随便写写 不要在意
+ *
+ * @author hll
+ * @since 2024/04/26
+ */
 @Slf4j
 public class SshTunnelHttpClient {
 

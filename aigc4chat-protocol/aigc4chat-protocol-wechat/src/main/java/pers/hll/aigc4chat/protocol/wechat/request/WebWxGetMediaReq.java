@@ -19,11 +19,11 @@ public class WebWxGetMediaReq extends BaseRequest<WebWxGetMediaReq, Object> {
 
     private long msgId;
 
-    private String sKey;
+    private String skey;
 
     private String passTicket;
 
-    private String encryFileName;
+    private String encryptFileName;
 
     private String fromUser;
 
@@ -42,8 +42,8 @@ public class WebWxGetMediaReq extends BaseRequest<WebWxGetMediaReq, Object> {
         return this;
     }
 
-    public WebWxGetMediaReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxGetMediaReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -52,8 +52,8 @@ public class WebWxGetMediaReq extends BaseRequest<WebWxGetMediaReq, Object> {
         return this;
     }
 
-    public WebWxGetMediaReq setEncryFileName(String encryFileName) {
-        this.encryFileName = encryFileName;
+    public WebWxGetMediaReq setEncryptFileName(String encryptFileName) {
+        this.encryptFileName = encryptFileName;
         return this;
     }
 
@@ -86,7 +86,7 @@ public class WebWxGetMediaReq extends BaseRequest<WebWxGetMediaReq, Object> {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
 
-        requestParamMap.put(WXQueryKey.ENCRY_FILE_NAME, encryFileName);
+        requestParamMap.put(WXQueryKey.ENCRY_FILE_NAME, encryptFileName);
         requestParamMap.put(WXQueryKey.FROM_USER, fromUser);
         requestParamMap.put(WXQueryKey.MEDIA_ID, mediaId);
         requestParamMap.put(WXQueryKey.PASS_TICKET, passTicket);

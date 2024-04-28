@@ -20,7 +20,7 @@ public class WebWxGetVideoReq extends BaseRequest<WebWxGetVideoReq, Object> {
 
     private long msgId;
 
-    private String sKey;
+    private String skey;
 
     private String passTicket;
 
@@ -33,8 +33,8 @@ public class WebWxGetVideoReq extends BaseRequest<WebWxGetVideoReq, Object> {
         return this;
     }
 
-    public WebWxGetVideoReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxGetVideoReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -53,7 +53,7 @@ public class WebWxGetVideoReq extends BaseRequest<WebWxGetVideoReq, Object> {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.MSG_ID, String.valueOf(msgId));
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
         requestParamMap.put(WXQueryKey.PASS_TICKET, passTicket);
         return this;
     }

@@ -1,7 +1,6 @@
 package pers.hll.aigc4chat.base.util;
 
 import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -12,10 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.core.annotation.AnnotationUtils;
 import pers.hll.aigc4chat.base.constant.FilePath;
+import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.base.xml.XmlConfig;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -42,6 +41,7 @@ public class XmlUtil {
                 xmlObject = clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 log.error("实例化类[{}]失败: ", clazz.getName(), e);
+                throw BizException.of("实例化类[{}]失败", clazz.getName(), e);
             }
             return xmlObject;
         }
@@ -52,6 +52,7 @@ public class XmlUtil {
             xmlObject = clazz.cast(unmarshaller.unmarshal(sr));
         } catch (Exception e) {
             log.error("XML字符串:\n{}\n转换为[{}]实例对象失败: ", xmlStr, clazz.getName(), e);
+            throw BizException.of("XML字符串:\n{}\n转换为[{}]实例对象失败", xmlStr, clazz.getName(), e);
         }
         return xmlObject;
     }
@@ -74,6 +75,7 @@ public class XmlUtil {
             result = writer.toString();
         } catch (Exception e) {
             log.error("实例对象[{}]转换XML字符串失败: ", obj.getClass(), e);
+            throw BizException.of("实例对象[{}]转换XML字符串失败", obj.getClass(), e);
         }
         return result;
     }
@@ -105,7 +107,8 @@ public class XmlUtil {
     public <T extends XmlConfig> T readXmlConfig(Class<T> clazz) throws IOException {
         File xmlConfigFile = new File(getXmlConfigFilePath(getXmlConfigName(clazz)));
         if (!xmlConfigFile.exists()) {
-            throw new FileNotFoundException("XML配置文件[" + xmlConfigFile.getAbsolutePath() + "]不存在!");
+            log.error("XML配置文件[{}]不存在!", xmlConfigFile.getAbsolutePath());
+            throw BizException.of("XML配置文件[{}]不存在!", xmlConfigFile.getAbsolutePath());
         }
         return xmlStrToObject(FileUtils.readFileToString(xmlConfigFile, StandardCharsets.UTF_8), clazz);
     }
@@ -129,7 +132,8 @@ public class XmlUtil {
     public <T extends XmlConfig> String getXmlConfigName(Class<T> clazz) {
         XmlRootElement root = AnnotationUtils.findAnnotation(clazz, XmlRootElement.class);
         if (root == null || StringUtils.isEmpty(root.name())) {
-            throw new AnnotationConfigurationException("类[" + clazz.getName() + "]缺少 @XmlRootElement 注解!");
+            log.error("类[{}]缺少 @XmlRootElement 注解!", clazz.getName());
+            throw BizException.of("类[{}]缺少 @XmlRootElement 注解!", clazz.getName());
         }
         return root.name();
     }

@@ -27,12 +27,13 @@ public class LoginController {
     private final IWeChatLoginService wechatLoginService;
 
     @GetMapping("/login")
-    @Operation(summary = "login", description = "登录(二维码)")
+    @Operation(summary = "登录", description = "生成二维码，使用微信扫码登录。")
     public void login(HttpServletResponse response) {
         wechatLoginService.login(response);
     }
 
     @GetMapping("/logout")
+    @Operation(summary = "登出", description = "")
     public R<LoginResp> logout() {
         wechatLoginService.logout();
         return R.success();

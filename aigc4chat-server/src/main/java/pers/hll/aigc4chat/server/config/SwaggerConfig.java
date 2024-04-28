@@ -29,6 +29,7 @@ public class SwaggerConfig {
                 .version("v1.0.0")
                 .license(license());
     }
+
     private ExternalDocumentation externalDocumentation() {
         return new ExternalDocumentation()
                 .description("欢迎 Star | Fork | Commit | Issue.")
@@ -36,7 +37,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public OpenAPI springShopOpenAPI() {
+    public OpenAPI openApi() {
         return new OpenAPI()
                 .info(info())
                 .externalDocs(externalDocumentation());

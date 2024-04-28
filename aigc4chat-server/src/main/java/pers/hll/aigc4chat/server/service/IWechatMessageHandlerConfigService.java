@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ *  消息处理器服务接口
  * </p>
  *
  * @author hll

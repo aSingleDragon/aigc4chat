@@ -16,6 +16,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
 
+/**
+ * MyBatis Plus 代码生成器配置
+ *
+ * @author hll
+ * @since 2024/04/28
+ */
 public class CodeGeneratorConfig {
 
     /**
@@ -95,7 +101,6 @@ public class CodeGeneratorConfig {
         InputStream inputStream = new FileInputStream(INIT_SQL_PATH);
         ScriptRunner scriptRunner = new ScriptRunner(conn);
         scriptRunner.setAutoCommit(true);
-        assert inputStream != null;
         scriptRunner.runScript(new InputStreamReader(inputStream));
         conn.close();
     }

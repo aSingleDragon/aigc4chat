@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.base.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import pers.hll.aigc4chat.base.exception.BizException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,7 +64,7 @@ public class ImgTypeUtil {
             }
         } catch (IOException e) {
             log.error("文件读写异常:", e);
-            return "";
+            throw BizException.of("文件读写异常: ", e);
         }
     }
 

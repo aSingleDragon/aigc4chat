@@ -2,6 +2,8 @@ package pers.hll.aigc4chat.server.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,27 +34,32 @@ public class UserController {
     private final IWeChatGroupMemberService weChatGroupMemberService;
 
     @GetMapping("/page/group")
+    @Operation(summary = "群分页", description = "分页查询，不传分页参数默认: {\"pageSize\" = 1 , \"pageNum\" = 10}\"")
     public R<IPage<WeChatUser>> pageGroup(WeChatUserPageQuery query) {
         return R.data(weChatUserService.pageGroup(query));
     }
 
     @GetMapping("/page/group/member")
+    @Operation(summary = "群成员分页", description = "分页查询，不传分页参数默认: {\"pageSize\" = 1 , \"pageNum\" = 10}\"")
     public R<IPage<WeChatUser>> pageGroupMember(WeChatUserPageQuery query) {
         return R.data(weChatGroupMemberService.pageGroupMember(query));
     }
 
     @GetMapping("/list/group/member")
+    @Operation(summary = "群成员列表")
     public R<List<WeChatUser>> listGroupMember(String groupUserName) {
         return R.data(weChatGroupMemberService.listGroupMember(groupUserName));
     }
 
     @GetMapping("/page/friend")
+    @Operation(summary = "好友分页", description = "分页查询，不传分页参数默认: {\"pageSize\" = 1 , \"pageNum\" = 10}\"")
     public R<IPage<WeChatUser>> pageFriend(WeChatUserPageQuery query) {
         return R.data(weChatUserService.pageFriend(query));
     }
 
-    @GetMapping("/query")
-    public R<List<WeChatUser>> query(String name) {
+    @GetMapping("/list/friend")
+    @Operation(summary = "好友列表")
+    public R<List<WeChatUser>> listFriend(@Parameter(description = "要查询的用户名，支持模糊查询") String name) {
         return R.data(weChatUserService.listByName(name));
     }
 }

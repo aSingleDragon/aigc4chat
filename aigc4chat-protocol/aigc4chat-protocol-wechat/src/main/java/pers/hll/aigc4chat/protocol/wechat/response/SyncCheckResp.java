@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Data
 @RequiredArgsConstructor
+@SuppressWarnings("all")
 public class SyncCheckResp {
 
     /**

@@ -4,7 +4,7 @@ import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
 import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 
 /**
- * 消息处理器
+ * 消息处理器接口
  *
  * @author hll
  * @since 2024/04/21

@@ -30,7 +30,7 @@ public class WxNewLoginPageReq extends BaseRequest<WxNewLoginPageReq, WxNewLogin
         Map<String, String> headerMap = this.getHeaderMap();
         headerMap.put(WXHeaderKey.USER_AGENT, DefaultConfig.USER_AGENT);
         headerMap.put(WXHeaderKey.CLIENT_VERSION, DefaultConfig.UOS_PATCH_CLIENT_VERSION);
-        headerMap.put(WXHeaderKey.EXT_SPAM, DefaultConfig.UOS_PATCH_EXTSPAM);
+        headerMap.put(WXHeaderKey.EXT_SPAM, DefaultConfig.UOS_PATCH_EXT_SPAM);
         headerMap.put(WXHeaderKey.REFERER, DefaultConfig.REFERER);
 
         return this;

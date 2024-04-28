@@ -19,7 +19,7 @@ public class WebWxGetVoiceReq extends BaseRequest<WebWxGetVoiceReq, Object> {
 
     private long msgId;
 
-    private String sKey;
+    private String skey;
 
     private String passTicket;
 
@@ -32,8 +32,8 @@ public class WebWxGetVoiceReq extends BaseRequest<WebWxGetVoiceReq, Object> {
         return this;
     }
 
-    public WebWxGetVoiceReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxGetVoiceReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -51,7 +51,7 @@ public class WebWxGetVoiceReq extends BaseRequest<WebWxGetVoiceReq, Object> {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.MSG_ID, String.valueOf(msgId));
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
         requestParamMap.put(WXQueryKey.PASS_TICKET, passTicket);
         return this;
     }

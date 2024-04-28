@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.protocol.wechat.request;
 
 import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.base.constant.StringPool;
+import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.protocol.wechat.response.JsLoginResp;
 import pers.hll.aigc4chat.protocol.wechat.constant.WXEndPoint;
 import pers.hll.aigc4chat.protocol.wechat.constant.WXQueryKey;
@@ -33,6 +34,7 @@ public class JsLoginReq extends BaseRequest<JsLoginReq, JsLoginResp> {
             uuid = entities[1].split(StringPool.QUOTE)[1].trim();
         } catch (Exception e) {
             log.error("JsLoginReq 响应:[{}]解析失败, 异常信息:", strEntity, e);
+            throw BizException.of("JsLoginReq 响应:[{}]解析失败, 异常信息:", strEntity, e);
         }
         return JsLoginResp.builder()
                 .code(code)

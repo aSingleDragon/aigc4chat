@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * ChatGPT 示例 随便谢谢 不要在意
+ *
+ * @author hll
+ * @since 2024/04/26
+ */
 public class ChatGPTExample {
 
     public static void main(String[] args) {

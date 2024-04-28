@@ -1,6 +1,5 @@
 package pers.hll.aigc4chat.protocol.wechat.request.body;
 
-
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

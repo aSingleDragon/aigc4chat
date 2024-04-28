@@ -54,7 +54,7 @@ public class WebWxSyncResp extends BaseResponseBaseBody {
     private SyncKey syncKey;
 
     @SerializedName("Skey")
-    private String sKey;
+    private String skey;
 
     @SerializedName("SyncCheckKey")
     private SyncKey syncCheckKey;

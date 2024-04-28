@@ -73,7 +73,7 @@ public class WebWxSyncReq extends BasePostRequest<WebWxSyncReq, WebWxSyncResp> {
 
     @Override
     public WebWxSyncResp convertRespBodyToObj(String strEntity) {
-        //log.info("微信同步原始消息: {}", strEntity);
+        // 微信同步原始消息
         return BaseUtil.GSON.fromJson(strEntity, WebWxSyncResp.class);
     }
 

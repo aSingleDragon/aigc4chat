@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.base.util.BaseUtil;
 import pers.hll.aigc4chat.base.util.XmlUtil;
 import pers.hll.aigc4chat.base.xml.XmlConfig;
@@ -43,6 +44,7 @@ public class XmlConfigServiceImpl implements IXmlConfigService {
                         .build());
             } catch (IOException e) {
                 log.error("读取配置文件失败", e);
+                throw BizException.of("读取XML配置异常", e);
             }
         }
         return xmlConfigVOList;
@@ -61,6 +63,7 @@ public class XmlConfigServiceImpl implements IXmlConfigService {
                     .build();
         } catch (IOException e) {
             log.error("读取[{}]配置文件失败", fileName, e);
+            throw BizException.of("读取XML配置异常", e);
         }
         return xmlConfigVO;
     }
@@ -74,6 +77,7 @@ public class XmlConfigServiceImpl implements IXmlConfigService {
             XmlUtil.writeXmlConfig(xmlConfig);
         } catch (IOException e) {
             log.error("写入XML配置异常: ", e);
+            throw BizException.of("写入XML配置异常", e);
         }
     }
 }

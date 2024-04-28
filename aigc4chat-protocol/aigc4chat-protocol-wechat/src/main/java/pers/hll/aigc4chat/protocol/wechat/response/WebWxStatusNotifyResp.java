@@ -15,5 +15,5 @@ import lombok.EqualsAndHashCode;
 public class WebWxStatusNotifyResp extends BaseResponseBaseBody {
 
     @SerializedName("MsgID")
-    public String msgID;
+    public String msgId;
 }

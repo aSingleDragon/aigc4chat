@@ -9,16 +9,17 @@ import lombok.Data;
 
 /**
  * 响应消息体
- * <blockquote><pre>
- * &lt;error&gt;
- *   &lt;ret&gt;0&lt;/ret&gt;
- *   &lt;message&gt;&lt;/message&gt;
- *   &lt;skey&gt;@crypt_8b7318fd_d8819ef6043a3e5eaf24b89e09f0bdc0&lt;/skey&gt;
- *   &lt;wxsid&gt;PNWg3LQayQU8fCCG&lt;/wxsid&gt;
- *   &lt;wxuin&gt;2977348135&lt;/wxuin&gt;
- *   &lt;pass_ticket&gt;XpIfrzRRUnnmFUWq0I%2FT...jEHhDL28hw%3D%3D&lt;/pass_ticket&gt;
- *   &lt;isgrayscale&gt;1&lt;/isgrayscale&gt;
- * &lt;/error&gt;
+ * <blockquote><pre>{@code
+ * <error>
+ *   <ret>0</ret>
+ *   <message></message>
+ *   <skey>@crypt_8b7318fd_d8819ef6043a3e5eaf24b89e09f0bdc0</skey>
+ *   <wxsid>PNWg3LQayQU8fCCG</wxsid>
+ *   <wxuin>2977348135</wxuin>
+ *   <pass_ticket>XpIfrzRRUnnmFUWq0I%2FT...jEHhDL28hw%3D%3D</pass_ticket>
+ *   <isgrayscale>1</isgrayscale>
+ * </error>
+ * }
  * </pre></blockquote>
  *
  * @author hll

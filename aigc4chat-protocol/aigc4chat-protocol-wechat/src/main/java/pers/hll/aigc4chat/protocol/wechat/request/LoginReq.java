@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.protocol.wechat.request;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import pers.hll.aigc4chat.base.constant.StringPool;
+import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.base.util.BaseUtil;
 import pers.hll.aigc4chat.protocol.wechat.constant.WXQueryKey;
 import pers.hll.aigc4chat.protocol.wechat.response.LoginResp;
@@ -55,7 +56,7 @@ public class LoginReq extends BaseRequest<LoginReq, LoginResp> {
                     .build();
         }
         log.error("解析登录请求响应数据失败: {}", strEntity);
-        return null;
+        throw BizException.of("解析登录请求响应数据失败: {}", strEntity);
     }
 
     @Override

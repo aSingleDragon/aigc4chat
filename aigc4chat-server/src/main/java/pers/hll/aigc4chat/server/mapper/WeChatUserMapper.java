@@ -5,7 +5,7 @@ import pers.hll.aigc4chat.server.entity.WeChatUser;
 
 /**
  * <p>
- * 用户表 Mapper 接口
+ * 用户 Mapper 接口
  * </p>
  *
  * @author hll

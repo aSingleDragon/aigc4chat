@@ -1,4 +1,5 @@
 package pers.hll.aigc4chat.server.converter;
+import pers.hll.aigc4chat.base.util.converter.ConverterUtil;
 import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 import pers.hll.aigc4chat.server.entity.WeChatMessage;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 /**
 * 实体类转换Converter
-* <p> 代码由 ConverterUtil 生成
+ * <p> 代码由 {@link ConverterUtil} 生成
 *
 * @author hll
 * @since 2024-04-06

@@ -1,6 +1,5 @@
 package pers.hll.aigc4chat.base.util;
 
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 
 import java.util.regex.Matcher;

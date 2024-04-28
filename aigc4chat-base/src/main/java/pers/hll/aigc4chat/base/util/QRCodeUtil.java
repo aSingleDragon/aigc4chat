@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import pers.hll.aigc4chat.base.exception.BizException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -103,6 +104,7 @@ public class QRCodeUtil {
             }
         } catch (WriterException | IOException e) {
             log.error("二维码[{}]打印失败:", content, e);
+            throw BizException.of("二维码[{}]打印失败:", content, e);
         }
     }
 
@@ -119,12 +121,14 @@ public class QRCodeUtil {
                 Files.createDirectories(parentDir);
             } catch (IOException e) {
                 log.error("创建目录失败: {}", parentDir.toAbsolutePath(), e);
+                throw BizException.of("创建目录失败: {}", parentDir.toAbsolutePath(), e);
             }
         }
         try {
             ImageIO.write(getBufferedImage(content), "png", new File(path));
         } catch (IOException e) {
             log.error("二维码图片写入异常:", e);
+            throw BizException.of("二维码图片写入异常:", e);
         }
     }
 
@@ -138,7 +142,8 @@ public class QRCodeUtil {
             response.setContentType("image/png");
             ImageIO.write(getBufferedImage(content), "png", response.getOutputStream());
         } catch (IOException e) {
-            log.error("二维码图片写入异常:", e);
+            log.error("二维码图片写入response异常:", e);
+            throw BizException.of("二维码图片写入response异常: ", e);
         }
     }
 
@@ -177,7 +182,8 @@ public class QRCodeUtil {
         try {
             Desktop.getDesktop().open(new File(path));
         } catch (IOException e) {
-            log.error("打开二维码图片失败:", e);
+            log.error("打开二维码图片失败: ", e);
+            throw BizException.of("二维码图片打开失败: ", e);
         }
     }
 }

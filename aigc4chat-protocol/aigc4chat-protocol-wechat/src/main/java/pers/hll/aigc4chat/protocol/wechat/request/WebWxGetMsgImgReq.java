@@ -18,7 +18,7 @@ public class WebWxGetMsgImgReq extends BaseRequest<WebWxGetMsgImgReq, Object> {
 
     private long msgId;
 
-    private String sKey;
+    private String skey;
 
     public WebWxGetMsgImgReq(String uri) {
         super(uri);
@@ -29,8 +29,8 @@ public class WebWxGetMsgImgReq extends BaseRequest<WebWxGetMsgImgReq, Object> {
         return this;
     }
 
-    public WebWxGetMsgImgReq setSKey(String sKey) {
-        this.sKey = sKey;
+    public WebWxGetMsgImgReq setSkey(String sKey) {
+        this.skey = sKey;
         return this;
     }
 
@@ -42,7 +42,7 @@ public class WebWxGetMsgImgReq extends BaseRequest<WebWxGetMsgImgReq, Object> {
 
         Map<String, Object> requestParamMap = getRequestParamMap();
         requestParamMap.put(WXQueryKey.MSG_ID, String.valueOf(msgId));
-        requestParamMap.put(WXQueryKey.SKEY, sKey);
+        requestParamMap.put(WXQueryKey.SKEY, skey);
         return this;
     }
 

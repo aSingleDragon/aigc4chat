@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 模拟网页微信客户端
+ * 模拟网页微信客户端 测试用 有点丑陋 不要在意
  *
  * @author hll
  * @since 2024/03/10

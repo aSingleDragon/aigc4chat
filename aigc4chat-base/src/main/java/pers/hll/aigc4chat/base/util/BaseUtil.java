@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import pers.hll.aigc4chat.base.exception.BizException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,6 +85,7 @@ public class BaseUtil {
             messageDigest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             log.error("未找到MD5算法:", e);
+            throw BizException.of("未找到MD5算法: ", e);
         }
         try (FileInputStream fileInputStream = new FileInputStream(file);
              DigestInputStream digestInputStream = new DigestInputStream(fileInputStream, messageDigest)) {
@@ -96,10 +98,11 @@ public class BaseUtil {
             return bytesToHex(digestInputStream.getMessageDigest().digest());
         } catch (FileNotFoundException e) {
             log.error("文件未找到: ", e);
+            throw BizException.of("文件未找到: ", e);
         } catch (IOException e) {
             log.error("IO异常: ", e);
+            throw BizException.of("IO异常: ", e);
         }
-        return null;
     }
 
     private static final char[] HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};

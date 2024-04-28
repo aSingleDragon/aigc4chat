@@ -3,6 +3,8 @@ package pers.hll.aigc4chat.base.constant;
 import java.io.File;
 
 /**
+ * 文件路径常量类 各种类型的文件的存储路径
+ *
  * @author hll
  * @since 2024/03/10
  */

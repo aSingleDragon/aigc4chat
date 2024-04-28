@@ -8,6 +8,12 @@ import pers.hll.aigc4chat.base.xml.ProxyConfig;
 
 import java.io.IOException;
 
+/**
+ * 随便写的测试类 不要在意
+ *
+ * @author hll
+ * @since 2024/04/26
+ */
 @Slf4j
 @SpringBootTest
 public class XmlUtilTest {

@@ -1,9 +1,11 @@
 package pers.hll.aigc4chat.server.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pers.hll.aigc4chat.server.base.R;
 import pers.hll.aigc4chat.server.base.ResultCode;
+import pers.hll.aigc4chat.base.exception.BizException;
 
 /**
  * 全局异常处理
@@ -11,6 +13,7 @@ import pers.hll.aigc4chat.server.base.ResultCode;
  * @author hll
  * @since 2024/04/25
  */
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,8 +27,9 @@ public class GlobalExceptionHandler {
         return R.fail(ResultCode.INTERNAL_SERVER_ERROR,"空指针异常：" + ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public R<String> handleException(Exception ex) {
+    @ExceptionHandler(BizException.class)
+    public R<String> handleException(BizException ex) {
+        log.error("业务异常：{}", ex.getMessage(), ex);
         return R.fail(ex.getMessage());
     }
 }

@@ -38,6 +38,7 @@ public class EasyCollUtil {
                 .map(mapper)
                 .filter(StringUtil::notNullOrEmpty)
                 .distinct()
+                // .toList(); // IDEA 会报错
                 .collect(Collectors.toList());
     }
 

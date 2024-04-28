@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * 应用消息
  *
  * @author hll
  * @since 2024/04/09
