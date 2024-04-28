@@ -4,13 +4,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.base.util.EasyCollUtil;
-import pers.hll.aigc4chat.base.util.StringUtil;
 import pers.hll.aigc4chat.entity.wechat.message.WXNotify;
 import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
 import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
@@ -26,7 +26,6 @@ import pers.hll.aigc4chat.server.converter.WeChatUserConverter;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
 import pers.hll.aigc4chat.server.entity.WeChatUser;
 import pers.hll.aigc4chat.server.handler.MessageHandler;
-import pers.hll.aigc4chat.server.handler.MessageHandlerName;
 import pers.hll.aigc4chat.server.wechat.WeChatRequestCache;
 import pers.hll.aigc4chat.server.wechat.WeChatTool;
 
@@ -46,7 +45,7 @@ import static pers.hll.aigc4chat.protocol.wechat.constant.WeChatWebApiConstant.H
  * <p>采用异步登录的原因是在{@link IWeChatLoginService#login(HttpServletResponse)}的方法里
  * 执行完{@link IWeChatApiService#jsLogin(HttpServletResponse)}
  * (将二维码输出到{@link HttpServletResponse#getOutputStream})后, 如果继续执行其他业务逻辑，
- * {@link GlobalExceptionHandler#handleException(Exception)}会捕获一个异常，该异常又定位到调用接口，形成死循环，最终导致缓存溢出。
+ * {@link GlobalExceptionHandler#handleException(BizException)}会捕获一个异常，该异常又定位到调用接口，形成死循环，最终导致缓存溢出。
  * </p>
  *
  * @author hll
@@ -65,9 +64,7 @@ public class AsyncLoginService {
 
     private final IWeChatMessageService weChatMessageService;
 
-    private final IWechatMessageHandlerConfigService wechatMessageHandlerConfigService;
-
-    private final ApplicationContext applicationContext;
+    private final IWeChatMessageHandlerConfigService weChatMessageHandlerConfigService;
 
     private final TaskScheduler taskScheduler;
 
@@ -157,7 +154,7 @@ public class AsyncLoginService {
             weChatUserService.saveOrUpdateMe(WeChatUserConverter.from(webWxInitResp.getUser()));
             // 获取并保存最近联系人
             log.info("正在获取并保存最近联系人...");
-            loadContacts(webWxInitResp.getChatSet(), true);
+            weChatUserService.loadContacts(webWxInitResp.getChatSet(), true);
             // 发送初始化状态信息
             WebWxStatusNotifyResp webWxStatusNotifyResp =
                     weChatApiService.webWxStatusNotify(weChatUserService.selectMe().getUserName(), WXNotify.NOTIFY_INITED);
@@ -196,7 +193,7 @@ public class AsyncLoginService {
         weChatUserService.removeBatchByIds(EasyCollUtil.getFieldList(deleteUserList, User::getUserName));
     }
 
-    private void handleAddMessage(List<AddMsg> addMsgList) {
+    public void handleAddMessage(List<AddMsg> addMsgList) {
         if (CollectionUtils.isEmpty(addMsgList)) {
             return;
         }
@@ -206,12 +203,12 @@ public class AsyncLoginService {
             if (addMsg.getMsgType() == MsgType.READ
                     && (addMsg.getStatusNotifyCode() == WXNotify.NOTIFY_SYNC_CONV)) {
                 // 会话同步，网页微信仅仅只获取了相关联系人详情
-                loadContacts(addMsg.getStatusNotifyUserName(), false);
+                weChatUserService.loadContacts(addMsg.getStatusNotifyUserName(), false);
             }
             // 不处理自己发的消息
             if (!Objects.equals(addMsg.getFromUserName(), weChatUserService.selectMe().getUserName())) {
-                String messageHandlerName = wechatMessageHandlerConfigService.getHandlerName(addMsg.getFromUserName());
-                MessageHandler messageHandler = getMessageHandler(messageHandlerName);
+                String messageHandlerName = weChatMessageHandlerConfigService.getHandlerName(addMsg.getFromUserName());
+                MessageHandler messageHandler = weChatMessageHandlerConfigService.getMessageHandler(messageHandlerName);
                 messageHandler.handle(addMsg);
             }
         }
@@ -245,7 +242,7 @@ public class AsyncLoginService {
     }
 
     public WeChatUser fetchContact(String userName) {
-        loadContacts(userName, false);
+        weChatUserService.loadContacts(userName, false);
         WeChatUser weChatUser = weChatUserService.getById(userName);
         if (WeChatTool.isGroup(weChatUser.getUserName())) {
             List<WeChatGroupMember> members = weChatGroupMemberService.listByGroupUserName(weChatUser.getUserName());
@@ -253,56 +250,9 @@ public class AsyncLoginService {
                     .stream()
                     .map(x -> new Contact(x.getUserName(), x.getGroupUserName()))
                     .toList());
-            loadContacts(contacts, true);
+            weChatUserService.loadContacts(contacts, true);
             //weChatUser.setDetail(true);
         }
         return weChatUser;
-    }
-
-    /**
-     * 获取并保存不限数量和类型的联系人信息
-     *
-     * @param userNames 逗号分隔的联系人userName
-     */
-    private void loadContacts(String userNames, boolean useCache) {
-        if (StringUtils.isNotEmpty(userNames)) {
-            List<Contact> contactList = StringUtil.splitToList(userNames).stream().map(Contact::new).toList();
-            loadContacts(new LinkedList<>(contactList), useCache);
-        }
-    }
-
-    /**
-     * 获取并保存不限数量和类型的联系人信息
-     *
-     * @param contacts 要获取的联系人的列表，数量和类型不限
-     */
-    private void loadContacts(List<Contact> contacts, boolean useCache) {
-        if (useCache) {
-            // 不是群聊，并且已经获取过，就不再次获取
-            contacts.removeIf(contact -> WeChatTool.isNotGroup(contact.getUserName())
-                    && weChatUserService.getById(contact.getUserName()) != null);
-        }
-        // 拆分成每次50个联系人分批获取
-        if (contacts.size() > 50) {
-            LinkedList<Contact> temp = new LinkedList<>();
-            for (Contact contact : contacts) {
-                temp.add(contact);
-                if (temp.size() >= 50) {
-                    weChatApiService.webWxBatchGetContact(contacts);
-                    temp.clear();
-                }
-            }
-            contacts = temp;
-        }
-        if (!contacts.isEmpty()) {
-            weChatApiService.webWxBatchGetContact(contacts);
-        }
-    }
-
-    private MessageHandler getMessageHandler(String beanName) {
-        if (StringUtils.isEmpty(beanName)) {
-            return (MessageHandler) applicationContext.getBean(MessageHandlerName.DEFAULT_MESSAGE_HANDLER);
-        }
-        return (MessageHandler) applicationContext.getBean(beanName);
     }
 }

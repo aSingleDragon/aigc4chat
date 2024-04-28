@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pers.hll.aigc4chat.server.base.R;
-import pers.hll.aigc4chat.server.entity.WechatMessageHandlerConfig;
+import pers.hll.aigc4chat.server.entity.WeChatMessageHandlerConfig;
 import pers.hll.aigc4chat.server.service.IWeChatUserService;
-import pers.hll.aigc4chat.server.service.IWechatMessageHandlerConfigService;
+import pers.hll.aigc4chat.server.service.IWeChatMessageHandlerConfigService;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import java.util.List;
 @Tag(name = "WechatMessageHandlerConfigController", description = "消息处理器控制器")
 public class WechatMessageHandlerConfigController {
 
-    private final IWechatMessageHandlerConfigService weChatMessageHandlerConfigService;
+    private final IWeChatMessageHandlerConfigService weChatMessageHandlerConfigService;
 
     private final IWeChatUserService weChatUserService;
 
@@ -43,7 +43,7 @@ public class WechatMessageHandlerConfigController {
         if (!weChatMessageHandlerConfigService.listHandlerName().contains(handlerName)) {
             throw new IllegalArgumentException("未找到[" + handlerName + "]对应的消息处理器!");
         }
-        weChatMessageHandlerConfigService.saveOrUpdate(new WechatMessageHandlerConfig(
+        weChatMessageHandlerConfigService.saveOrUpdate(new WeChatMessageHandlerConfig(
                 weChatUserService.getOneByName(userName),
                 handlerName));
         return R.success();

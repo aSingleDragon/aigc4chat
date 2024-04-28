@@ -2,10 +2,8 @@ package pers.hll.aigc4chat.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 
 import lombok.*;
-import pers.hll.aigc4chat.server.entity.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -21,7 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @EqualsAndHashCode(callSuper = true)
 @TableName("wechat_message_handler_config")
 @Schema(name = "微信消息处理器配置", description = "")
-public class WechatMessageHandlerConfig extends BaseEntity {
+public class WeChatMessageHandlerConfig extends BaseEntity {
 
     @TableId
     private String userName;

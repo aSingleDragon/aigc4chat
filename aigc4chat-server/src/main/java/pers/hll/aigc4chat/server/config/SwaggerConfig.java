@@ -18,8 +18,8 @@ public class SwaggerConfig {
 
     private License license() {
         return new License()
-                .name("MIT")
-                .url("https://opensource.org/licenses/MIT");
+                .name("Apache-2.0")
+                .url("https://www.apache.org/licenses/");
     }
 
     private Info info(){

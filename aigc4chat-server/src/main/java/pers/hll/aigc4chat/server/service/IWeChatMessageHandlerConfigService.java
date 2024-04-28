@@ -1,7 +1,8 @@
 package pers.hll.aigc4chat.server.service;
 
-import pers.hll.aigc4chat.server.entity.WechatMessageHandlerConfig;
+import pers.hll.aigc4chat.server.entity.WeChatMessageHandlerConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import pers.hll.aigc4chat.server.handler.MessageHandler;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
  * @author hll
  * @since 2024-04-22
  */
-public interface IWechatMessageHandlerConfigService extends IService<WechatMessageHandlerConfig> {
+public interface IWeChatMessageHandlerConfigService extends IService<WeChatMessageHandlerConfig> {
 
     String getHandlerName(String userName);
 
     List<String> listHandlerName();
+
+    MessageHandler getMessageHandler(String beanName);
 }

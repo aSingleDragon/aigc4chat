@@ -30,5 +30,4 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
     public void logout() {
         weChatApiService.logout();
     }
-
 }
