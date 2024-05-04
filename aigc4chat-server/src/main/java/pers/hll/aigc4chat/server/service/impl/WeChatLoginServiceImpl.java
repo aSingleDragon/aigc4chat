@@ -22,6 +22,9 @@ public class WeChatLoginServiceImpl implements IWeChatLoginService {
     private final AsyncLoginService asyncLoginService;
     @Override
     public void login(HttpServletResponse response) {
+        if (weChatApiService.isActive()) {
+            return;
+        }
         weChatApiService.jsLogin(response);
         asyncLoginService.login();
     }

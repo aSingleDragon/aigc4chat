@@ -1,5 +1,6 @@
 package pers.hll.aigc4chat.server.service;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import pers.hll.aigc4chat.base.exception.BizException;
 import pers.hll.aigc4chat.base.util.EasyCollUtil;
@@ -20,6 +20,7 @@ import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
 import pers.hll.aigc4chat.protocol.wechat.response.*;
 import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.User;
 import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.server.config.ThreadPoolName;
 import pers.hll.aigc4chat.server.controller.GlobalExceptionHandler;
 import pers.hll.aigc4chat.server.converter.WeChatMessageConverter;
 import pers.hll.aigc4chat.server.converter.WeChatUserConverter;
@@ -66,6 +67,7 @@ public class AsyncLoginService {
 
     private final IWeChatMessageHandlerConfigService weChatMessageHandlerConfigService;
 
+    @Resource(name = ThreadPoolName.LOGIN)
     private final TaskScheduler taskScheduler;
 
     private final AtomicBoolean resultReceived = new AtomicBoolean(false);
@@ -74,7 +76,7 @@ public class AsyncLoginService {
 
     private static final int SYNC_CHECK_ERROR_THRESHOLD = 5;
 
-    @Async
+    @Async(ThreadPoolName.ASYNC_LOGIN)
     public void login() {
         Runnable loginTask = () -> {
             if (!resultReceived.get()) {
@@ -154,7 +156,7 @@ public class AsyncLoginService {
             weChatUserService.saveOrUpdateMe(WeChatUserConverter.from(webWxInitResp.getUser()));
             // 获取并保存最近联系人
             log.info("正在获取并保存最近联系人...");
-            weChatUserService.loadContacts(webWxInitResp.getChatSet(), true);
+            weChatApiService.loadContacts(webWxInitResp.getChatSet(), true);
             // 发送初始化状态信息
             WebWxStatusNotifyResp webWxStatusNotifyResp =
                     weChatApiService.webWxStatusNotify(weChatUserService.selectMe().getUserName(), WXNotify.NOTIFY_INITED);
@@ -203,7 +205,7 @@ public class AsyncLoginService {
             if (addMsg.getMsgType() == MsgType.READ
                     && (addMsg.getStatusNotifyCode() == WXNotify.NOTIFY_SYNC_CONV)) {
                 // 会话同步，网页微信仅仅只获取了相关联系人详情
-                weChatUserService.loadContacts(addMsg.getStatusNotifyUserName(), false);
+                weChatApiService.loadContacts(addMsg.getStatusNotifyUserName(), false);
             }
             // 不处理自己发的消息
             if (!Objects.equals(addMsg.getFromUserName(), weChatUserService.selectMe().getUserName())) {
@@ -242,7 +244,7 @@ public class AsyncLoginService {
     }
 
     public WeChatUser fetchContact(String userName) {
-        weChatUserService.loadContacts(userName, false);
+        weChatApiService.loadContacts(userName, false);
         WeChatUser weChatUser = weChatUserService.getById(userName);
         if (WeChatTool.isGroup(weChatUser.getUserName())) {
             List<WeChatGroupMember> members = weChatGroupMemberService.listByGroupUserName(weChatUser.getUserName());
@@ -250,7 +252,7 @@ public class AsyncLoginService {
                     .stream()
                     .map(x -> new Contact(x.getUserName(), x.getGroupUserName()))
                     .toList());
-            weChatUserService.loadContacts(contacts, true);
+            weChatApiService.loadContacts(contacts, true);
             //weChatUser.setDetail(true);
         }
         return weChatUser;

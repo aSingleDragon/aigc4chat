@@ -2,6 +2,7 @@ package pers.hll.aigc4chat.server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
@@ -13,11 +14,20 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 public class ThreadPoolConfig {
 
-    @Bean
+    @Bean(ThreadPoolName.LOGIN)
     public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+        taskScheduler.setThreadNamePrefix("login-task-");
         taskScheduler.setPoolSize(4);
         taskScheduler.initialize();
         return taskScheduler;
+    }
+
+    @Bean(ThreadPoolName.ASYNC_LOGIN)
+    public SimpleAsyncTaskExecutor asyncExecutor() {
+        SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+        executor.setThreadNamePrefix("async-login-");
+        executor.setConcurrencyLimit(1);
+        return executor;
     }
 }

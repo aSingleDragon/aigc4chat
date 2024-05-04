@@ -1,8 +1,8 @@
 package pers.hll.aigc4chat.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pers.hll.aigc4chat.server.base.R;
 import pers.hll.aigc4chat.server.base.ResultCode;
 import pers.hll.aigc4chat.base.exception.BizException;
@@ -14,7 +14,7 @@ import pers.hll.aigc4chat.base.exception.BizException;
  * @since 2024/04/25
  */
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)

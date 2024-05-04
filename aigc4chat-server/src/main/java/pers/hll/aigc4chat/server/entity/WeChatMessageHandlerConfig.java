@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * <p>
- * 
+ *     微信消息处理器配置
  * </p>
  *
  * @author hll
@@ -18,11 +18,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @TableName("wechat_message_handler_config")
-@Schema(name = "微信消息处理器配置", description = "")
+@Schema(name = "微信消息处理器配置")
 public class WeChatMessageHandlerConfig extends BaseEntity {
 
     @TableId
-    private String userName;
+    private String remarkName;
 
     private String handlerName;
 }

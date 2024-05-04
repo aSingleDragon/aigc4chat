@@ -11,4 +11,6 @@ public final class XmlConfigName {
     private XmlConfigName() {}
 
     public static final String PROXY_CONFIG = "proxyXmlConfig";
+
+    public static final String OLLAMA_CONFIG = "ollamaXmlConfig";
 }

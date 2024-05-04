@@ -7,10 +7,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.springframework.stereotype.Service;
-import pers.hll.aigc4chat.base.util.BaseUtil;
-import pers.hll.aigc4chat.base.util.ImgTypeUtil;
-import pers.hll.aigc4chat.base.util.QRCodeUtil;
-import pers.hll.aigc4chat.base.util.XmlUtil;
+import pers.hll.aigc4chat.base.exception.BizException;
+import pers.hll.aigc4chat.base.util.*;
 import pers.hll.aigc4chat.entity.wechat.message.AppMsg;
 import pers.hll.aigc4chat.entity.wechat.message.OriContent;
 import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
@@ -36,6 +34,7 @@ import pers.hll.aigc4chat.server.wechat.WeChatTool;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 
 import static pers.hll.aigc4chat.protocol.wechat.constant.WXEndPoint.*;
@@ -463,6 +462,75 @@ public class WeChatApiServiceImpl implements IWeChatApiService {
                 .setToUserName(toUserName)
                 .setBaseRequestBody(WeChatRequestCache.getBaseRequestBody())
                 .build());
+    }
+
+
+    /**
+     * 获取并保存不限数量和类型的联系人信息
+     *
+     * @param userNames 逗号分隔的联系人userName
+     */
+    @Override
+    public void loadContacts(String userNames, boolean useCache) {
+        if (StringUtils.isNotEmpty(userNames)) {
+            List<Contact> contactList = StringUtil.splitToList(userNames).stream().map(Contact::new).toList();
+            loadContacts(new LinkedList<>(contactList), useCache);
+        }
+    }
+
+    /**
+     * 获取并保存不限数量和类型的联系人信息
+     *
+     * @param contacts 要获取的联系人的列表，数量和类型不限
+     */
+    @Override
+    public void loadContacts(List<Contact> contacts, boolean useCache) {
+        if (useCache) {
+            // 不是群聊，并且已经获取过，就不再次获取
+            contacts.removeIf(contact -> WeChatTool.isNotGroup(contact.getUserName())
+                    && weChatUserService.getById(contact.getUserName()) != null);
+        }
+        // 拆分成每次50个联系人分批获取
+        if (contacts.size() > 50) {
+            LinkedList<Contact> temp = new LinkedList<>();
+            for (Contact contact : contacts) {
+                temp.add(contact);
+                if (temp.size() >= 50) {
+                    webWxBatchGetContact(contacts);
+                    temp.clear();
+                }
+            }
+            contacts = temp;
+        }
+        if (!contacts.isEmpty()) {
+            webWxBatchGetContact(contacts);
+        }
+    }
+
+    @Override
+    public void activeCheck() {
+        try {
+            SyncCheckResp syncCheckResp = syncCheck();
+            if (syncCheckResp == null || syncCheckResp.getRetCode() != 0) {
+                throw BizException.of("同步检查失败");
+            }
+        } catch (Exception e) {
+            log.error("同步检查失败", e);
+            throw BizException.of("同步检查失败: ", e);
+        }
+    }
+
+    @Override
+    public boolean isActive() {
+        try {
+            SyncCheckResp syncCheckResp = syncCheck();
+            if (syncCheckResp == null || syncCheckResp.getRetCode() != 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override

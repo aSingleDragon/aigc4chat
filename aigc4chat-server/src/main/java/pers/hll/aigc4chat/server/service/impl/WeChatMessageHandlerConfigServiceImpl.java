@@ -31,9 +31,9 @@ public class WeChatMessageHandlerConfigServiceImpl
     private final ApplicationContext applicationContext;
 
     @Override
-    public String getHandlerName(String userName) {
+    public String getHandlerName(String remarkName) {
         return lambdaQuery()
-                .eq(WeChatMessageHandlerConfig::getUserName, userName)
+                .eq(WeChatMessageHandlerConfig::getRemarkName, remarkName)
                 .oneOpt()
                 .map(WeChatMessageHandlerConfig::getHandlerName)
                 .orElse(null);

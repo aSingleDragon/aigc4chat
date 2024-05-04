@@ -16,12 +16,12 @@ public class Contact {
 
     public Contact(String userName) {
         this.userName = userName;
-        this.encryChatRoomId = "";
+        this.encryptChatRoomId = "";
     }
 
     @SerializedName("UserName")
     public final String userName;
 
     @SerializedName("EncryChatRoomId")
-    public final String encryChatRoomId;
+    public final String encryptChatRoomId;
 }

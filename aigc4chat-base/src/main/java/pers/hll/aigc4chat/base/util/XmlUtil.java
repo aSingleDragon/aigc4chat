@@ -34,8 +34,8 @@ public class XmlUtil {
      * @param clazz  要转换的类
      * @return 转换后的类的实例对象
      */
-    public <T> T xmlStrToObject(String xmlStr, Class<T> clazz)  {
-        T xmlObject = null;
+    public <T> T xmlStrToObject(String xmlStr, Class<T> clazz) {
+        T xmlObject;
         if (StringUtils.isBlank(xmlStr)) {
             try {
                 xmlObject = clazz.getDeclaredConstructor().newInstance();
@@ -104,13 +104,17 @@ public class XmlUtil {
      * @param clazz 要转换的目标类
      * @throws IOException IO异常
      */
-    public <T extends XmlConfig> T readXmlConfig(Class<T> clazz) throws IOException {
+    public <T extends XmlConfig> T readXmlConfig(Class<T> clazz) {
         File xmlConfigFile = new File(getXmlConfigFilePath(getXmlConfigName(clazz)));
-        if (!xmlConfigFile.exists()) {
-            log.error("XML配置文件[{}]不存在!", xmlConfigFile.getAbsolutePath());
-            throw BizException.of("XML配置文件[{}]不存在!", xmlConfigFile.getAbsolutePath());
+        String fileContent = null;
+        if (xmlConfigFile.exists()) {
+            try {
+                fileContent = FileUtils.readFileToString(xmlConfigFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                log.error("读取XML配置文件[{}]失败: ", xmlConfigFile.getAbsolutePath(), e);
+            }
         }
-        return xmlStrToObject(FileUtils.readFileToString(xmlConfigFile, StandardCharsets.UTF_8), clazz);
+        return xmlStrToObject(fileContent, clazz);
     }
 
     /**

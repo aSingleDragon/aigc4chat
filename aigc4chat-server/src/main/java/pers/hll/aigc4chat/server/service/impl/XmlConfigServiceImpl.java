@@ -36,16 +36,11 @@ public class XmlConfigServiceImpl implements IXmlConfigService {
         for (Map.Entry<String, XmlConfig> entry : xmlConfigBeanMap.entrySet()) {
             Class<? extends XmlConfig> xmlConfigBeanClazz = entry.getValue().getClass();
             String xmlConfigName = XmlUtil.getXmlConfigName(xmlConfigBeanClazz);
-            try {
-                xmlConfigVOList.add(XmlConfigVO.builder()
-                        .fileName(xmlConfigName)
-                        .filePath(XmlUtil.getXmlConfigFilePath(xmlConfigName))
-                        .config(XmlUtil.readXmlConfig(xmlConfigBeanClazz))
-                        .build());
-            } catch (IOException e) {
-                log.error("读取配置文件失败", e);
-                throw BizException.of("读取XML配置异常", e);
-            }
+            xmlConfigVOList.add(XmlConfigVO.builder()
+                    .fileName(xmlConfigName)
+                    .filePath(XmlUtil.getXmlConfigFilePath(xmlConfigName))
+                    .config(XmlUtil.readXmlConfig(xmlConfigBeanClazz))
+                    .build());
         }
         return xmlConfigVOList;
     }
@@ -54,18 +49,11 @@ public class XmlConfigServiceImpl implements IXmlConfigService {
     public XmlConfigVO<XmlConfig> getByFileName(String fileName) {
         Map<String, XmlConfig> xmlConfigBeanMap = applicationContext.getBeansOfType(XmlConfig.class);
         Class<? extends XmlConfig> xmlConfigBeanClazz = xmlConfigBeanMap.get(fileName).getClass();
-        XmlConfigVO<XmlConfig> xmlConfigVO = null;
-        try {
-            xmlConfigVO = XmlConfigVO.builder()
-                    .fileName(fileName)
-                    .filePath(XmlUtil.getXmlConfigFilePath(fileName))
-                    .config(XmlUtil.readXmlConfig(xmlConfigBeanClazz))
-                    .build();
-        } catch (IOException e) {
-            log.error("读取[{}]配置文件失败", fileName, e);
-            throw BizException.of("读取XML配置异常", e);
-        }
-        return xmlConfigVO;
+        return XmlConfigVO.builder()
+                .fileName(fileName)
+                .filePath(XmlUtil.getXmlConfigFilePath(fileName))
+                .config(XmlUtil.readXmlConfig(xmlConfigBeanClazz))
+                .build();
     }
 
     @Override

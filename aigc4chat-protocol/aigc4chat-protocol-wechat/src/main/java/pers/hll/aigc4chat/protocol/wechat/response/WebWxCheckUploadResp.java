@@ -24,5 +24,5 @@ public class WebWxCheckUploadResp extends BaseResponseBaseBody {
     private String mediaId;
 
     @SerializedName("EncryFileName")
-    private String encryFileName;
+    private String encryptFileName;
 }

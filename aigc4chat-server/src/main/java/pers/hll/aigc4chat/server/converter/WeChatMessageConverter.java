@@ -32,7 +32,7 @@ public class WeChatMessageConverter {
         weChatMessage.setHasProductId(addMsg.getHasProductId());
         weChatMessage.setToUserName(addMsg.getToUserName());
         weChatMessage.setTicket(addMsg.getTicket());
-        weChatMessage.setEncrFileName(addMsg.getEncrFileName());
+        weChatMessage.setEncryptFileName(addMsg.getEncryptFileName());
         weChatMessage.setImgStatus(addMsg.getImgStatus());
         weChatMessage.setFromUserName(addMsg.getFromUserName());
         weChatMessage.setOriContent(addMsg.getOriContent());

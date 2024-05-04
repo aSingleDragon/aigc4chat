@@ -94,5 +94,5 @@ public class AddMsg {
     private String oriContent;
 
     @SerializedName("EncryFileName")
-    private String encrFileName;
+    private String encryptFileName;
 }

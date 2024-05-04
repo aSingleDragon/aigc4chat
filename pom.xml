@@ -39,13 +39,12 @@
         <velocity-engine-code.version>2.3</velocity-engine-code.version>
         <!-- 轮子工具 -->
         <hutool-all.version>5.8.25</hutool-all.version>
+        <!-- guava -->
+        <guava.version>33.1.0-jre</guava.version>
+        <!-- checkmark检测 高危 升级 -->
+        <spring-web.version>6.1.6</spring-web.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -107,15 +106,27 @@
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>${lombok-mapstruct-binding.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -129,6 +140,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring-web.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

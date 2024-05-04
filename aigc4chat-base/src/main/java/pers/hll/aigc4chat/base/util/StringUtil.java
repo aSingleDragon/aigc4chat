@@ -82,4 +82,11 @@ public class StringUtil {
         }
         return Objects.nonNull(obj);
     }
+
+    public boolean isNullOrEmpty(Object obj) {
+        if (obj instanceof CharSequence cs) {
+            return StringUtils.isEmpty(cs);
+        }
+        return Objects.isNull(obj);
+    }
 }

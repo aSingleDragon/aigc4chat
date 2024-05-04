@@ -17,16 +17,16 @@ import pers.hll.aigc4chat.server.service.IWeChatApiService;
 @Component(MessageHandlerName.AUDIO_REPEATER_MESSAGE_HANDLER)
 public class AudioRepeaterMessageHandler implements MessageHandler {
 
-    private final IWeChatApiService websChatApiService;
+    private final IWeChatApiService weChatApiService;
 
     @Override
     public void handleTextMessage(AddMsg addMsg) {
-        websChatApiService.sendTextMessage(addMsg.getContent(), addMsg.getFromUserName());
+        weChatApiService.sendTextMessage(addMsg.getContent(), addMsg.getFromUserName());
     }
 
     @Override
     public void handleLocationMessage(AddMsg addMsg) {
-        websChatApiService.sendLocationMessage(
+        weChatApiService.sendLocationMessage(
                 XmlUtil.xmlStrToObject(addMsg.getOriContent(), OriContent.class),
                 addMsg.getToUserName());
     }

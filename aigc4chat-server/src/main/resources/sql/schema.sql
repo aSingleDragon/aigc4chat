@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS wechat_message
     -- 原始内容（用于撤回/编辑消息时使用）
     ori_content             TEXT,
     -- 加密后的文件名（加密消息时有效）
-    encr_file_name          TEXT,
+    encrypt_file_name          TEXT,
     -- 创建时间
     created_time            DATETIME,
     -- 更新时间
@@ -154,8 +154,8 @@ CREATE TABLE IF NOT EXISTS wechat_message
 
 CREATE TABLE IF NOT EXISTS wechat_message_handler_config
 (
-    -- 用户名称
-    user_name    TEXT PRIMARY KEY,
+    -- 用户备注
+    remark_name  TEXT PRIMARY KEY,
     -- 消息处理函数
     handler_name TEXT NOT NULL,
     -- 创建时间

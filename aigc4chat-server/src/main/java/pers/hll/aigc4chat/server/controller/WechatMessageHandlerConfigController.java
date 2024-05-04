@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import pers.hll.aigc4chat.base.exception.BizException;
+import pers.hll.aigc4chat.base.util.EasyCollUtil;
 import pers.hll.aigc4chat.server.base.R;
 import pers.hll.aigc4chat.server.entity.WeChatMessageHandlerConfig;
+import pers.hll.aigc4chat.server.entity.WeChatUser;
 import pers.hll.aigc4chat.server.service.IWeChatUserService;
 import pers.hll.aigc4chat.server.service.IWeChatMessageHandlerConfigService;
 
@@ -14,7 +18,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author hll
@@ -38,14 +42,21 @@ public class WechatMessageHandlerConfigController {
 
     @PostMapping("/save-or-update")
     @Operation(summary = "新增/更新消息处理器配置", description = "增加或更新某用户对应的消息处理器")
-    public R<String> saveOrUpdate(@RequestParam @Parameter(description = "用户名称") String userName,
-                                  @RequestParam @Parameter(description = "处理器名称")String handlerName) {
+    public R<String> saveOrUpdate(@RequestParam @Parameter(description = "用户名(请保证用户的备注非空且唯一)") String userName,
+                                  @RequestParam @Parameter(description = "处理器名称") String handlerName) {
         if (!weChatMessageHandlerConfigService.listHandlerName().contains(handlerName)) {
             throw new IllegalArgumentException("未找到[" + handlerName + "]对应的消息处理器!");
         }
-        weChatMessageHandlerConfigService.saveOrUpdate(new WeChatMessageHandlerConfig(
-                weChatUserService.getOneByName(userName),
-                handlerName));
+        List<WeChatUser> weChatUserList = weChatUserService.listByName(userName);
+        List<String> sameRemarkNameList = EasyCollUtil.getFieldList(weChatUserList, WeChatUser::getRemarkName);
+        if (!CollectionUtils.isEmpty(sameRemarkNameList)) {
+            throw BizException.of("用户[{}]的备注为空!", userName);
+        }
+        if (sameRemarkNameList.size() > 1) {
+            throw BizException.of("用户[{}]的备注不唯一[有{}个]!", userName, sameRemarkNameList.size());
+        }
+        weChatMessageHandlerConfigService.saveOrUpdate(
+                new WeChatMessageHandlerConfig(sameRemarkNameList.get(0), handlerName));
         return R.success();
     }
 
