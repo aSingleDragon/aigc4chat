@@ -33,7 +33,16 @@ build/
 .vscode/
 
 ### Chat History ###
-./file/chat-history/
+/file/chat-history/
 
 ### SQLite Local DB ###
-./file/project/db/
+/file/project/db/
+
+### Xml Config File ###
+/file/project/config/
+
+### Upload File ###
+/file/upload/
+
+### Converter ###
+**/Main.java

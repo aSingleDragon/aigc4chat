@@ -1,9 +1,9 @@
 package pers.hll.aigc4chat.server.service;
 
 import jakarta.servlet.http.HttpServletResponse;
-import pers.hll.aigc4chat.common.entity.wechat.message.OriContent;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
+import pers.hll.aigc4chat.entity.wechat.message.OriContent;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
 
 import java.util.List;
 
@@ -82,6 +82,30 @@ public interface IWeChatApiService {
 
     WebWxSendMsgResp webWxSendAppMsg(String mediaId, String fileName, String fileExt, long totalLen,
                                      String signature, String toUserName);
+
+    /**
+     * 获取并保存不限数量和类型的联系人信息
+     *
+     * @param userNames 逗号分隔的联系人userName
+     */
+    void loadContacts(String userNames, boolean useCache);
+
+    /**
+     * 获取并保存不限数量和类型的联系人信息
+     *
+     * @param contacts 要获取的联系人的列表，数量和类型不限
+     */
+    void loadContacts(List<Contact> contacts, boolean useCache);
+
+    /**
+     * 微信连接是否活跃检查 如果已经断开或无法连接 抛出业务异常
+     */
+    void activeCheck();
+
+    /**
+     * 微信连接是否活跃检查 如果活跃则返回 ture 否则返回 false
+     */
+    boolean isActive();
 
     void logout();
 }

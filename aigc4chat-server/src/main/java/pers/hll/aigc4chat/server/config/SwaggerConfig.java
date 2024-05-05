@@ -18,8 +18,8 @@ public class SwaggerConfig {
 
     private License license() {
         return new License()
-                .name("MIT")
-                .url("https://opensource.org/licenses/MIT");
+                .name("Apache-2.0")
+                .url("https://www.apache.org/licenses/");
     }
 
     private Info info(){
@@ -29,14 +29,15 @@ public class SwaggerConfig {
                 .version("v1.0.0")
                 .license(license());
     }
+
     private ExternalDocumentation externalDocumentation() {
         return new ExternalDocumentation()
-                .description("欢迎Star|Fork|Issue|Commit.")
+                .description("欢迎 Star | Fork | Commit | Issue.")
                 .url("https://gitee.com/aSingleDragon/aigc4chat");
     }
 
     @Bean
-    public OpenAPI springShopOpenAPI() {
+    public OpenAPI openApi() {
         return new OpenAPI()
                 .info(info())
                 .externalDocs(externalDocumentation());

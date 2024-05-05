@@ -7,20 +7,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
-import pers.hll.aigc4chat.common.base.constant.FilePath;
-import pers.hll.aigc4chat.common.base.util.BaseUtil;
-import pers.hll.aigc4chat.common.base.util.QRCodeUtil;
-import pers.hll.aigc4chat.common.base.util.ImgTypeUtil;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXQueryValue;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.FormFile;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.form.UploadMediaRequest;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
+import pers.hll.aigc4chat.base.constant.FilePath;
+import pers.hll.aigc4chat.base.exception.BizException;
+import pers.hll.aigc4chat.base.util.BaseUtil;
+import pers.hll.aigc4chat.base.util.QRCodeUtil;
+import pers.hll.aigc4chat.base.util.ImgTypeUtil;
+import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
+import pers.hll.aigc4chat.protocol.wechat.constant.WXQueryValue;
+import pers.hll.aigc4chat.protocol.wechat.request.*;
+import pers.hll.aigc4chat.protocol.wechat.request.body.BaseRequestBody;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Msg;
+import pers.hll.aigc4chat.protocol.wechat.request.form.FormFile;
+import pers.hll.aigc4chat.protocol.wechat.request.form.UploadMediaRequest;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.SyncKey;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
@@ -32,7 +33,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.WXEndPoint.*;
+import static pers.hll.aigc4chat.protocol.wechat.constant.WXEndPoint.*;
 
 /**
  * 网页版微信全部接口
@@ -91,6 +92,7 @@ public class WeChatApi {
                 Desktop.getDesktop().open(new File(FilePath.WECHAT_LOGIN_QR_CODE));
             } catch (IOException e) {
                 log.error("打开二维码图片失败:", e);
+                throw BizException.of("打开二维码图片失败: ", e);
             }
             return qrCodeUri;
         }
@@ -356,7 +358,7 @@ public class WeChatApi {
         String filePath = FilePath.WECHAT_IMAGE + fileName;
         WebWxGetMsgImgReq webWxGetMsgImgReq = new WebWxGetMsgImgReq(String.format(WEB_WX_GET_MSG_IMG, host))
                 .setMsgId(msgId)
-                .setSKey(skey)
+                .setSkey(skey)
                 .setFileStreamAvailable(true)
                 .setFileStreamSavePath(filePath)
                 .build();
@@ -380,7 +382,7 @@ public class WeChatApi {
         String voiceFilePath = FilePath.WECHAT_VOICE + String.format("voice-%s.mp3", msgId);
         WebWxGetVoiceReq webWxGetVoiceReq = new WebWxGetVoiceReq(String.format(WEB_WX_GET_VOICE, host))
                 .setMsgId(msgId)
-                .setSKey(skey)
+                .setSkey(skey)
                 .setPassTicket(passTicket)
                 .setFileStreamAvailable(true)
                 .setFileStreamSavePath(voiceFilePath)
@@ -399,7 +401,7 @@ public class WeChatApi {
         String videoFilepath = FilePath.WECHAT_VIDEO + String.format("video-%d.mp4", msgId);
         WebWxGetVideoReq wxGetVideoReq = new WebWxGetVideoReq(String.format(WEB_WX_GET_VIDEO, host))
                 .setMsgId(msgId)
-                .setSKey(skey)
+                .setSkey(skey)
                 .setPassTicket(passTicket)
                 .build();
         WeChatHttpClient.get(wxGetVideoReq);
@@ -419,7 +421,7 @@ public class WeChatApi {
         String videoFormat = filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
         String mediaFilepath = FilePath.WECHAT_MEDIA + String.format("media-%d%s", msgId, videoFormat);
         WebWxGetMediaReq webWxGetVideoReq = new WebWxGetMediaReq(String.format(WEB_WX_GET_MEDIA, host))
-                .setEncryFileName(filename)
+                .setEncryptFileName(filename)
                 .setFromUser(uin)
                 .setMediaId(mediaId)
                 .setPassTicket(passTicket)

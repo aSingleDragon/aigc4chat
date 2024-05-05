@@ -1,5 +1,6 @@
 package pers.hll.aigc4chat.server.converter;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.base.util.converter.ConverterUtil;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 import pers.hll.aigc4chat.server.entity.WeChatMessage;
 
 import lombok.experimental.UtilityClass;
@@ -8,7 +9,7 @@ import java.util.List;
 
 /**
 * 实体类转换Converter
-* <p> 代码由 ConverterUtil 生成
+ * <p> 代码由 {@link ConverterUtil} 生成
 *
 * @author hll
 * @since 2024-04-06
@@ -31,7 +32,7 @@ public class WeChatMessageConverter {
         weChatMessage.setHasProductId(addMsg.getHasProductId());
         weChatMessage.setToUserName(addMsg.getToUserName());
         weChatMessage.setTicket(addMsg.getTicket());
-        weChatMessage.setEncrFileName(addMsg.getEncrFileName());
+        weChatMessage.setEncryptFileName(addMsg.getEncryptFileName());
         weChatMessage.setImgStatus(addMsg.getImgStatus());
         weChatMessage.setFromUserName(addMsg.getFromUserName());
         weChatMessage.setOriContent(addMsg.getOriContent());

@@ -1,7 +1,10 @@
 package pers.hll.aigc4chat.server.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import pers.hll.aigc4chat.server.bean.WeChatUserPageQuery;
 import pers.hll.aigc4chat.server.entity.WeChatGroupMember;
+import pers.hll.aigc4chat.server.entity.WeChatUser;
 
 import java.util.List;
 
@@ -17,4 +20,8 @@ public interface IWeChatGroupMemberService extends IService<WeChatGroupMember> {
 
 
     List<WeChatGroupMember> listByGroupUserName(String groupUserName);
+
+    IPage<WeChatUser> pageGroupMember(WeChatUserPageQuery query);
+
+    List<WeChatUser> listGroupMember(String groupUserName);
 }

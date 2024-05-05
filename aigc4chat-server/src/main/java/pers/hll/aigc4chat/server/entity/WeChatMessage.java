@@ -155,5 +155,5 @@ public class WeChatMessage extends BaseEntity {
     /**
      * 加密后的文件名（加密消息时有效）
      */
-    private String encrFileName;
+    private String encryptFileName;
 }

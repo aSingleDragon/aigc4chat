@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.hll.aigc4chat.server.mapper.WeChatGroupMemberMapper">
+
+    <select id="pageGroupMember" resultType="WeChatUser">
+        SELECT wu.*
+        FROM wechat_user wu
+        WHERE EXISTS (SELECT 1
+                      FROM wechat_group_member wge
+                      WHERE wge.user_name = wu.user_name
+                        AND wge.group_user_name = #{query.userName});
+    </select>
+
+    <select id="listGroupMember" resultType="WeChatUser">
+        SELECT wu.*
+        FROM wechat_user wu
+        WHERE EXISTS (SELECT 1
+                      FROM wechat_group_member wge
+                      WHERE wge.user_name = wu.user_name
+                        AND wge.group_user_name = #{groupUserName});
+    </select>
+
+</mapper>

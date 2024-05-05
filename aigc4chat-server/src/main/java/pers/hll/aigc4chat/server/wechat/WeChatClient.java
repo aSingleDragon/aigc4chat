@@ -5,24 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import pers.hll.aigc4chat.common.base.constant.FilePath;
-import pers.hll.aigc4chat.common.base.util.ImgTypeUtil;
-import pers.hll.aigc4chat.common.base.util.XmlUtil;
-import pers.hll.aigc4chat.common.entity.wechat.contact.Member;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXGroup;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXUser;
-import pers.hll.aigc4chat.common.entity.wechat.message.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.WeChatHttpClient;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Cmd;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.MsgType;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.constant.Op;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.WebWxGetAvatarReq;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Contact;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.Msg;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.*;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.User;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxsync.AddMsg;
+import pers.hll.aigc4chat.base.constant.FilePath;
+import pers.hll.aigc4chat.base.util.ImgTypeUtil;
+import pers.hll.aigc4chat.base.util.XmlUtil;
+import pers.hll.aigc4chat.entity.wechat.contact.Member;
+import pers.hll.aigc4chat.entity.wechat.contact.WXContact;
+import pers.hll.aigc4chat.entity.wechat.contact.WXGroup;
+import pers.hll.aigc4chat.entity.wechat.contact.WXUser;
+import pers.hll.aigc4chat.entity.wechat.message.*;
+import pers.hll.aigc4chat.protocol.wechat.WeChatHttpClient;
+import pers.hll.aigc4chat.protocol.wechat.constant.Cmd;
+import pers.hll.aigc4chat.protocol.wechat.constant.MsgType;
+import pers.hll.aigc4chat.protocol.wechat.constant.Op;
+import pers.hll.aigc4chat.protocol.wechat.request.WebWxGetAvatarReq;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Contact;
+import pers.hll.aigc4chat.protocol.wechat.request.body.Msg;
+import pers.hll.aigc4chat.protocol.wechat.response.*;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.User;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxsync.AddMsg;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 模拟网页微信客户端
+ * 模拟网页微信客户端 测试用 有点丑陋 不要在意
  *
  * @author hll
  * @since 2024/03/10
@@ -371,7 +371,7 @@ public final class WeChatClient {
                 MsgType.LOCATION,
                 null,
                 0,
-                XmlUtil.objectToXmlStr(oriContent, OriContent.class),
+                XmlUtil.objectToXmlStr(oriContent),
                 null,
                 weChatContacts.getMe().getUserName(),
                 wxContact.getUserName()));
@@ -424,7 +424,7 @@ public final class WeChatClient {
         voiceMsg.setCreateTime(System.currentTimeMillis());
         voiceMsg.setFromUserName(weChatContacts.getMe().getUserName());
         voiceMsg.setToUserName(wxContact.getUserName());
-        String voiceContent = XmlUtil.objectToXmlStr(voiceMsg, VoiceMsg.class);
+        String voiceContent = XmlUtil.objectToXmlStr(voiceMsg);
         WebWxSendMsgResp rspSendMsg = weChatApi.webWxSendMsg(new Msg(MsgType.VOICE, mediaId, 0,
                 voiceContent, null, weChatContacts.getMe().getUserName(), wxContact.getUserName()));
         //WXVoice wxVoice = new WXVoice();

@@ -1,0 +1,49 @@
+package pers.hll.aigc4chat.base.xml;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+import pers.hll.aigc4chat.base.util.XmlUtil;
+
+/**
+ * Ollama xml配置
+ * <ol>
+ *     <li>{@link Data} Json序列化时用到其生成的 Getter Setter 方法</li>
+ *     <li>{@link JsonInclude} 全局配置的null值不序列化 假如暂时没有配置类对应的xml配置文件 我们需要查看xml配置格式 此时null值就需要序列化</li>
+ *     <li>{@link NoArgsConstructor} {@link XmlUtil#objectToXmlStr}里的{@link JAXBContext#newInstance(Class[])}用到</li>
+ *     <li>{@link AllArgsConstructor} 生成实例对象时用到 直接用 {@code new} 或者 {@link Builder} 生成也可以 此时 {@link NoArgsConstructor} 就不再需要了</li>
+ *     <li>{@link XmlAccessorType} Xml序列化时需要</li>
+ *     <li>{@link Component} 配置类交给Spring管理 需要配合 {@link XmlConfig} 一起使用</li>
+ *     <li>{@link XmlRootElement} Xml序列化时需要 没有这个注解 读取配置类会报错</li>
+ * </ol>
+ * <p>{@link XmlConfigName} 配置类名称
+ *
+ * @author hll
+ * @since 2024/04/30
+ */
+@Data
+@JsonInclude
+@NoArgsConstructor
+@AllArgsConstructor
+@XmlAccessorType(XmlAccessType.FIELD)
+@Component(XmlConfigName.OLLAMA_CONFIG)
+@XmlRootElement(name = XmlConfigName.OLLAMA_CONFIG)
+public class OllamaConfig implements XmlConfig {
+
+    private String protocol;
+
+    private String host;
+
+    private Integer port;
+
+    public String getUri() {
+        return String.format("%s://%s:%d", protocol, host, port);
+    }
+}

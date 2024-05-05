@@ -11,10 +11,19 @@
     </parent>
 
     <artifactId>aigc4chat-model</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>aigc4chat-model-baidu</module>
+        <module>aigc4chat-model-chatgpt</module>
+        <module>aigc4chat-model-gemini</module>
+        <module>aigc4chat-model-ollama</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <sockslib.version>1.0.0</sockslib.version>
     </properties>
 
     <dependencies>

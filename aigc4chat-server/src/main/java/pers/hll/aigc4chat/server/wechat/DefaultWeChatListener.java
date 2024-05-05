@@ -3,14 +3,10 @@ package pers.hll.aigc4chat.server.wechat;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import pers.hll.aigc4chat.common.entity.wechat.contact.WXContact;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXLocation;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXMessage;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXText;
-import pers.hll.aigc4chat.common.entity.wechat.message.WXVerify;
-import pers.lys.aigc4chat.common.ai.enums.ReplyModeEnum;
-import pers.lys.aigc4chat.common.ai.AiModCallServiceImpl;
-import pers.hll.aigc4chat.common.entity.wechat.message.*;
+import pers.hll.aigc4chat.entity.wechat.contact.WXContact;
+import pers.hll.aigc4chat.entity.wechat.message.*;
+import pers.lys.aigc4chat.model.baidu.enums.ReplyModeEnum;
+import pers.lys.aigc4chat.model.baidu.AiModCallServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * 默认监听器 复读机
+ * 默认监听器 复读机 测试用 有点丑陋 不要在意
  *
  * @author hll
  * @since 2024/03/19

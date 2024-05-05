@@ -2,18 +2,24 @@ package pers.hll.aigc4chat.server.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.LoginResp;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.SyncCheckResp;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pers.hll.aigc4chat.base.util.MultipartFileUtil;
+import pers.hll.aigc4chat.entity.wechat.message.OriContent;
+import pers.hll.aigc4chat.protocol.wechat.response.LoginResp;
 import pers.hll.aigc4chat.server.base.R;
 import pers.hll.aigc4chat.server.bean.WeChatMessagePageQuery;
 import pers.hll.aigc4chat.server.entity.WeChatMessage;
 import pers.hll.aigc4chat.server.service.IWeChatApiService;
 import pers.hll.aigc4chat.server.service.IWeChatMessageService;
+
+import java.io.IOException;
 
 /**
  * 消息控制器
@@ -21,6 +27,7 @@ import pers.hll.aigc4chat.server.service.IWeChatMessageService;
  * @author hll
  * @since 2024/04/14
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/message")
@@ -31,25 +38,38 @@ public class MessageController {
 
     private final IWeChatApiService weChatApiService;
 
-    @GetMapping("/page/message")
+    @GetMapping("/page")
+    @Operation(summary = "分页", description = "分页查询，不传分页参数默认: {\"pageSize\" = 1 , \"pageNum\" = 10}\"")
     public R<IPage<WeChatMessage>> pageMessage(WeChatMessagePageQuery query) {
         return R.data(weChatMessageService.pageMessage(query));
     }
 
-    @GetMapping("/send/text")
-    public R<LoginResp> sendText(String text, String toUserName) {
-        if (syncCheck()) {
-            return R.fail("已断开连接!");
-        }
+    @PostMapping("/send/text")
+    @Operation(summary = "发送文字消息")
+    public R<LoginResp> sendText(@RequestParam @Parameter(description = "要发送的文字内容")String text,
+                                 @RequestParam @Parameter(description = "要发送到的用户名") String toUserName) {
+        weChatApiService.activeCheck();
         weChatApiService.sendTextMessage(text, toUserName);
         return R.success();
     }
 
-    private boolean syncCheck() {
-        SyncCheckResp syncCheckResp = weChatApiService.syncCheck();
-        if (syncCheckResp == null && syncCheckResp.getRetCode() != 0) {
-            return false;
-        }
-        return true;
+    @PostMapping("/send/location")
+    @Operation(summary = "发送地理位置消息")
+    public R<LoginResp> sendLocation(@RequestBody OriContent location,
+                                     @RequestParam @Parameter(description = "要发送到的用户名") String toUserName) {
+        weChatApiService.activeCheck();
+        weChatApiService.sendLocationMessage(location, toUserName);
+        return R.success();
+    }
+
+    @Operation(summary = "发送文件消息")
+    @PostMapping(value = "/send/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public R<LoginResp> sendFile(@RequestPart("file")  @Parameter(description = "要发送到的文件") MultipartFile file,
+                                 @RequestParam @Parameter(description = "要发送到的用户名") String toUserName)
+            throws IOException {
+        weChatApiService.activeCheck();
+        String filePath = MultipartFileUtil.saveFile(file);
+        weChatApiService.sendFileMessage(filePath, toUserName);
+        return R.success(filePath);
     }
 }

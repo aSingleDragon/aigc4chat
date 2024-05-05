@@ -3,6 +3,7 @@ package pers.hll.aigc4chat.server;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 启动类
@@ -10,8 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author hll
  * @since 2024/03/09
  */
-@SpringBootApplication
+@EnableAsync
 @MapperScan(value = "pers.hll.aigc4chat.server.mapper")
+@SpringBootApplication(scanBasePackages = "pers.hll.aigc4chat.*")
 public class Aigc4ChatApplication {
 
     public static void main(String[] args) {

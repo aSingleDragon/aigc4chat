@@ -18,6 +18,7 @@ public class BaseEntity implements Serializable {
 
     /**
      * 创建时间
+     * <a href="https://www.sqlite.org/datatype3.html">Datatypes In SQLite</a>
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;

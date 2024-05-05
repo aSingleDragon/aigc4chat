@@ -3,8 +3,8 @@ package pers.hll.aigc4chat.server.wechat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.request.body.BaseRequestBody;
-import pers.hll.aigc4chat.common.protocol.wechat.protocol.response.webwxinit.SyncKey;
+import pers.hll.aigc4chat.protocol.wechat.request.body.BaseRequestBody;
+import pers.hll.aigc4chat.protocol.wechat.response.webwxinit.SyncKey;
 
 import java.util.concurrent.atomic.AtomicReference;
 
